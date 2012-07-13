@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+ 	<resource src="resources/materials/casaamarela.material.xml" /> 
+ 	<resource src="resources/materials/CasaRosa.material.xml" /> 
+ 	<resource src="resources/materials/estrada.material.xml" /> 
+ 	<resource src="resources/materials/estrada-cruz.material.xml" /> 
+ 	<resource src="resources/materials/grass.material.xml" /> 
+ 	<resource src="resources/materials/metal-tiles-dirt.material.xml" /> 
+ 	<resource src="resources/materials/passeio-corner.material.xml" /> 
+ 	<resource src="resources/materials/passeio-side.material.xml" /> 
+ 	<resource src="resources/materials/passeio-tile.material.xml" /> 
+ 	<resource src="resources/materials/rooftiles.material.xml" /> 
+ 	<resource src="resources/materials/toit.material.xml" /> 
+ 	<resource src="resources/materials/whitehouselittle.material.xml" /> 
+ 	<resource src="resources/materials/Yellowhouse.material.xml" /> 
+ 	<resource src="resources/materials/simple.effect.xml" /> 
+  	<resource src="resources/materials/Mat1Tex1.material.xml" /> 
+  	<resource src="resources/materials/Mat2Tex0.material.xml" /> 
+  	<resource src="resources/materials/Mat3Tex0.material.xml" /> 
+  	<resource src="resources/materials/Mat4Tex0.material.xml" /> 
+  	<resource src="resources/materials/Mat5Tex0.material.xml" /> 
+  	<resource src="resources/materials/mat0.material.xml" /> 
+  	<resource src="resources/materials/blinn3SG.material.xml" /> 
+
+  	<resource src="resources/scene/large-scene.scene.xml" />
+	
+ 	<!--resource src="resources/images/bombermanBody.tga" /> 
+ 	<resource src="resources/images/bombermanFace.tga" /> 
+ 	<resource src="resources/images/brickbump_normal.tga" /> 
+ 	<resource src="resources/images/brickbump.tga" /> 
+ 	<resource src="resources/images/casaamarela.tga" /> 
+ 	<resource src="resources/images/CasaRosa.tga" /> 
+ 	<resource src="resources/images/ciel_nuages_512x512.tga" /> 
+ 	<resource src="resources/images/default_ddn.tga" /> 
+ 	<resource src="resources/images/default.tga" /> 
+ 	<resource src="resources/images/estrada.tga" /> 
+ 	<resource src="resources/images/estrada-cruz.tga" /> 
+ 	<resource src="resources/images/grass.tga" /> 
+ 	<resource src="resources/images/lion_ddn.tga" /> 
+ 	<resource src="resources/images/lion.tga" /> 
+ 	<resource src="resources/images/metal-tiles-dirt.tga" /> 
+ 	<resource src="resources/images/passeio-corner.tga" /> 
+ 	<resource src="resources/images/passeio-side.tga" /> 
+ 	<resource src="resources/images/passeio-tile.tga" /> 
+ 	<resource src="resources/images/rockwall_normal.tga" /> 
+ 	<resource src="resources/images/rockwall.tga" /> 
+ 	<resource src="resources/images/rooftiles.tga" /> 
+ 	<resource src="resources/images/toit.tga" /> 
+ 	<resource src="resources/images/whitehouselittle.tga" /> 
+ 	<resource src="resources/images/Yellowhouse.tga" /> 
+ 	<resource src="resources/images/duckCM.tga" /> 
+	
+  	<resource src="resources/scene/level.mesh.xml" /> 
+ 	
+  	<resource src="resources/scene/bomberman.ms3d" /> 
+
+  	<resource src="resources/images/cow.tga" /> 
+  	<resource src="resources/scene/cow.dae" /> 
+
+  	<resource src="resources/scene/duck_triangulate.dae" /> 
+
+  	<resource src="resources/scene/dice.dae" />
+  	 
+  	<resource src="resources/scene/simple-scene.scene.xml" />
+  	
+  	<resource src="resources/scene/large-scene.scene.xml" />
+  	<resource src="resources/scene/teste-composto.dae" />
+  	
+  	<resource src="resources/materials/simple.effect.xml" />
+  	
+  	<resource src="resources/scene/large-scene.scene.xml" />
+  	<resource src="resources/scene/duck_triangulate.dae"> 
+  		<options>
+  			<option name="only-geometry" value="true" />
+  			<option name="geometry-name" value="duck_triangulate" />
+  		</options>
+  	</resource-->
+</resources>

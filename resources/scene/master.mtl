@@ -1,0 +1,41 @@
+newmtl red
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl blue
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl green
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl gold
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl orange
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl purple
+map_Kd lion.tga
+bump lion_ddn.tga
+Kd 0.615 0.615 0.615
+Ks 0.2 0.2 0.2
+Ns 32.0

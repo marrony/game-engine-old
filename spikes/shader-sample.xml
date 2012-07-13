@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<effect>
+
+	<aspect name="AMBIENT">
+		<colorWrite value="false"/>
+		<zFunc value="515"/>
+		
+		<vertexShader src="shaders/simpleVertex.vert.c">
+			<!-- define />
+			<include src="path/to/include/file.vs" />
+			<source src="path/to/vertex/shader.vs" /-->
+		</vertexShader>
+	
+		<fragmentShader src="shaders/simpleFragment.frag.c">
+			<!-- include src="" />
+			<source>
+				uniform sampler tex;
+	
+				void main() {
+				bagaca
+				}
+			</source-->
+		</fragmentShader>
+	</aspect>
+	
+	<aspect name="LIGHT">
+		<colorWrite value="true"/>
+		<depthWrite value="false"/>
+		<blend/>
+		
+		<vertexShader src="shaders/simpleVertex.vert.c"/>
+		<fragmentShader src="shaders/simpleFragment.frag.c"/>
+	</aspect>
+
+</effect>

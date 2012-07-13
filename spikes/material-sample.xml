@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<material>
+
+	<effect src="spikes\\shader-sample.xml"/>
+	
+	<sampler name="myTexture0" src="images\\default.tga"/>
+	<sampler name="myTexture1" src="images\\default_ddn.tga"/>
+
+	<constant name="x" value="10"/>
+</material>

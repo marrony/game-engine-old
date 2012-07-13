@@ -1,0 +1,12 @@
+
+all:
+	ndk-build V=1 NDK_DEBUG=1
+	ant debug
+	adb install -r bin/NativeActivity-debug-unaligned.apk
+
+clean:
+	ndk-build V=1 clean
+	ant clean
+
+debug:
+	ndk-gdb --start --force --verbose

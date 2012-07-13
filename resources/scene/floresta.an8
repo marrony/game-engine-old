@@ -1,0 +1,3008 @@
+header {
+  version { "0.97d beta" }
+  build { "2008.09.21" }
+}
+environment {
+  grid { 1 10 50 50 }
+  lighting {
+    intensity { 1 }
+    ambientintensity { 0.20000 }
+  }
+  framerate { 24 }
+  film {
+    size { 400 300 }
+    ratio { 4 3 }
+  }
+}
+texture { "rockwall"
+  file { "D:\\workspace-jogo\\Game\\images\\rockwall.jpg" }
+}
+object { "object01"
+  material { "material01"
+    surface {
+      /* RGB chunk no longer used */
+      rgb { 224 224 224 }
+      lockambiantdiffuse { }
+      ambiant {
+        rgb { 224 224 224 }
+        factor { 0.30000 }
+      }
+      diffuse {
+        rgb { 224 224 224 }
+        factor { 0.70000 }
+        texturename { "rockwall" }
+        textureparams {
+          blendmode { decal }
+          alphamode { none }
+        }
+      }
+      specular {
+        rgb { 255 255 255 }
+        factor { 0.20000 }
+      }
+      phongsize { 32 }
+    }
+  }
+  material { "material02"
+    surface {
+      /* RGB chunk no longer used */
+      rgb { 216 86 79 }
+      lockambiantdiffuse { }
+      ambiant {
+        rgb { 216 86 79 }
+        factor { 0.30000 }
+      }
+      diffuse {
+        rgb { 216 86 79 }
+        factor { 0.70000 }
+      }
+      specular {
+        rgb { 251 217 217 }
+        factor { 0.20000 }
+      }
+      emissive {
+        rgb { 90 221 71 }
+        factor { 0.50000 }
+      }
+      brilliance { 2 }
+      phongsize { 32 }
+    }
+  }
+  mesh {
+    name { "mesh01" }
+    base {
+      origin { (-4.077 -11.317 3.1922) }
+    }
+    material { "material01" }
+    smoothangle { 45 }
+    texgen {
+      mode { "planar" }
+      scale { 657.32 7.7697 }
+      center { (0 0 0) }
+      up { (0 0.99985 0.01745) }
+      forward { (0 0.01745 -0.99985) }
+    }
+    /* 50 points, 48 faces, 50 uvCoords */
+    materiallist {
+      materialname { "material01" }
+    }
+    points {
+      (-328.66 -3.8849 -328.66) (-328.66 -3.8849 328.66) 
+      (-328.66 3.8849 -328.66) (-328.66 3.8849 328.66) (-164.33 -3.8849 -328.66)
+      (-164.33 -3.8849 328.66) (-164.33 3.8849 -328.66) (-164.33 3.8849 328.66) 
+      (0 -3.8849 -328.66) (0 -3.8849 328.66) (0 3.8849 -328.66) 
+      (0 3.8849 328.66) (164.33 -3.8849 -328.66) (164.33 -3.8849 328.66) 
+      (164.33 3.8849 -328.66) (164.33 3.8849 328.66) (328.66 -3.8849 -328.66) 
+      (328.66 -3.8849 328.66) (328.66 3.8849 -328.66) (328.66 3.8849 328.66) 
+      (-328.66 -3.8849 -164.33) (328.66 -3.8849 -164.33) (-328.66 -3.8849 0) 
+      (328.66 -3.8849 0) (-328.66 -3.8849 164.33) (328.66 -3.8849 164.33) 
+      (-328.66 3.8849 -164.33) (328.66 3.8849 -164.33) (-328.66 3.8849 0) 
+      (328.66 3.8849 0) (-328.66 3.8849 164.33) (328.66 3.8849 164.33) 
+      (-164.33 -3.8849 -164.33) (-164.33 3.8849 -164.33) (-164.33 -3.8849 0) 
+      (-164.33 3.8849 0) (-164.33 -3.8849 164.33) (-164.33 3.8849 164.33) 
+      (0 -3.8849 -164.33) (0 3.8849 -164.33) (0 -3.8849 0) (0 3.8849 0) 
+      (0 -3.8849 164.33) (0 3.8849 164.33) (164.33 -3.8849 -164.33) 
+      (164.33 3.8849 -164.33) (164.33 -3.8849 0) (164.33 3.8849 0) 
+      (164.33 -3.8849 164.33) (164.33 3.8849 164.33)
+    }
+    texcoords {
+      (0 0.73832) (0.25000 0.73832) (0.25000 1.7382) (0 1.7382) 
+      (0.50000 0.73832) (0.50000 1.7382) (0.75000 0.73832) (0.75000 1.7382) 
+      (1 0.73832) (1 1.7382) (0 -0.73816) (0 0.26168) (0.25000 0.26168) 
+      (0.25000 -0.73816) (0.50000 0.26168) (0.50000 -0.73816) (0.75000 0.26168) 
+      (0.75000 -0.73816) (1 0.26168) (1 -0.73816) (0 1.369) (0 0.36920) 
+      (0 0.99992) (0 0.00008) (0 0.63080) (0 -0.36904) (1 0.36920) (1 1.369) 
+      (1 0.00008) (1 0.99992) (1 -0.36904) (1 0.63080) (0.25000 1.369) 
+      (0.25000 0.99992) (0.25000 0.63080) (0.50000 1.369) (0.50000 0.99992) 
+      (0.50000 0.63080) (0.75000 1.369) (0.75000 0.99992) (0.75000 0.63080) 
+      (0.25000 0.36920) (0.25000 0.00008) (0.25000 -0.36904) (0.50000 0.36920) 
+      (0.50000 0.00008) (0.50000 -0.36904) (0.75000 0.36920) (0.75000 0.00008) 
+      (0.75000 -0.36904)
+    }
+    faces {
+      4 4 0 -1 ( (0 0) (4 1) (6 2) (2 3) )
+      4 4 0 -1 ( (4 1) (8 4) (10 5) (6 2) )
+      4 4 0 -1 ( (8 4) (12 6) (14 7) (10 5) )
+      4 4 0 -1 ( (12 6) (16 8) (18 9) (14 7) )
+      4 4 0 -1 ( (1 10) (3 11) (7 12) (5 13) )
+      4 4 0 -1 ( (5 13) (7 12) (11 14) (9 15) )
+      4 4 0 -1 ( (9 15) (11 14) (15 16) (13 17) )
+      4 4 0 -1 ( (13 17) (15 16) (19 18) (17 19) )
+      4 4 0 -1 ( (0 0) (2 3) (26 20) (20 21) )
+      4 4 0 -1 ( (20 21) (26 20) (28 22) (22 23) )
+      4 4 0 -1 ( (22 23) (28 22) (30 24) (24 25) )
+      4 4 0 -1 ( (24 25) (30 24) (3 11) (1 10) )
+      4 4 0 -1 ( (16 8) (21 26) (27 27) (18 9) )
+      4 4 0 -1 ( (21 26) (23 28) (29 29) (27 27) )
+      4 4 0 -1 ( (23 28) (25 30) (31 31) (29 29) )
+      4 4 0 -1 ( (25 30) (17 19) (19 18) (31 31) )
+      4 4 0 -1 ( (2 3) (6 2) (33 32) (26 20) )
+      4 4 0 -1 ( (26 20) (33 32) (35 33) (28 22) )
+      4 4 0 -1 ( (28 22) (35 33) (37 34) (30 24) )
+      4 4 0 -1 ( (30 24) (37 34) (7 12) (3 11) )
+      4 4 0 -1 ( (6 2) (10 5) (39 35) (33 32) )
+      4 4 0 -1 ( (33 32) (39 35) (41 36) (35 33) )
+      4 4 0 -1 ( (35 33) (41 36) (43 37) (37 34) )
+      4 4 0 -1 ( (37 34) (43 37) (11 14) (7 12) )
+      4 4 0 -1 ( (10 5) (14 7) (45 38) (39 35) )
+      4 4 0 -1 ( (39 35) (45 38) (47 39) (41 36) )
+      4 4 0 -1 ( (41 36) (47 39) (49 40) (43 37) )
+      4 4 0 -1 ( (43 37) (49 40) (15 16) (11 14) )
+      4 4 0 -1 ( (14 7) (18 9) (27 27) (45 38) )
+      4 4 0 -1 ( (45 38) (27 27) (29 29) (47 39) )
+      4 4 0 -1 ( (47 39) (29 29) (31 31) (49 40) )
+      4 4 0 -1 ( (49 40) (31 31) (19 18) (15 16) )
+      4 4 0 -1 ( (0 0) (20 21) (32 41) (4 1) )
+      4 4 0 -1 ( (20 21) (22 23) (34 42) (32 41) )
+      4 4 0 -1 ( (22 23) (24 25) (36 43) (34 42) )
+      4 4 0 -1 ( (24 25) (1 10) (5 13) (36 43) )
+      4 4 0 -1 ( (4 1) (32 41) (38 44) (8 4) )
+      4 4 0 -1 ( (32 41) (34 42) (40 45) (38 44) )
+      4 4 0 -1 ( (34 42) (36 43) (42 46) (40 45) )
+      4 4 0 -1 ( (36 43) (5 13) (9 15) (42 46) )
+      4 4 0 -1 ( (8 4) (38 44) (44 47) (12 6) )
+      4 4 0 -1 ( (38 44) (40 45) (46 48) (44 47) )
+      4 4 0 -1 ( (40 45) (42 46) (48 49) (46 48) )
+      4 4 0 -1 ( (42 46) (9 15) (13 17) (48 49) )
+      4 4 0 -1 ( (12 6) (44 47) (21 26) (16 8) )
+      4 4 0 -1 ( (44 47) (46 48) (23 28) (21 26) )
+      4 4 0 -1 ( (46 48) (48 49) (25 30) (23 28) )
+      4 4 0 -1 ( (48 49) (13 17) (17 19) (25 30) )
+    }
+  }
+  cylinder {
+    name { "cylinder161" }
+    base {
+      origin { (-223.83 20.845 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder162" }
+    base {
+      origin { (-164.91 20.845 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder163" }
+    base {
+      origin { (-100.7 21.417 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder164" }
+    base {
+      origin { (-28.24 19.633 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder165" }
+    base {
+      origin { (40.682 21.383 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder166" }
+    base {
+      origin { (101.36 20.777 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder167" }
+    base {
+      origin { (163.2 21.35 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder168" }
+    base {
+      origin { (228.59 20.744 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder169" }
+    base {
+      origin { (293.98 21.316 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  cylinder {
+    name { "cylinder170" }
+    base {
+      origin { (-275.82 20.71 297.61) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  group {
+    name { "group13" }
+    base {
+      origin { (-248.69 22.312 -10.854) }
+    }
+    cylinder {
+      name { "cylinder11" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere11" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group14" }
+    base {
+      origin { (-189.77 22.312 -10.854) }
+    }
+    cylinder {
+      name { "cylinder12" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere12" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group15" }
+    base {
+      origin { (-125.56 22.884 -10.854) }
+    }
+    cylinder {
+      name { "cylinder13" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere13" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group16" }
+    base {
+      origin { (-53.107 21.099 -10.854) }
+    }
+    cylinder {
+      name { "cylinder14" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere14" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group17" }
+    base {
+      origin { (15.815 22.85 -10.854) }
+    }
+    cylinder {
+      name { "cylinder15" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere15" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group18" }
+    base {
+      origin { (76.489 22.244 -10.854) }
+    }
+    cylinder {
+      name { "cylinder16" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere16" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group19" }
+    base {
+      origin { (138.34 22.817 -10.854) }
+    }
+    cylinder {
+      name { "cylinder17" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere17" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group20" }
+    base {
+      origin { (203.73 22.21 -10.854) }
+    }
+    cylinder {
+      name { "cylinder18" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere18" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group21" }
+    base {
+      origin { (269.12 22.783 -10.854) }
+    }
+    cylinder {
+      name { "cylinder19" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere19" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group22" }
+    base {
+      origin { (-300.68 22.177 -10.854) }
+    }
+    cylinder {
+      name { "cylinder20" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere20" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group24" }
+    base {
+      origin { (-248.69 22.312 47.157) }
+    }
+    cylinder {
+      name { "cylinder21" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere21" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group25" }
+    base {
+      origin { (-189.77 22.312 47.157) }
+    }
+    cylinder {
+      name { "cylinder22" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere22" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group26" }
+    base {
+      origin { (-125.56 22.884 47.157) }
+    }
+    cylinder {
+      name { "cylinder23" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere23" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group27" }
+    base {
+      origin { (-53.107 21.099 47.157) }
+    }
+    cylinder {
+      name { "cylinder24" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere24" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group28" }
+    base {
+      origin { (15.815 22.85 47.157) }
+    }
+    cylinder {
+      name { "cylinder25" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere25" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group29" }
+    base {
+      origin { (76.489 22.244 47.157) }
+    }
+    cylinder {
+      name { "cylinder26" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere26" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group30" }
+    base {
+      origin { (138.34 22.817 47.157) }
+    }
+    cylinder {
+      name { "cylinder27" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere27" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group31" }
+    base {
+      origin { (203.73 22.21 47.157) }
+    }
+    cylinder {
+      name { "cylinder28" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere28" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group32" }
+    base {
+      origin { (269.12 22.783 47.157) }
+    }
+    cylinder {
+      name { "cylinder29" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere29" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group33" }
+    base {
+      origin { (-300.68 22.177 47.157) }
+    }
+    cylinder {
+      name { "cylinder30" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere30" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group57" }
+    base {
+      origin { (-248.69 22.312 108.33) }
+    }
+    cylinder {
+      name { "cylinder51" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere51" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group58" }
+    base {
+      origin { (-189.77 22.312 108.33) }
+    }
+    cylinder {
+      name { "cylinder52" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere52" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group59" }
+    base {
+      origin { (-125.56 22.884 108.33) }
+    }
+    cylinder {
+      name { "cylinder53" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere53" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group60" }
+    base {
+      origin { (-53.107 21.099 108.33) }
+    }
+    cylinder {
+      name { "cylinder54" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere54" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group61" }
+    base {
+      origin { (15.815 22.85 108.33) }
+    }
+    cylinder {
+      name { "cylinder55" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere55" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group62" }
+    base {
+      origin { (76.489 22.244 108.33) }
+    }
+    cylinder {
+      name { "cylinder56" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere56" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group63" }
+    base {
+      origin { (138.34 22.817 108.33) }
+    }
+    cylinder {
+      name { "cylinder57" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere57" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group64" }
+    base {
+      origin { (203.73 22.21 108.33) }
+    }
+    cylinder {
+      name { "cylinder58" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere58" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group65" }
+    base {
+      origin { (269.12 22.783 108.33) }
+    }
+    cylinder {
+      name { "cylinder59" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere59" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group66" }
+    base {
+      origin { (-300.68 22.177 108.33) }
+    }
+    cylinder {
+      name { "cylinder60" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere60" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group79" }
+    base {
+      origin { (-238.69 26.663 171.62) }
+    }
+    cylinder {
+      name { "cylinder71" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere71" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group80" }
+    base {
+      origin { (-179.77 26.663 171.62) }
+    }
+    cylinder {
+      name { "cylinder72" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere72" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group81" }
+    base {
+      origin { (-115.56 27.235 171.62) }
+    }
+    cylinder {
+      name { "cylinder73" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere73" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group82" }
+    base {
+      origin { (-43.107 25.451 171.62) }
+    }
+    cylinder {
+      name { "cylinder74" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere74" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group83" }
+    base {
+      origin { (25.815 27.202 171.62) }
+    }
+    cylinder {
+      name { "cylinder75" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere75" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group84" }
+    base {
+      origin { (86.489 26.596 171.62) }
+    }
+    cylinder {
+      name { "cylinder76" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere76" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group85" }
+    base {
+      origin { (148.34 27.168 171.62) }
+    }
+    cylinder {
+      name { "cylinder77" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere77" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group86" }
+    base {
+      origin { (213.73 26.562 171.62) }
+    }
+    cylinder {
+      name { "cylinder78" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere78" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group87" }
+    base {
+      origin { (279.12 27.134 171.62) }
+    }
+    cylinder {
+      name { "cylinder79" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere79" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group88" }
+    base {
+      origin { (-290.68 26.528 171.62) }
+    }
+    cylinder {
+      name { "cylinder80" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere80" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group101" }
+    base {
+      origin { (-228.69 21.217 -77.303) }
+    }
+    cylinder {
+      name { "cylinder91" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere91" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group102" }
+    base {
+      origin { (-169.77 21.217 -77.303) }
+    }
+    cylinder {
+      name { "cylinder92" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere92" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group103" }
+    base {
+      origin { (-105.56 21.789 -77.303) }
+    }
+    cylinder {
+      name { "cylinder93" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere93" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group104" }
+    base {
+      origin { (-33.107 20.004 -77.303) }
+    }
+    cylinder {
+      name { "cylinder94" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere94" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group105" }
+    base {
+      origin { (35.815 21.755 -77.303) }
+    }
+    cylinder {
+      name { "cylinder95" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere95" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group106" }
+    base {
+      origin { (96.489 21.149 -77.303) }
+    }
+    cylinder {
+      name { "cylinder96" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere96" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group107" }
+    base {
+      origin { (158.34 21.722 -77.303) }
+    }
+    cylinder {
+      name { "cylinder97" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere97" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group108" }
+    base {
+      origin { (223.73 21.115 -77.303) }
+    }
+    cylinder {
+      name { "cylinder98" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere98" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group109" }
+    base {
+      origin { (289.12 21.688 -77.303) }
+    }
+    cylinder {
+      name { "cylinder99" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere99" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group110" }
+    base {
+      origin { (-280.68 21.082 -77.303) }
+    }
+    cylinder {
+      name { "cylinder100" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere100" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group123" }
+    base {
+      origin { (-218.69 21.724 -140.59) }
+    }
+    cylinder {
+      name { "cylinder111" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere111" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group124" }
+    base {
+      origin { (-159.77 21.724 -140.59) }
+    }
+    cylinder {
+      name { "cylinder112" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere112" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group125" }
+    base {
+      origin { (-95.564 22.296 -140.59) }
+    }
+    cylinder {
+      name { "cylinder113" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere113" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group126" }
+    base {
+      origin { (-23.107 20.511 -140.59) }
+    }
+    cylinder {
+      name { "cylinder114" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere114" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group127" }
+    base {
+      origin { (45.815 22.262 -140.59) }
+    }
+    cylinder {
+      name { "cylinder115" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere115" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group128" }
+    base {
+      origin { (106.49 21.656 -140.59) }
+    }
+    cylinder {
+      name { "cylinder116" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere116" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group129" }
+    base {
+      origin { (168.34 22.229 -140.59) }
+    }
+    cylinder {
+      name { "cylinder117" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere117" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group130" }
+    base {
+      origin { (233.73 21.622 -140.59) }
+    }
+    cylinder {
+      name { "cylinder118" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere118" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group131" }
+    base {
+      origin { (299.12 22.195 -140.59) }
+    }
+    cylinder {
+      name { "cylinder119" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere119" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group132" }
+    base {
+      origin { (-270.68 21.589 -140.59) }
+    }
+    cylinder {
+      name { "cylinder120" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere120" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group145" }
+    base {
+      origin { (-208.69 23.286 -209.15) }
+    }
+    cylinder {
+      name { "cylinder131" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere131" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group146" }
+    base {
+      origin { (-149.77 23.286 -209.15) }
+    }
+    cylinder {
+      name { "cylinder132" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere132" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group147" }
+    base {
+      origin { (-85.564 23.858 -209.15) }
+    }
+    cylinder {
+      name { "cylinder133" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere133" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group148" }
+    base {
+      origin { (-13.107 22.073 -209.15) }
+    }
+    cylinder {
+      name { "cylinder134" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere134" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group149" }
+    base {
+      origin { (55.815 23.824 -209.15) }
+    }
+    cylinder {
+      name { "cylinder135" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere135" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group150" }
+    base {
+      origin { (116.49 23.218 -209.15) }
+    }
+    cylinder {
+      name { "cylinder136" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere136" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group151" }
+    base {
+      origin { (178.34 23.791 -209.15) }
+    }
+    cylinder {
+      name { "cylinder137" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere137" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group152" }
+    base {
+      origin { (243.73 23.184 -209.15) }
+    }
+    cylinder {
+      name { "cylinder138" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere138" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group153" }
+    base {
+      origin { (309.12 23.757 -209.15) }
+    }
+    cylinder {
+      name { "cylinder139" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere139" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group154" }
+    base {
+      origin { (-260.68 23.151 -209.15) }
+    }
+    cylinder {
+      name { "cylinder140" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere140" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group167" }
+    base {
+      origin { (-198.69 22.739 -277.7) }
+    }
+    cylinder {
+      name { "cylinder151" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere151" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group168" }
+    base {
+      origin { (-139.77 22.739 -277.7) }
+    }
+    cylinder {
+      name { "cylinder152" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere152" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group169" }
+    base {
+      origin { (-75.564 23.311 -277.7) }
+    }
+    cylinder {
+      name { "cylinder153" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere153" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group170" }
+    base {
+      origin { (-3.1073 21.526 -277.7) }
+    }
+    cylinder {
+      name { "cylinder154" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere154" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group171" }
+    base {
+      origin { (65.815 23.277 -277.7) }
+    }
+    cylinder {
+      name { "cylinder155" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere155" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group172" }
+    base {
+      origin { (126.49 22.671 -277.7) }
+    }
+    cylinder {
+      name { "cylinder156" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere156" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group173" }
+    base {
+      origin { (188.34 23.244 -277.7) }
+    }
+    cylinder {
+      name { "cylinder157" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere157" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group174" }
+    base {
+      origin { (253.73 22.637 -277.7) }
+    }
+    cylinder {
+      name { "cylinder158" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere158" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group175" }
+    base {
+      origin { (319.12 23.21 -277.7) }
+    }
+    cylinder {
+      name { "cylinder159" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere159" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  group {
+    name { "group176" }
+    base {
+      origin { (-250.68 22.604 -277.7) }
+    }
+    cylinder {
+      name { "cylinder160" }
+      base {
+        origin { (1.1785 -3.0312 0) }
+        orientation { (-1 0 0 0) }
+      }
+      material { " -- default --" }
+      length { 29.461 }
+      diameter { 5.8923 }
+      topdiameter { 5.8923 }
+      longlat { 12 8 }
+      capend { }
+      capstart { }
+    }
+    sphere {
+      name { "sphere160" }
+      base {
+        origin { (0 9.9318 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+  cylinder {
+    name { "cylinder171" }
+    base {
+      origin { (-222.68 22.099 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere171" }
+    base {
+      origin { (-223.86 35.062 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder172" }
+    base {
+      origin { (-163.76 22.099 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere172" }
+    base {
+      origin { (-164.94 35.062 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder173" }
+    base {
+      origin { (-99.553 22.671 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere173" }
+    base {
+      origin { (-100.73 35.634 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder174" }
+    base {
+      origin { (-27.096 20.887 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere174" }
+    base {
+      origin { (-28.274 33.85 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder175" }
+    base {
+      origin { (41.826 22.638 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere175" }
+    base {
+      origin { (40.648 35.601 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder176" }
+    base {
+      origin { (102.5 22.032 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere176" }
+    base {
+      origin { (101.32 34.995 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder177" }
+    base {
+      origin { (164.35 22.604 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere177" }
+    base {
+      origin { (163.17 35.567 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder178" }
+    base {
+      origin { (229.74 21.998 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere178" }
+    base {
+      origin { (228.56 34.961 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder179" }
+    base {
+      origin { (295.13 22.57 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere179" }
+    base {
+      origin { (293.95 35.533 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  cylinder {
+    name { "cylinder180" }
+    base {
+      origin { (-274.67 21.964 236.86) }
+      orientation { (-1 0 0 0) }
+    }
+    material { " -- default --" }
+    length { 29.461 }
+    diameter { 5.8923 }
+    topdiameter { 5.8923 }
+    longlat { 12 8 }
+    capend { }
+    capstart { }
+  }
+  sphere {
+    name { "sphere180" }
+    base {
+      origin { (-275.85 34.927 236.86) }
+    }
+    material { " -- default --" }
+    diameter { 45.121 }
+    longlat { 12 8 }
+  }
+  mesh {
+    name { "mesh02" }
+    base {
+      origin { (-21.582 85.267 20.918) }
+    }
+    material { "material02" }
+    smoothangle { 45 }
+    texgen {
+      mode { "planar" }
+      scale { 30.915 28.88 }
+      center { (0 0 0) }
+      up { (0.62192 0.77843 -0.08522) }
+      forward { (0.74565 -0.62192 -0.23920) }
+    }
+    /* 20 points, 12 faces, 20 uvCoords */
+    materiallist {
+      materialname { "material02" }
+    }
+    points {
+      (0 0 15.458) (10.305 0 11.521) (-5.1525 8.9244 11.521) 
+      (-5.1525 -8.9244 11.521) (11.521 8.9244 5.1525) (11.521 -8.9244 5.1525) 
+      (-13.489 5.5155 5.1525) (1.9681 14.44 5.1525) (1.9681 -14.44 5.1525) 
+      (-13.489 -5.5156 5.1525) (13.489 5.5156 -5.1525) (13.489 -5.5156 -5.1525) 
+      (-11.521 8.9244 -5.1525) (-1.9681 14.44 -5.1525) (-1.9681 -14.44 -5.1525) 
+      (-11.521 -8.9244 -5.1525) (5.1525 8.9244 -11.521) (5.1525 -8.9244 -11.521)
+      (-10.305 0 -11.521) (0 0 -15.458)
+    }
+    texcoords {
+      (0.36178 1.0039) (0.68145 0.99436) (0.64440 0.81751) (0.30185 0.71770) 
+      (0.12718 0.83288) (0.00271 0.52277) (0.16040 0.50210) (0.38231 0.79943) 
+      (0.28534 0.33641) (0.10046 0.21594) (0.83960 0.49790) (0.61769 0.20057) 
+      (0.71466 0.66359) (0.89954 0.78406) (0.31855 0.00564) (0.35560 0.18249) 
+      (0.99729 0.47723) (0.63822 -0.00386) (0.69815 0.28230) (0.87282 0.16712)
+    }
+    faces {
+      5 4 0 -1 ( (2 0) (7 1) (4 2) (1 3) (0 4) )
+      5 4 0 -1 ( (3 5) (9 6) (6 7) (2 0) (0 4) )
+      5 4 0 -1 ( (1 3) (5 8) (8 9) (3 5) (0 4) )
+      5 4 0 -1 ( (4 2) (10 10) (11 11) (5 8) (1 3) )
+      5 4 0 -1 ( (6 7) (12 12) (13 13) (7 1) (2 0) )
+      5 4 0 -1 ( (8 9) (14 14) (15 15) (9 6) (3 5) )
+      5 4 0 -1 ( (7 1) (13 13) (16 16) (10 10) (4 2) )
+      5 4 0 -1 ( (11 11) (17 17) (14 14) (8 9) (5 8) )
+      5 4 0 -1 ( (9 6) (15 15) (18 18) (12 12) (6 7) )
+      5 4 0 -1 ( (16 16) (19 19) (17 17) (11 11) (10 10) )
+      5 4 0 -1 ( (18 18) (19 19) (16 16) (13 13) (12 12) )
+      5 4 0 -1 ( (17 17) (19 19) (18 18) (15 15) (14 14) )
+    }
+  }
+  group {
+    name { "group01" }
+    base {
+      origin { (7.9 33.488 297.61) }
+    }
+    sphere {
+      name { "sphere161" }
+      base {
+        origin { (-232.91 0.32000 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere162" }
+      base {
+        origin { (-173.99 0.32000 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere163" }
+      base {
+        origin { (-109.78 0.89200 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere164" }
+      base {
+        origin { (-37.318 -0.89200 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere165" }
+      base {
+        origin { (31.604 0.85800 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere166" }
+      base {
+        origin { (92.28 0.25200 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere167" }
+      base {
+        origin { (154.12 0.82500 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere168" }
+      base {
+        origin { (219.51 0.21900 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere169" }
+      base {
+        origin { (284.9 0.79100 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+    sphere {
+      name { "sphere170" }
+      base {
+        origin { (-284.9 0.18500 0) }
+      }
+      material { " -- default --" }
+      diameter { 45.121 }
+      longlat { 12 8 }
+    }
+  }
+}

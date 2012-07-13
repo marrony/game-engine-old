@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <authoring_tool>Lightwave 9.5</authoring_tool>
+        </contributor>
+        <created>2009-04-14T23:24:47Z</created>
+        <modified>2009-04-14T23:24:47Z</modified>
+        <unit meter="0.01"></unit>
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_animations>
+        <animation id="bla_Layer1rotation_Y">
+            <source id="bla_Layer1rotation_Y-input">
+                <float_array id="bla_Layer1rotation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_Y-output">
+                <float_array id="bla_Layer1rotation_Y-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_Y-interpolations">
+                <Name_array id="bla_Layer1rotation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer1rotation_Y-sampler">
+                <input semantic="INPUT" source="#bla_Layer1rotation_Y-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer1rotation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer1rotation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer1rotation_Y-sampler" target="bla_Layer1/rotation_y.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer1rotation_X">
+            <source id="bla_Layer1rotation_X-input">
+                <float_array id="bla_Layer1rotation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_X-output">
+                <float_array id="bla_Layer1rotation_X-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_X-interpolations">
+                <Name_array id="bla_Layer1rotation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer1rotation_X-sampler">
+                <input semantic="INPUT" source="#bla_Layer1rotation_X-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer1rotation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer1rotation_X-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer1rotation_X-sampler" target="bla_Layer1/rotation_x.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer1rotation_Z">
+            <source id="bla_Layer1rotation_Z-input">
+                <float_array id="bla_Layer1rotation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_Z-output">
+                <float_array id="bla_Layer1rotation_Z-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer1rotation_Z-interpolations">
+                <Name_array id="bla_Layer1rotation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer1rotation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer1rotation_Z-sampler">
+                <input semantic="INPUT" source="#bla_Layer1rotation_Z-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer1rotation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer1rotation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer1rotation_Z-sampler" target="bla_Layer1/rotation_z.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer2rotation_Y">
+            <source id="bla_Layer2rotation_Y-input">
+                <float_array id="bla_Layer2rotation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_Y-output">
+                <float_array id="bla_Layer2rotation_Y-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_Y-interpolations">
+                <Name_array id="bla_Layer2rotation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer2rotation_Y-sampler">
+                <input semantic="INPUT" source="#bla_Layer2rotation_Y-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer2rotation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer2rotation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer2rotation_Y-sampler" target="bla_Layer2/rotation_y.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer2rotation_X">
+            <source id="bla_Layer2rotation_X-input">
+                <float_array id="bla_Layer2rotation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_X-output">
+                <float_array id="bla_Layer2rotation_X-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_X-interpolations">
+                <Name_array id="bla_Layer2rotation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer2rotation_X-sampler">
+                <input semantic="INPUT" source="#bla_Layer2rotation_X-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer2rotation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer2rotation_X-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer2rotation_X-sampler" target="bla_Layer2/rotation_x.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer2rotation_Z">
+            <source id="bla_Layer2rotation_Z-input">
+                <float_array id="bla_Layer2rotation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_Z-output">
+                <float_array id="bla_Layer2rotation_Z-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer2rotation_Z-interpolations">
+                <Name_array id="bla_Layer2rotation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer2rotation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer2rotation_Z-sampler">
+                <input semantic="INPUT" source="#bla_Layer2rotation_Z-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer2rotation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer2rotation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer2rotation_Z-sampler" target="bla_Layer2/rotation_z.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer3rotation_Y">
+            <source id="bla_Layer3rotation_Y-input">
+                <float_array id="bla_Layer3rotation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_Y-output">
+                <float_array id="bla_Layer3rotation_Y-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_Y-interpolations">
+                <Name_array id="bla_Layer3rotation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer3rotation_Y-sampler">
+                <input semantic="INPUT" source="#bla_Layer3rotation_Y-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer3rotation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer3rotation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer3rotation_Y-sampler" target="bla_Layer3/rotation_y.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer3rotation_X">
+            <source id="bla_Layer3rotation_X-input">
+                <float_array id="bla_Layer3rotation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_X-output">
+                <float_array id="bla_Layer3rotation_X-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_X-interpolations">
+                <Name_array id="bla_Layer3rotation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer3rotation_X-sampler">
+                <input semantic="INPUT" source="#bla_Layer3rotation_X-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer3rotation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer3rotation_X-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer3rotation_X-sampler" target="bla_Layer3/rotation_x.ANGLE"></channel>
+        </animation>
+        <animation id="bla_Layer3rotation_Z">
+            <source id="bla_Layer3rotation_Z-input">
+                <float_array id="bla_Layer3rotation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_Z-output">
+                <float_array id="bla_Layer3rotation_Z-output-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="bla_Layer3rotation_Z-interpolations">
+                <Name_array id="bla_Layer3rotation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#bla_Layer3rotation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="bla_Layer3rotation_Z-sampler">
+                <input semantic="INPUT" source="#bla_Layer3rotation_Z-input"></input>
+                <input semantic="OUTPUT" source="#bla_Layer3rotation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#bla_Layer3rotation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#bla_Layer3rotation_Z-sampler" target="bla_Layer3/rotation_z.ANGLE"></channel>
+        </animation>
+        <animation id="Lighttranslation_X">
+            <source id="Lighttranslation_X-input">
+                <float_array id="Lighttranslation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_X-output">
+                <float_array id="Lighttranslation_X-output-array" count="1">525.144 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_X-interpolations">
+                <Name_array id="Lighttranslation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lighttranslation_X-sampler">
+                <input semantic="INPUT" source="#Lighttranslation_X-input"></input>
+                <input semantic="OUTPUT" source="#Lighttranslation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#Lighttranslation_X-interpolations"></input>
+            </sampler>
+            <channel source="#Lighttranslation_X-sampler" target="Light/translation.X"></channel>
+        </animation>
+        <animation id="Lighttranslation_Y">
+            <source id="Lighttranslation_Y-input">
+                <float_array id="Lighttranslation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_Y-output">
+                <float_array id="Lighttranslation_Y-output-array" count="1">505.734 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_Y-interpolations">
+                <Name_array id="Lighttranslation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lighttranslation_Y-sampler">
+                <input semantic="INPUT" source="#Lighttranslation_Y-input"></input>
+                <input semantic="OUTPUT" source="#Lighttranslation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#Lighttranslation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#Lighttranslation_Y-sampler" target="Light/translation.Y"></channel>
+        </animation>
+        <animation id="Lighttranslation_Z">
+            <source id="Lighttranslation_Z-input">
+                <float_array id="Lighttranslation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_Z-output">
+                <float_array id="Lighttranslation_Z-output-array" count="1">291.18 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lighttranslation_Z-interpolations">
+                <Name_array id="Lighttranslation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lighttranslation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lighttranslation_Z-sampler">
+                <input semantic="INPUT" source="#Lighttranslation_Z-input"></input>
+                <input semantic="OUTPUT" source="#Lighttranslation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#Lighttranslation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#Lighttranslation_Z-sampler" target="Light/translation.Z"></channel>
+        </animation>
+        <animation id="Lightrotation_Y">
+            <source id="Lightrotation_Y-input">
+                <float_array id="Lightrotation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_Y-output">
+                <float_array id="Lightrotation_Y-output-array" count="1">62.4 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_Y-interpolations">
+                <Name_array id="Lightrotation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lightrotation_Y-sampler">
+                <input semantic="INPUT" source="#Lightrotation_Y-input"></input>
+                <input semantic="OUTPUT" source="#Lightrotation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#Lightrotation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#Lightrotation_Y-sampler" target="Light/rotation_y.ANGLE"></channel>
+        </animation>
+        <animation id="Lightrotation_X">
+            <source id="Lightrotation_X-input">
+                <float_array id="Lightrotation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_X-output">
+                <float_array id="Lightrotation_X-output-array" count="1">-37.8 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_X-interpolations">
+                <Name_array id="Lightrotation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lightrotation_X-sampler">
+                <input semantic="INPUT" source="#Lightrotation_X-input"></input>
+                <input semantic="OUTPUT" source="#Lightrotation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#Lightrotation_X-interpolations"></input>
+            </sampler>
+            <channel source="#Lightrotation_X-sampler" target="Light/rotation_x.ANGLE"></channel>
+        </animation>
+        <animation id="Lightrotation_Z">
+            <source id="Lightrotation_Z-input">
+                <float_array id="Lightrotation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_Z-output">
+                <float_array id="Lightrotation_Z-output-array" count="1">-12.9 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Lightrotation_Z-interpolations">
+                <Name_array id="Lightrotation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Lightrotation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Lightrotation_Z-sampler">
+                <input semantic="INPUT" source="#Lightrotation_Z-input"></input>
+                <input semantic="OUTPUT" source="#Lightrotation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#Lightrotation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#Lightrotation_Z-sampler" target="Light/rotation_z.ANGLE"></channel>
+        </animation>
+        <animation id="Cameratranslation_X">
+            <source id="Cameratranslation_X-input">
+                <float_array id="Cameratranslation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_X-output">
+                <float_array id="Cameratranslation_X-output-array" count="1">345.607 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_X-interpolations">
+                <Name_array id="Cameratranslation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Cameratranslation_X-sampler">
+                <input semantic="INPUT" source="#Cameratranslation_X-input"></input>
+                <input semantic="OUTPUT" source="#Cameratranslation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#Cameratranslation_X-interpolations"></input>
+            </sampler>
+            <channel source="#Cameratranslation_X-sampler" target="Camera/translation.X"></channel>
+        </animation>
+        <animation id="Cameratranslation_Y">
+            <source id="Cameratranslation_Y-input">
+                <float_array id="Cameratranslation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_Y-output">
+                <float_array id="Cameratranslation_Y-output-array" count="1">206 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_Y-interpolations">
+                <Name_array id="Cameratranslation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Cameratranslation_Y-sampler">
+                <input semantic="INPUT" source="#Cameratranslation_Y-input"></input>
+                <input semantic="OUTPUT" source="#Cameratranslation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#Cameratranslation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#Cameratranslation_Y-sampler" target="Camera/translation.Y"></channel>
+        </animation>
+        <animation id="Cameratranslation_Z">
+            <source id="Cameratranslation_Z-input">
+                <float_array id="Cameratranslation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_Z-output">
+                <float_array id="Cameratranslation_Z-output-array" count="1">1204.78 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Cameratranslation_Z-interpolations">
+                <Name_array id="Cameratranslation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Cameratranslation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Cameratranslation_Z-sampler">
+                <input semantic="INPUT" source="#Cameratranslation_Z-input"></input>
+                <input semantic="OUTPUT" source="#Cameratranslation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#Cameratranslation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#Cameratranslation_Z-sampler" target="Camera/translation.Z"></channel>
+        </animation>
+        <animation id="Camerarotation_Y">
+            <source id="Camerarotation_Y-input">
+                <float_array id="Camerarotation_Y-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Y-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_Y-output">
+                <float_array id="Camerarotation_Y-output-array" count="1">17.3 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Y-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_Y-interpolations">
+                <Name_array id="Camerarotation_Y-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Y-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Camerarotation_Y-sampler">
+                <input semantic="INPUT" source="#Camerarotation_Y-input"></input>
+                <input semantic="OUTPUT" source="#Camerarotation_Y-output"></input>
+                <input semantic="INTERPOLATION" source="#Camerarotation_Y-interpolations"></input>
+            </sampler>
+            <channel source="#Camerarotation_Y-sampler" target="Camera/rotation_y.ANGLE"></channel>
+        </animation>
+        <animation id="Camerarotation_X">
+            <source id="Camerarotation_X-input">
+                <float_array id="Camerarotation_X-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_X-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_X-output">
+                <float_array id="Camerarotation_X-output-array" count="1">-7.6 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_X-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_X-interpolations">
+                <Name_array id="Camerarotation_X-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_X-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Camerarotation_X-sampler">
+                <input semantic="INPUT" source="#Camerarotation_X-input"></input>
+                <input semantic="OUTPUT" source="#Camerarotation_X-output"></input>
+                <input semantic="INTERPOLATION" source="#Camerarotation_X-interpolations"></input>
+            </sampler>
+            <channel source="#Camerarotation_X-sampler" target="Camera/rotation_x.ANGLE"></channel>
+        </animation>
+        <animation id="Camerarotation_Z">
+            <source id="Camerarotation_Z-input">
+                <float_array id="Camerarotation_Z-input-array" count="1">0 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Z-input-array" stride="1">
+                        <param name="TIME" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_Z-output">
+                <float_array id="Camerarotation_Z-output-array" count="1">-0.1 </float_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Z-output-array" stride="1">
+                        <param name="VALUE" type="float"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <source id="Camerarotation_Z-interpolations">
+                <Name_array id="Camerarotation_Z-interpolations-array" count="1">LINEAR </Name_array>
+                <technique_common>
+                    <accessor count="1" offset="0" source="#Camerarotation_Z-interpolations-array" stride="1">
+                        <param name="INTERPOLATION" type="Name"></param>
+                    </accessor>
+                </technique_common>
+            </source>
+            <sampler id="Camerarotation_Z-sampler">
+                <input semantic="INPUT" source="#Camerarotation_Z-input"></input>
+                <input semantic="OUTPUT" source="#Camerarotation_Z-output"></input>
+                <input semantic="INTERPOLATION" source="#Camerarotation_Z-interpolations"></input>
+            </sampler>
+            <channel source="#Camerarotation_Z-sampler" target="Camera/rotation_z.ANGLE"></channel>
+        </animation>
+    </library_animations>
+    <library_cameras>
+        <camera id="Camera_lib" name="Camera">
+            <optics>
+                <technique_common>
+                    <perspective>
+                        <xfov>45.2397</xfov>
+                        <aspect_ratio>1.0</aspect_ratio>
+                        <znear>10</znear>
+                        <zfar>4000</zfar>
+                    </perspective>
+                </technique_common>
+            </optics>
+        </camera>
+    </library_cameras>
+    <library_lights>
+        <light id="Light_lib" name="Light">
+            <technique_common>
+                <point>
+                    <color>0.875 0.875 0.504412</color>
+                </point>
+            </technique_common>
+        </light>
+    </library_lights>
+    <library_materials>
+        <material id="buidling" name="buidling">
+            <instance_effect url="#buidling-fx"></instance_effect>
+        </material>
+        <material id="garage" name="garage">
+            <instance_effect url="#garage-fx"></instance_effect>
+        </material>
+        <material id="tower" name="tower">
+            <instance_effect url="#tower-fx"></instance_effect>
+        </material>
+        <material id="garage_2" name="garage_2">
+            <instance_effect url="#garage_2-fx"></instance_effect>
+        </material>
+        <material id="tower_2" name="tower_2">
+            <instance_effect url="#tower_2-fx"></instance_effect>
+        </material>
+        <material id="garage_3" name="garage_3">
+            <instance_effect url="#garage_3-fx"></instance_effect>
+        </material>
+        <material id="tower_3" name="tower_3">
+            <instance_effect url="#tower_3-fx"></instance_effect>
+        </material>
+        <material id="buidling_3" name="buidling_3">
+            <instance_effect url="#buidling_3-fx"></instance_effect>
+        </material>
+        <material id="buidling_2" name="buidling_2">
+            <instance_effect url="#buidling_2-fx"></instance_effect>
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="buidling-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.501961 0.501961 0.501961 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="garage-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.25098 0 0 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="tower-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>1 1 1 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="garage_2-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.25098 0 0 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="tower_2-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>1 1 1 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="garage_3-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.25098 0 0 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="tower_3-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>1 1 1 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="buidling_3-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.501961 0.501961 0.501961 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="buidling_2-fx">
+            <profile_COMMON>
+                <technique sid="common">
+                    <blinn>
+                        <diffuse>
+                            <color>0.501961 0.501961 0.501961 0</color>
+                        </diffuse>
+                    </blinn>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="bla_Layer1_lib" name="bla_Layer1">
+            <mesh>
+                <source id="bla_Layer1_positions" name="position">
+                    <float_array id="bla_Layer1_positions_array" count="48">-265 -22.3755 -265 
+-265 -22.3755 265 
+-75 -22.3755 265 
+-75 -22.3755 -265 
+-265 127.624 -265 
+-265 127.624 265 
+-75 127.624 265 
+-75 127.624 -265 
+-265 -22.3755 -75 
+265 -22.3755 -75 
+265 -22.3755 -265 
+-265 -22.3755 -265 
+-265 127.624 -75 
+265 127.624 -75 
+265 127.624 -265 
+-265 127.624 -265 
+</float_array>
+                    <technique_common>
+                        <accessor count="16" offset="0" source="#bla_Layer1_positions_array" stride="3">
+                            <param name="X" type="float"></param>
+                            <param name="Y" type="float"></param>
+                            <param name="Z" type="float"></param>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="bla_Layer1_vertices">
+                    <input semantic="POSITION" source="#bla_Layer1_positions"></input>
+                </vertices>
+                <polylist count="12" material="buidling">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer1_vertices"></input>
+                    <vcount>4 4 4 4 4 4 4 4 4 4 4 4 </vcount>
+                    <p>3 2 1 0 1 5 4 0 2 6 5 1 7 6 2 3 4 7 3 0 5 6 7 4 11 10 9 8 9 13 12 8 10 14 13 9 15 14 10 11 12 15 11 8 13 14 15 12 </p>
+                </polylist>
+                <polylist count="0" material="garage">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer1_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+                <polylist count="0" material="tower">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer1_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+            </mesh>
+        </geometry>
+        <geometry id="bla_Layer2_lib" name="bla_Layer2">
+            <mesh>
+                <source id="bla_Layer2_positions" name="position">
+                    <float_array id="bla_Layer2_positions_array" count="192">-265 -127.375 -235 
+-265 -22.3755 -235 
+-235 -22.3755 -235 
+-235 -127.375 -235 
+-265 -127.375 -265 
+-265 -22.3755 -265 
+-235 -22.3755 -265 
+-235 -127.375 -265 
+-105 -127.375 -235 
+-105 -22.3755 -235 
+-75 -22.3755 -235 
+-75 -127.375 -235 
+-105 -127.375 -265 
+-105 -22.3755 -265 
+-75 -22.3755 -265 
+-75 -127.375 -265 
+-265 -127.375 -75 
+-265 -22.3755 -75 
+-235 -22.3755 -75 
+-235 -127.375 -75 
+-265 -127.375 -105 
+-265 -22.3755 -105 
+-235 -22.3755 -105 
+-235 -127.375 -105 
+-265 -127.375 265 
+-265 -22.3755 265 
+-235 -22.3755 265 
+-235 -127.375 265 
+-265 -127.375 235 
+-265 -22.3755 235 
+-235 -22.3755 235 
+-235 -127.375 235 
+-105 -127.375 265 
+-105 -22.3755 265 
+-75 -22.3755 265 
+-75 -127.375 265 
+-105 -127.375 235 
+-105 -22.3755 235 
+-75 -22.3755 235 
+-75 -127.375 235 
+-105 -127.375 -75 
+-105 -22.3755 -75 
+-75 -22.3755 -75 
+-75 -127.375 -75 
+-105 -127.375 -105 
+-105 -22.3755 -105 
+-75 -22.3755 -105 
+-75 -127.375 -105 
+235 -127.375 -75 
+235 -22.3755 -75 
+265 -22.3755 -75 
+265 -127.375 -75 
+235 -127.375 -105 
+235 -22.3755 -105 
+265 -22.3755 -105 
+265 -127.375 -105 
+235 -127.375 -235 
+235 -22.3755 -235 
+265 -22.3755 -235 
+265 -127.375 -235 
+235 -127.375 -265 
+235 -22.3755 -265 
+265 -22.3755 -265 
+265 -127.375 -265 
+</float_array>
+                    <technique_common>
+                        <accessor count="64" offset="0" source="#bla_Layer2_positions_array" stride="3">
+                            <param name="X" type="float"></param>
+                            <param name="Y" type="float"></param>
+                            <param name="Z" type="float"></param>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="bla_Layer2_vertices">
+                    <input semantic="POSITION" source="#bla_Layer2_positions"></input>
+                </vertices>
+                <polylist count="0" material="buidling_2">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer2_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+                <polylist count="0" material="garage_2">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer2_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+                <polylist count="48" material="tower_2">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer2_vertices"></input>
+                    <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 </vcount>
+                    <p>3 2 1 0 1 5 4 0 2 6 5 1 7 6 2 3 4 7 3 0 5 6 7 4 11 10 9 8 9 13 12 8 10 14 13 9 15 14 10 11 12 15 11 8 13 14 15 12 19 18 17 16 17 21 20 16 18 22 21 17 23 22 18 19 20 23 19 16 21 22 23 20 27 26 25 24 25 29 28 24 26 30 29 25 31 30 26 27 28 31 27 24 29 30 31 28 35 34 33 32 33 37 36 32 34 38 37 33 39 38 34 35 36 39 35 32 37 38 39 36 43 42 41 40 41 45 44 40 42 46 45 41 47 46 42 43 44 47 43 40 45 46 47 44 51 50 49 48 49 53 52 48 50 54 53 49 55 54 50 51 52 55 51 48 53 54 55 52 59 58 57 56 57 61 60 56 58 62 61 57 63 62 58 59 60 63 59 56 61 62 63 60 </p>
+                </polylist>
+            </mesh>
+        </geometry>
+        <geometry id="bla_Layer3_lib" name="bla_Layer3">
+            <mesh>
+                <source id="bla_Layer3_positions" name="position">
+                    <float_array id="bla_Layer3_positions_array" count="24">-265 -127.624 -76 
+-76 -127.624 -76 
+-76 -127.624 -265 
+-265 -127.624 -265 
+-265 -21.6245 -76 
+-265 -21.6245 -265 
+-76 -21.6245 -265 
+-76 -21.6245 -76 
+</float_array>
+                    <technique_common>
+                        <accessor count="8" offset="0" source="#bla_Layer3_positions_array" stride="3">
+                            <param name="X" type="float"></param>
+                            <param name="Y" type="float"></param>
+                            <param name="Z" type="float"></param>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="bla_Layer3_vertices">
+                    <input semantic="POSITION" source="#bla_Layer3_positions"></input>
+                </vertices>
+                <polylist count="0" material="buidling_3">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer3_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+                <polylist count="5" material="garage_3">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer3_vertices"></input>
+                    <vcount>4 4 4 4 4 </vcount>
+                    <p>7 6 5 4 7 4 0 1 4 5 3 0 3 5 6 2 2 6 7 1 </p>
+                </polylist>
+                <polylist count="0" material="tower_3">
+                    <input offset="0" semantic="VERTEX" source="#bla_Layer3_vertices"></input>
+                    <vcount></vcount>
+                    <p></p>
+                </polylist>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_controllers></library_controllers>
+    <library_visual_scenes>
+        <visual_scene id="VisualSceneNode" name="blaScene">
+            <node id="bla_Layer1" name="bla_Layer1">
+                <rotate sid="rotation_y">0 1 0 0</rotate>
+                <rotate sid="rotation_x">1 0 0 0</rotate>
+                <rotate sid="rotation_z">0 0 1 0</rotate>
+                <instance_geometry url="#bla_Layer1_lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="buidling" target="#buidling"></instance_material>
+                            <instance_material symbol="garage" target="#garage"></instance_material>
+                            <instance_material symbol="tower" target="#tower"></instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="bla_Layer2" name="bla_Layer2">
+                <rotate sid="rotation_y">0 1 0 0</rotate>
+                <rotate sid="rotation_x">1 0 0 0</rotate>
+                <rotate sid="rotation_z">0 0 1 0</rotate>
+                <instance_geometry url="#bla_Layer2_lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="buidling_2" target="#buidling_2"></instance_material>
+                            <instance_material symbol="garage_2" target="#garage_2"></instance_material>
+                            <instance_material symbol="tower_2" target="#tower_2"></instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="bla_Layer3" name="bla_Layer3">
+                <rotate sid="rotation_y">0 1 0 0</rotate>
+                <rotate sid="rotation_x">1 0 0 0</rotate>
+                <rotate sid="rotation_z">0 0 1 0</rotate>
+                <instance_geometry url="#bla_Layer3_lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="buidling_3" target="#buidling_3"></instance_material>
+                            <instance_material symbol="garage_3" target="#garage_3"></instance_material>
+                            <instance_material symbol="tower_3" target="#tower_3"></instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Light" name="Light">
+                <translate sid="translation">525.144 505.734 291.18</translate>
+                <rotate sid="rotation_y">0 1 0 62.4</rotate>
+                <rotate sid="rotation_x">1 0 0 -37.8</rotate>
+                <rotate sid="rotation_z">0 0 1 -12.9</rotate>
+                <instance_light url="#Light_lib"></instance_light>
+            </node>
+            <node id="Camera" name="Camera">
+                <translate sid="translation">345.607 206 1204.78</translate>
+                <rotate sid="rotation_y">0 1 0 17.3</rotate>
+                <rotate sid="rotation_x">1 0 0 -7.6</rotate>
+                <rotate sid="rotation_z">0 0 1 -0.1</rotate>
+                <instance_camera url="#Camera_lib"></instance_camera>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#VisualSceneNode"></instance_visual_scene>
+    </scene>
+</COLLADA>

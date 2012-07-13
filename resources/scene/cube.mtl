@@ -1,0 +1,19 @@
+# Created with Anim8or 0.97d beta
+# Object "object01":
+
+newmtl material01
+map_Kd D:\workspace\Game\images\textures\lion.jpg
+bump D:\workspace\Game\images\textures\lion_ddn.jpg
+Ka 0.294 0.0965 0.0918
+Kd 0.686 0.225 0.214
+Ks 0.2 0.2 0.2
+Ns 32.0
+
+newmtl material02
+map_Kd D:\workspace\Game\images\textures\lion.jpg
+bump D:\workspace\Game\images\textures\lion_ddn.jpg
+Ka 0.0224 0.238 0.0165
+Kd 0.0522 0.555 0.0384
+Ks 0.2 0.2 0.2
+Ns 32.0
+

@@ -1,0 +1,1 @@
+cmake -G "MSYS Makefiles" -DCMAKE_MAKE_PROGRAM:FILEPATH=make

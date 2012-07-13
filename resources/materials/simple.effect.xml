@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<effect>
+
+	<attribute name="myVertex" semmantic="POSITION"/>
+	<attribute name="myNormal" semmantic="NORMAL"/>
+	<attribute name="myTangent" semmantic="STANGENT"/>
+	<attribute name="myBinormal" semmantic="TTANGENT"/>
+	<attribute name="myTexCoord" semmantic="TEXCOORD"/>
+	<attribute name="myBoneIds" semmantic="BONEID"/>
+	<attribute name="myWeights" semmantic="WEIGHT"/>
+	
+	<vertexShader src="resources/shaders/simpleVertex.vert.c"/>
+	<fragmentShader src="resources/shaders/simpleFragment.frag.c"/>
+
+</effect>

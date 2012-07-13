@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<material>
+
+	<effect src="resources/materials/simple.effect.xml">
+		<sampler name="myTexture0" src="resources/images/duckCM.tga"/>
+		<sampler name="myTexture1" src="resources/images/default_ddn.tga"/>
+	</effect>
+
+</material>

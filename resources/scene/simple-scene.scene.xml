@@ -1,0 +1,71 @@
+<scene formatVersion="1.0.0">
+	<nodes>
+		<node name="CubeBox">
+			<position x="0.000000" y="1.500000" z="0.000000"/>
+			<rotation qx="0.000000" qy="0.000000" qz="0.000000" qw="1.000000"/>
+			<scale x="1.000000" y="1.000000" z="1.000000"/>
+			<physics mass="5.000000" type="box"/>
+			<entity name="CubeBox" meshFile="resources/scene/CubeBox.mesh.xml"/>
+		</node>
+
+		<node name="Cow">
+			<position x="5" y="0" z="5"/>
+			<rotation axisX="1" axisY="0" axisZ="0" angle="-1.5707"/>
+			<scale x="1.000000" y="1.000000" z="1.000000"/>
+			<physics mass="5.000000" type="box"/>
+			<entity name="Cow" meshFile="resources/scene/cow.dae"/>
+		</node>
+
+		<node name="Lamp">
+			<position x="4.076245" y="1.005454" z="5.903862"/>
+			<rotation qx="0.169076" qy="0.272171" qz="0.755880" qw="0.570948"/>
+			<scale x="1.000000" y="1.000000" z="1.000000"/>
+			
+			<light name="Spot" type="point">
+				<position x="0.000" y="3.000" z="0.000"/>
+				<colourDiffuse r="0.000000" g="0.000000" b="1.000000"/>
+				<colourSpecular r="1.000000" g="1.000000" b="1.000000"/>
+				<lightAttenuation range="50.0" constant="0.000000" linear="0.033333" quadratic="0.000000"/>
+			</light>
+
+			<light name="Spot" type="point">
+				<position x="-3.000" y="3.000" z="0.000"/>
+				<colourDiffuse r="0.000000" g="0.000000" b="1.000000"/>
+				<colourSpecular r="1.000000" g="1.000000" b="1.000000"/>
+				<lightAttenuation range="50.0" constant="1.000000" linear="0.033333" quadratic="0.000000"/>
+			</light>
+
+			<light name="Spot" type="point">
+				<position x="+15.000" y="3.000" z="0.000"/>
+				<colourDiffuse r="0.000000" g="1.000000" b="0.000000"/>
+				<colourSpecular r="1.000000" g="1.000000" b="1.000000"/>
+				<lightAttenuation range="50.0" constant="1.000000" linear="0.033333" quadratic="0.000000"/>
+			</light>
+		</node>
+		
+		<node name="Camera">
+			<position x="7.481132" y="-6.507640" z="5.343665"/>
+			<rotation qx="0.481707" qy="0.212922" qz="0.334251" qw="0.781600"/>
+			<scale x="1.000000" y="1.000000" z="1.000000"/>
+			<camera name="Camera" fov="37.849289" projectionType="perspective">
+				<clipping nearPlaneDist="0.100000" farPlaneDist="100.000000"/>
+			</camera>
+		</node>
+		
+		<node name="CubeRoom">
+			<position x="0.000000" y="0.000000" z="1.000001"/>
+			<rotation qx="0.000000" qy="0.000000" qz="0.000000" qw="1.000000"/>
+			<scale x="1.000000" y="1.000000" z="1.000000"/>
+			<entity name="CubeRoom" meshFile="resources/scene/CubeRoom.mesh.xml" castShadows="false"/>
+		</node>
+	</nodes>
+	<externals>
+		<item type="material">
+			<file name="Scene.material"/>
+		</item>
+	</externals>
+	<environment>
+		<colourAmbient r="0.000000" g="0.000000" b="0.000000"/>
+		<colourBackground r="0.056563" g="0.220815" b="0.400000"/>
+	</environment>
+</scene>
