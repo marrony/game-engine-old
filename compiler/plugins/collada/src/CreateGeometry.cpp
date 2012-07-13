@@ -8,8 +8,11 @@
 #include "CreateGeometry.h"
 #include "ColladaArray.h"
 
-CreateGeometry::CreateGeometry(const std::string& name) :
-		model(0), name(name) {
+#include "Model.h"
+#include "ResourceManager.h"
+
+CreateGeometry::CreateGeometry(const std::string& name, ResourceManager* manager) :
+		manager(manager), model(0), name(name) {
 }
 
 void CreateGeometry::visit(ColladaGeometry* geometry) {
@@ -174,7 +177,8 @@ void CreateGeometry::visit(ColladaPolyList* polylist) {
 			}
 		}
 
-		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, polylist->getMaterial(), vertexSoup.flags);
+		Material* material = manager->loadMaterial(polylist->getMaterial());
+		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }
 
@@ -187,6 +191,7 @@ void CreateGeometry::visit(ColladaTriangles* triangles) {
 			vertexSoup.indices.push_back(index);
 		}
 
-		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, triangles->getMaterial(), vertexSoup.flags);
+		Material* material = manager->loadMaterial(triangles->getMaterial());
+		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }

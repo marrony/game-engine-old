@@ -19,7 +19,6 @@
 namespace engine {
 
 	class MaterialAttribute;
-	class Texture;
 	class Shader;
 	class Constant;
 	class GraphicManager;
@@ -63,6 +62,26 @@ namespace engine {
 		float objectId;
 	};
 
+	struct AttributeEnabled {
+		std::string name;
+		bool enabled;
+		int mode;
+		int index;
+
+		AttributeEnabled() :
+				name(), enabled(false), mode(0) {
+		}
+	};
+
+	struct ConstantsEnabled {
+		std::string name;
+		Constants constant;
+
+		ConstantsEnabled(const std::string& name, Constants constant) :
+				name(name), constant(constant) {
+		}
+	};
+
 	class Effect : public Resource {
 	public:
 		Effect(const std::string& name) : Resource(name) {
@@ -87,9 +106,10 @@ namespace engine {
 		void begin(ConstantContext& context);
 		void end(ConstantContext& context);
 
+		void finalizeInitialization();
+
 		void setAttribute(const std::string& name, const std::string& semmantic);
 
-		void setupConstants(ConstantContext& context);
 		void setupAttributes(class Model* model, class Shader* shader, class GraphicManager* graphicManager);
 
 		void setShader(Shader* s) {
@@ -116,25 +136,6 @@ namespace engine {
 		int _blendMode;
 		int _cullMode;
 
-		struct AttributeEnabled {
-			std::string name;
-			bool enabled;
-			int mode;
-
-			AttributeEnabled() :
-					name(), enabled(false), mode(0) {
-			}
-		};
-
-		struct ConstantsEnabled {
-			std::string name;
-			Constants constant;
-
-			ConstantsEnabled(const std::string& name, Constants constant) :
-					name(name), constant(constant) {
-			}
-		};
-
 		AttributeEnabled attributesEnabled[AttributeOffset::MaxAttributeOffset];
 		std::vector<ConstantsEnabled> constants;
 
@@ -148,14 +149,14 @@ namespace engine {
 
 	class Material : public Resource {
 	public:
-		Material(const std::string& name, ResourceId effectId);
+		Material(const std::string& name, Effect* effect);
 		virtual ~Material();
 
-		void addSampler(const std::string& samplerName, ResourceId sampler);
-		ResourceId getSampler(const std::string& samplerName);
+		void addSampler(const std::string& samplerName, Texture* sampler);
+		Texture* getSampler(const std::string& samplerName);
 
-		ResourceId getEffect() {
-			return effectId;
+		Effect* getEffect() {
+			return effect;
 		}
 
 		void begin(const std::string& aspect, ConstantContext& context);
@@ -167,8 +168,8 @@ namespace engine {
 
 		static const Type TYPE;
 	private:
-		ResourceId effectId;
-		std::map<std::string, ResourceId> samplers;
+		Effect* effect;
+		std::map<std::string, Texture*> samplers;
 
 		friend class MaterialUtils;
 	};

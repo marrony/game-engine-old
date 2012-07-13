@@ -16,7 +16,7 @@ namespace engine {
 
 	Framebuffer* const Framebuffer::DEFAULT = 0;
 
-	void Framebuffer::setTexture(engine::Texture* texImpl, int target) {
+	void Framebuffer::setTexture(const Texture& texImpl, int target) {
 		int textureId = 0;
 
 		if(texImpl != 0) {

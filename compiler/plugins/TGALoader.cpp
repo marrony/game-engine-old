@@ -8,7 +8,7 @@
 #include "ResourcePlugin.h"
 #include "ResourceCompiler.h"
 #include "MemoryTexture.h"
-#include "Texture.h"
+#include "Image.h"
 #include "FileUtil.h"
 
 #include <fstream>
@@ -59,24 +59,24 @@ struct TGAHeader {
 };
 
 class TGALoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 public:
 	virtual ~TGALoader() {
-		for(size_t i = 0; i < resources.size(); i++)
-			delete resources[i];
 	}
 
 	virtual void release() {
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
+
 		compiler->registerLoader(this, "TGA Loader", "tga");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		std::ifstream stream(fileName, std::ios::binary);
 
 		if(!stream.good())
@@ -152,20 +152,18 @@ public:
 				std::swap(dados[i + 0], dados[i + 2]);
 		}
 
-		Texture* texture = 0;
+		Image* texture = 0;
 
 		switch(pixel_size) {
 		case 1:
 			break;
 
 		case 3:
-			texture = new MemoryTexture(file::getFilename(fileName));
-			texture->setData(0, header.width, header.height, 3, dados);
+			texture = new Image(header.width, header.height, 3, dados);
 			break;
 
 		case 4:
-			texture = new MemoryTexture(file::getFilename(fileName));
-			texture->setData(0, header.width, header.height, 4, dados);
+			texture = new Image(header.width, header.height, 4, dados);
 			break;
 
 		default:
@@ -174,18 +172,13 @@ public:
 
 		delete[] dados;
 
-		resources.push_back(texture);
-
-		compiler->addResource(this, texture);
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".texture";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		TextureUtils::write(resourceStream, *manager, texture);
 	}
 
 	virtual void destroyResource(engine::Resource* resource) {
-		std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-		if(ite != resources.end()) {
-			resources.erase(ite);
-			delete resource;
-		}
 	}
 };
 

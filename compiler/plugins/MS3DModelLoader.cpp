@@ -37,12 +37,12 @@ public:
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
 		compiler->registerLoader(this, "Milkshape Loader", "ms3d");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		std::ifstream file(fileName, std::ios::in | std::ios::binary);
 
 		if(file.eof())
@@ -122,7 +122,8 @@ public:
 			int flags = MeshVertex::POSITION | MeshVertex::NORMAL | MeshVertex::TEXTURE | MeshVertex::BONES;
 			ms3d_material_t* material = ms3d.GetMaterial(group->materialIndex);
 
-			model->addVertexData(vertices, indices, material->name, flags);
+			//TODO carregar
+			model->addVertexData(vertices, indices, 0/*material->name*/, flags);
 		}
 
 		model->geometry->calculateTangent();
@@ -169,8 +170,6 @@ public:
 		}
 
 		resources.push_back(model);
-
-		compiler->addResource(this, model);
 	}
 
 	virtual void destroyResource(Resource* resource) {

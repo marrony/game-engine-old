@@ -67,8 +67,8 @@ public:
 //////////////////////////////////////////////////////////////////
 
 class ColladaLoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 
 	void parse(const char* fileName, ColladaDocument& colladaDocument) {
 		std::fstream sceneStream(fileName);
@@ -93,22 +93,29 @@ class ColladaLoader : public ResourceLoader {
 
 		colladaDocument.loadFromXml(root);
 	}
+
+	void saveModel(const std::string& path, Model* model) {
+		std::string outputName = path + "/" + model->getName() + ".model";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		ModelUtils::write(resourceStream, *manager, model);
+	}
 public:
 	virtual ~ColladaLoader() {
-		for(size_t i = 0; i < resources.size(); i++)
-			delete resources[i];
 	}
 
 	virtual void release() {
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
+
 		compiler->registerLoader(this, "Collada Loader", "dae");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		try {
 			ColladaDocument colladaDocument;
 
@@ -116,33 +123,28 @@ public:
 
 			if(options["only-geometry"] == "true") {
 				for(ColladaGeometry* geometry : colladaDocument.libraryGeometries->getItems()) {
-					CreateGeometry createGeometry(options["geometry-name"]);
+					CreateGeometry createGeometry(options["geometry-name"], manager);
 
 					geometry->accept(&createGeometry);
 
-					compiler->addResource(this, createGeometry.getModel());
-					resources.push_back(createGeometry.getModel());
+					saveModel(file::getPath(fileName), createGeometry.getModel());
 				}
 			} else {
-				CreateScene createScene(compiler, this, &colladaDocument);
+				CreateScene createScene(compiler, manager, this, &colladaDocument);
 				colladaDocument.scene->accept(&createScene);
 
-				const std::vector<Resource*>& resourcesCreated = createScene.getResourcesCreated();
-				resources.insert(resources.end(), resourcesCreated.begin(), resourcesCreated.end());
+				for(Resource* resource : createScene.getResourcesCreated()) {
+					if(Model* model = dynamic_cast<Model*>(resource)) {
+						saveModel(file::getPath(fileName), model);
+					}
+				}
 			}
-
 		} catch(...) {
 			throw;
 		}
 	}
 
 	virtual void destroyResource(engine::Resource* resource) {
-		std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-		if(ite != resources.end()) {
-			resources.erase(ite);
-			delete resource;
-		}
 	}
 };
 

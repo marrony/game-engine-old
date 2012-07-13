@@ -8,11 +8,15 @@
 #include "Model.h"
 #include "Exception.h"
 #include "HardwareBuffer.h"
+#include "ResourceManager.h"
+#include "GraphicManager.h"
+
+#include "MemoryManager.h"
 
 namespace engine {
 	const Type Model::TYPE("model");
 
-	void Model::addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, const std::string& material, int flags) {
+	void Model::addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags) {
 		if(!geometry)
 			geometry = new Geo;
 
@@ -99,7 +103,7 @@ namespace engine {
 		}
 	}
 
-	void Geo::uploadData() {
+	void Geo::uploadData(GraphicManager* graphicManager) {
 		elementsPerVertex = 3;
 
 		attributeOffsets[PositionOffset] = 0;
@@ -133,8 +137,8 @@ namespace engine {
 			elementsPerVertex += 2;
 		}
 
-		vertexBuffer = new HardwareBuffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
-		indexBuffer = new HardwareBuffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
+		vertexBuffer = graphicManager->createBuffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
+		indexBuffer = graphicManager->createBuffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
 
 		void* indexPtr = indexBuffer->map(AccessType::WriteOnly);
 		memcpy(indexPtr, indices.data(), indices.size() * sizeof(unsigned short));
@@ -294,6 +298,10 @@ namespace engine {
 	Model::~Model() {
 	}
 
+	void Model::uploadData(GraphicManager* graphicManager) {
+		geometry->uploadData(graphicManager);
+	}
+
 	void* ModelUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		std::vector<math::Vector3> position;
 		std::vector<math::Vector3> normal;
@@ -355,7 +363,7 @@ namespace engine {
 			indexMesh->count = stream.readShort("count");
 			indexMesh->start = stream.readShort("start");
 			indexMesh->end = stream.readShort("end");
-			indexMesh->material = stream.readString("material");
+			indexMesh->material = manager.loadMaterial(stream.readString("material"));
 
 			stream.popGroup();
 		}
@@ -435,7 +443,7 @@ namespace engine {
 
 		model->geometry->calculateTangent();
 		model->geometry->calculateBoundingBox();
-		model->geometry->uploadData();
+		//model->geometry->uploadData();
 
 		return model;
 	}
@@ -488,7 +496,7 @@ namespace engine {
 			stream.writeShort("count", indexMesh->count);
 			stream.writeShort("start", indexMesh->start);
 			stream.writeShort("end", indexMesh->end);
-			stream.writeString("material", indexMesh->material);
+			stream.writeString("material", indexMesh->material->getName());
 
 			stream.popGroup();
 		}

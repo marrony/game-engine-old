@@ -16,8 +16,10 @@
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Buffer.h"
+#include "HardwareBuffer.h"
 #include "System.h"
 #include "Material.h"
+#include "Texture.h"
 
 namespace engine {
 
@@ -31,15 +33,43 @@ namespace engine {
 		};
 	};
 
+	class GraphicManager : public ResourceListener {
+		template<typename T>
+		struct Resources {
+			std::vector<T> resources;
+			std::vector<size_t> free;
 
-	class GraphicManager {
+			size_t add(const T& resource) {
+				if(!free.empty()) {
+					size_t handle = free.back();
+					free.pop_back();
+
+					resources[handle] = resource;
+					return handle + 1;
+				}
+
+				resources.push_back(resource);
+				return resources.size();
+			}
+
+			void remove(size_t handle) {
+				if(handle == 0) return;
+				free.push_back(--handle);
+			}
+
+			T& get(size_t handle) {
+				return resources[--handle];
+			}
+		};
+
 		enum PendingFlags {
 			VertexBufferAltered = 0x01,
 			IndexBufferAltered  = 0x02,
 			AttributesAltered   = 0x04,
-			ShaderAltered       = 0x08,
-			TextureAltered      = 0x10,
-			FramebufferAltered  = 0x20,
+			ConstantsAltered    = 0x08,
+			ShaderAltered       = 0x10,
+			TextureAltered      = 0x20,
+			FramebufferAltered  = 0x40,
 		};
 
 		int width;
@@ -52,7 +82,7 @@ namespace engine {
 		Buffer* indexBuffer;
 
 		struct Attribs {
-			Attribute* attribute;
+			int attrib;
 			int mode;
 			int offset;
 			int stride;
@@ -62,12 +92,6 @@ namespace engine {
 		int lastUsedAttributes;
 		int usedAttributes;
 		Attribs attribs[AttributeOffset::MaxAttributeOffset];
-
-		class Texture* textures[16];
-		std::string textureName[16];
-		int lastUsedTextures;
-
-		std::map<std::string, class Texture*> samplers;
 
 		void commitModifications();
 	public:
@@ -110,8 +134,6 @@ namespace engine {
 
 		VIRTUAL void setShader(Shader* const newShader);
 
-		VIRTUAL void unbindShader(); //TODO remover
-
 		VIRTUAL void enableDepthWrite();
 
 		VIRTUAL void disableDepthWrite();
@@ -124,20 +146,62 @@ namespace engine {
 
 		VIRTUAL void disableTexture();
 
-		VIRTUAL void drawIndex(Buffer* indexBuffer, int start, int end, int count, int offset);
+		VIRTUAL void drawIndex(int start, int end, int count, int offset);
 
 		VIRTUAL void drawIndex(const unsigned short* index, unsigned int count);
 
 		VIRTUAL void bindTexture(const std::string& name, class Texture* texture);
 
-		VIRTUAL void addSampler(const std::string& name, class Texture* sampler); //TODO remover
-
-		VIRTUAL void removeSamplers();
-
 		VIRTUAL void setVertexBuffer(Buffer* vertexBuffer);
 		VIRTUAL void setIndexBuffer(Buffer* indexBuffer);
 
-		VIRTUAL void setAttribute(int index, Attribute* attr, int mode, int offset, int stride);
+		VIRTUAL void setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride);
+
+		ConstantContext context;
+		std::vector<ConstantsEnabled> constants;
+		VIRTUAL void setConstant(ConstantContext& context, std::vector<ConstantsEnabled>& constants) {
+			this->context = context;
+			this->constants = constants;
+
+			flags |= ConstantsAltered;
+		}
+
+		enum TexType {
+			Texture2D = GL_TEXTURE_2D,
+			Texture3D = GL_TEXTURE_3D,
+			TextureCube = GL_TEXTURE_CUBE_MAP
+		};
+
+		virtual void onTexture(class Texture* texture, class Image* image);
+
+		virtual void onMaterial(class Material* material);
+
+		virtual void onEffect(class Effect* effect);
+
+		virtual void onShader(class Shader* shader);
+
+		virtual void onModel(class Model* model);
+
+		struct Tex {
+			unsigned int texId;
+			int width;
+			int height;
+			int depth;
+			TexType type;
+			TextureFormat format;
+		};
+
+		Resources<Tex> textures0;
+		Texture* textures[16];
+		std::string textureName[16];
+		int usedTextures;
+		int lastUsedTextures;
+
+		VIRTUAL int createTexture2D();
+		VIRTUAL void destroyTexture(int handle);
+		VIRTUAL void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
+
+		VIRTUAL Buffer* createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
 	};
 
 }

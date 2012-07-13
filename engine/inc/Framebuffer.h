@@ -10,9 +10,9 @@
 
 #include <map>
 
-namespace engine {
+#include "Texture.h"
 
-	class Texture;
+namespace engine {
 
 	class Framebuffer {
 		static const int MAX_COLORS = 8;
@@ -29,7 +29,7 @@ namespace engine {
 		engine::Texture* depth;
 		engine::Texture* stencil;
 
-		void setTexture(engine::Texture* texImpl, int target);
+		void setTexture(const Texture& texImpl, int target);
 	public:
 		Framebuffer(int _width, int _height);
 		~Framebuffer();
@@ -37,9 +37,9 @@ namespace engine {
 		Texture* getColorBuffer(int index);
 		Texture* getDepthBuffer();
 
-		void setRenderTarget(Texture* texture, int index);
-		void setDepthTarget(Texture* texture);
-		void setStencilTarget(Texture* texture);
+		void setRenderTarget(const Texture& texture, int index);
+		void setDepthTarget(const Texture& texture);
+		void setStencilTarget(const Texture& texture);
 
 		void bind();
 		void unbind();

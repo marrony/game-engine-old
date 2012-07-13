@@ -40,6 +40,8 @@ namespace engine {
 		resourceManager = new ResourceManager;
 		sceneManager = new SceneManager;
 
+		resourceManager->addListener(graphicManager);
+
 		window->onKeyUp += [=](void* sender, KeyEvent event) {
 			keyboardManager->keyUp(event.keyCode);
 		};

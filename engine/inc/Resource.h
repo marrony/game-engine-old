@@ -150,6 +150,17 @@ namespace engine {
 	typedef std::function<void(ResourceStream&, class ResourceManager&, void*)> ResourceWriter;
 	typedef std::function<void*(const char*)> ResourceFactory;
 
+
+	struct ResourceListener {
+		virtual ~ResourceListener() {}
+
+		virtual void onTexture(class Texture* texture, class Image* image) = 0;
+		virtual void onMaterial(class Material* material) = 0;
+		virtual void onEffect(class Effect* effect) = 0;
+		virtual void onShader(class Shader* shader) = 0;
+		virtual void onModel(class Model* model) = 0;
+	};
+
 } // namespace engine
 
 #endif /* RESOURCE_H_ */

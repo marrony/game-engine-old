@@ -15,7 +15,7 @@
 namespace engine {
 
 	HardwareTexture::HardwareTexture(const std::string& name, TextureFormat format) :
-			Texture(name), format(format), textureId(0), unit(0) {
+			format(format), textureId(0), unit(0) {
 	}
 
 	HardwareTexture::~HardwareTexture() {

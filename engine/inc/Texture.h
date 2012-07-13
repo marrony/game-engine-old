@@ -25,34 +25,23 @@ namespace engine {
 
 	class Texture : public Resource {
 	public:
-		Texture(const std::string& name);
-		virtual ~Texture() { }
-
-		virtual int getWidth() = 0;
-
-		virtual int getHeight() = 0;
-
-		virtual int getDepth() = 0;
-
-		virtual void bind(int textureUnit) = 0;
-
-		virtual void unbind() = 0;
-
-		virtual void generateMipmap() = 0;
-
-		virtual void setData(int level, Image* image) = 0;
-
-		virtual void setData(int level, int width, int height, int depth, const void* data) = 0;
-
-		virtual void getData(int level, void* data) = 0;
-
-		virtual Type getType() const {
-			return TYPE;
+		int handle;
+		class GraphicManager* manager;
+	public:
+		Texture(const std::string& name) :
+				Resource(name), handle(0), manager(0) {
 		}
 
-		static const Type TYPE;
-	private:
-		friend class TextureUtils;
+		virtual Type getType() const {
+			return Type("texture");
+		}
+
+		virtual void postLoaded() {
+//			if(!manager) return;
+//			if(handle) return;
+//
+//			handle = manager->createTexture2D();
+		}
 	};
 
 	struct TextureUtils {

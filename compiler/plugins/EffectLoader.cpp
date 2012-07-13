@@ -23,6 +23,7 @@ using namespace compiler;
 class EffectLoader : public ResourceLoader {
 	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 public:
 	virtual ~EffectLoader() {
 		for(size_t i = 0; i < resources.size(); i++)
@@ -33,12 +34,14 @@ public:
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
+
 		compiler->registerLoader(this, "Effect Loader", "effect.xml");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		std::ifstream stream(fileName);
 
 		std::string content = file::loadFromStream(stream);
@@ -108,9 +111,10 @@ public:
 		if(xmlZFunc)
 			effect->depthTest(515);
 
-		resources.push_back(effect);
-
-		compiler->addResource(this, effect);
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".effect";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		EffectUtils::write(resourceStream, *manager, effect);
 	}
 
 	virtual void destroyResource(engine::Resource* resource) {

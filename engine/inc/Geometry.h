@@ -27,16 +27,14 @@ namespace engine {
 
 	class Geometry : public SceneTreeObject, public DataComponent {
 	public:
-		Geometry(ResourceId modelId, const AABoundingBox& aabbox, TransformationModifier* modifier);
+		Geometry(class Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier);
 		virtual ~Geometry();
-
-		ResourceId getMaterial(int index) const;
 
 		math::Matrix4 getTransformation() const;
 
 		void setFrame(float frame);
 
-		ResourceId getModel() const;
+		class Model* getModel() const;
 
 		const math::Matrix4* getBoneMatrix() const;
 
@@ -65,12 +63,10 @@ namespace engine {
 	protected:
 		void updateBoundingBox() const;
 	private:
-		ResourceId modelId;
 		class Model* model;
 		mutable AABoundingBox aabbox;
 		mutable bool boundingBoxDirty;
 		std::vector<math::Matrix4> global;
-		std::vector<ResourceId> material;
 		TransformationModifier* modifier;
 	};
 

@@ -39,28 +39,23 @@ class CreateScene : public Visitor,
 						public ColladaSkewVisitor,
 						public ColladaTranslateVisitor,
 						public ColladaInstanceGeometryVisitor,
-						public ColladaGeometryVisitor,
-						public ColladaMeshVisitor,
-						public ColladaPolyListVisitor,
-						public ColladaTrianglesVisitor,
 						public ColladaMaterialVisitor {
 	Scene* product;
-	Model* model;
 	std::stack<Node*> nodes;
 	std::stack<math::Matrix4> matrix;
 	ColladaDocument* document;
 	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
+	class ResourceManager* manager;
 	ResourceLoader* loader;
-	std::map<std::string, ResourceId> materials;
+	//std::map<std::string, ResourceId> materials;
 
-	ResourceId addResource(Resource* resource);
 	void pushNode(Node* node);
 	void popNode();
 	void concatNode(Node* node);
 	void concatMatrix(math::Matrix4 matrix);
 public:
-	CreateScene(ResourceCompiler* compiler, ResourceLoader* loader, ColladaDocument* document);
+	CreateScene(ResourceCompiler* compiler, class ResourceManager* manager, ResourceLoader* loader, ColladaDocument* document);
 
 	Scene* getScene() const { return product; }
 	const std::vector<Resource*>& getResourcesCreated() const { return resources; }
@@ -68,10 +63,6 @@ public:
 	virtual void visit(ColladaScene* scene);
 	virtual void visit(ColladaNode* node);
 	virtual void visit(ColladaInstanceGeometry* instanceGeometry);
-	virtual void visit(ColladaGeometry* geometry);
-	virtual void visit(ColladaMesh* mesh);
-	virtual void visit(ColladaPolyList* polylist);
-	virtual void visit(ColladaTriangles* triangles);
 	virtual void visit(ColladaMaterial* colladaMaterial);
 	virtual void visit(ColladaMatrix* matrix);
 	virtual void visit(ColladaRotate* rotate);

@@ -24,10 +24,6 @@ namespace compiler {
 		virtual ResourceLoader* findLoader(const char* extension) = 0;
 
 		virtual bool compile(const char* fileName, std::map<std::string, std::string>& options) = 0;
-
-		virtual engine::ResourceId findResource(const char* name, engine::Type type) = 0;
-		virtual engine::ResourceId addResource(ResourceLoader* loader, engine::Resource* resource) = 0;
-		virtual engine::Resource* getResource(engine::ResourceId resourceId) = 0;
 	};
 
 } /* namespace compiler */

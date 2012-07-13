@@ -23,8 +23,7 @@ namespace engine {
 	}
 
 	void RenderEntity::render(GraphicManager* graphicManager, Geometry* geometry, Frustum* frustum, Light* light, float objectId) {
-		ResourceId modelId = geometry->getModel();
-		Model* model = (Model*)resourceManager.getResource(modelId);
+		Model* model = geometry->getModel();
 
 		Buffer *indexBuffer = model->geometry->indexBuffer;
 		Buffer *vertexBuffer = model->geometry->vertexBuffer;
@@ -36,7 +35,7 @@ namespace engine {
 			for(size_t i = 0; i < model->getMeshCount(); i++) {
 				Mesh* indexMesh = model->getIndexMesh(i);
 
-				Material* material = (Material*)resourceManager.getResource(geometry->getMaterial(i));
+				Material* material = indexMesh->material;
 
 				if(!material) break;
 
@@ -52,7 +51,7 @@ namespace engine {
 
 				material->begin(actualAspect, context);
 
-				graphicManager->drawIndex(indexBuffer, indexMesh->start, indexMesh->end, indexMesh->count, indexMesh->offset);
+				graphicManager->drawIndex(indexMesh->start, indexMesh->end, indexMesh->count, indexMesh->offset);
 
 				material->end();
 			}

@@ -825,7 +825,29 @@ public:
  * deferred rendering
  */
 
+std::function<void()> teste(int x) {
+	return []() {
+		std::cout << 10 << std::endl;
+	};
+}
+
+std::function<void()> teste(int x, int y, int z) {
+	return [=]() {
+		std::cout << x << std::endl;
+		std::cout << y << std::endl;
+		std::cout << z << std::endl;
+	};
+}
+
 int main(int argc, char* argv[]) {
+	std::function<void()> f0 = teste(10);
+	std::function<void()> f1 = teste(11, 12, 13);
+
+	f0();
+	f1();
+
+	return 0;
+
 	NewEffect effect;
 
 	ConstantGate* s = new ConstantGate(0);

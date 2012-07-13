@@ -26,8 +26,7 @@ class SimpleRenderer : public Renderer {
 
 	void renderScene(Frustum* frustum, GraphicManager* graphicManager, Light* light, const std::string& aspect, Scene* scene) {
 		for(RenderQueueEntry entry : scene->getRenderQueue()) {
-			ResourceId modelId = entry.geometry->getModel();
-			Model* model = (Model*)resourceManager.getResource(modelId);
+			Model* model = entry.geometry->getModel();
 
 			Buffer *indexBuffer = model->geometry->indexBuffer;
 			Buffer *vertexBuffer = model->geometry->vertexBuffer;
@@ -50,7 +49,7 @@ class SimpleRenderer : public Renderer {
 
 			entry.material->begin(aspect, context);
 
-			graphicManager->drawIndex(indexBuffer, entry.mesh->start, entry.mesh->end, entry.mesh->count, entry.mesh->offset);
+			graphicManager->drawIndex(entry.mesh->start, entry.mesh->end, entry.mesh->count, entry.mesh->offset);
 		}
 	}
 

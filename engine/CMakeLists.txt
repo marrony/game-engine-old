@@ -11,7 +11,7 @@ set(ENGINE_COMMON_SRC
 	#src/main/OpenCL.cpp
 	src/main/Application.cpp
 	src/main/GameEntity.cpp
-	src/main/Framebuffer.cpp
+	#src/main/Framebuffer.cpp
 	src/main/Frustum.cpp
 	src/main/KDTree.cpp
 	src/main/Light.cpp
@@ -34,7 +34,6 @@ set(ENGINE_COMMON_SRC
 	
 	src/main/Scene.cpp
 	
-	src/main/TextureAttribute.cpp
 	src/main/Shader.cpp
 	
 	src/main/Model.cpp

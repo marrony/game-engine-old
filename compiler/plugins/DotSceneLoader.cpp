@@ -28,12 +28,14 @@ void DotSceneLoader::release() {
 	delete this;
 }
 
-void DotSceneLoader::initialize(ResourceCompiler* compiler) {
+void DotSceneLoader::initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 	this->compiler = compiler;
+	this->manager = manager;
+
 	compiler->registerLoader(this, "Dot Scene Loader", "scene.xml");
 }
 
-void DotSceneLoader::loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+void DotSceneLoader::compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 	staticObjects.clear();
 	dynamicObjects.clear();
 
@@ -60,8 +62,6 @@ void DotSceneLoader::loadResource(const char* fileName, std::map<std::string, st
 		scene->createSceneTree();
 
 		resources.push_back(scene);
-
-		compiler->addResource(this, scene);
 	} catch(...) {
 		if(scene)
 			delete scene;
@@ -590,10 +590,9 @@ void DotSceneLoader::processEntity(TiXmlElement *xmlNode, Node *parent) {
 		options["geometry-name"] = file::getFilename(meshFile);
 
 		compiler->compile(meshFile.c_str(), options);
-		engine::ResourceId modelId = compiler->findResource(file::getFilename(meshFile).c_str(), Model::TYPE);
+		Model* model = manager->loadModel(file::getFilename(meshFile));
 
-		Model* model = (Model*)compiler->getResource(modelId);
-		Geometry* entity = scene->createGeometry(modelId, model->getBoundingBox(), parent);
+		Geometry* entity = scene->createGeometry(model, model->getBoundingBox(), parent);
 	} catch(Exception &/*e*/) {
 	}
 

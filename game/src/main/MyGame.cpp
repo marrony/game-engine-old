@@ -83,12 +83,6 @@ void MyGame::create(Application& app) {
 
 	renderer = new SimpleRenderer(application->getResourceManager());
 
-	application->getResourceManager().registerReader(Material::TYPE, "resources/materials", MaterialUtils::read);
-	application->getResourceManager().registerReader(Model::TYPE, "resources/scene", ModelUtils::read);
-	application->getResourceManager().registerReader(Effect::TYPE, "resources/materials", EffectUtils::read);
-	application->getResourceManager().registerReader(Texture::TYPE, "resources/images", TextureUtils::read);
-	application->getResourceManager().registerReader(Scene::TYPE, "resources/scene", SceneUtils::read);
-
 //		getEventManager().registerHandler(Event1::type, [&](void* sender, Event* event) {
 //			onEvent1(sender, event);
 //		});
@@ -103,8 +97,7 @@ void MyGame::create(Application& app) {
 	Node* node;
 	Geometry* geometry;
 
-	ResourceId sceneId = application->getResourceManager().registerResource("large-scene", Scene::TYPE);
-	scene = (Scene*)application->getResourceManager().getResource(sceneId);
+	scene = application->getResourceManager().loadScene("large-scene");
 
 //	ResourceId modelId = application->getResourceManager().registerResource("duck_triangulate", Model::TYPE);
 //	Model* model = (Model*)application->getResourceManager().getResource(modelId);

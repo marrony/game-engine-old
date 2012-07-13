@@ -387,6 +387,15 @@ namespace engine {
 		return a->second;
 	}
 
+	int Shader::getAttributeIndex(const std::string& name) const {
+		std::map<std::string, Attribute*>::const_iterator a = attributes.find(name);
+
+		if(a == attributes.end())
+			return -1;
+
+		return a->second->getIndex();
+	}
+
 	void Shader::enableAttribute(Attribute* parameter) {
 		parameter->enable();
 		attribsEnabled.insert(parameter);

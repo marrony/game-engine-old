@@ -51,20 +51,15 @@ void parseOptions(TiXmlElement* xmlOptions, std::map<std::string, std::string>& 
 }
 
 int compile(PluginManager& pluginManager) {
+	ResourceManager manager;
 	ResourceCompilerImpl compiler;
-
-	compiler.addWriter(Material::TYPE, MaterialUtils::write, "resources/materials");
-	compiler.addWriter(Model::TYPE, ModelUtils::write, "resources/scene");
-	compiler.addWriter(Effect::TYPE, EffectUtils::write, "resources/materials");
-	compiler.addWriter(Texture::TYPE, TextureUtils::write, "resources/images");
-	compiler.addWriter(Scene::TYPE, SceneUtils::write, "resources/scene");
 
 	std::vector<Plugin*> plugins = pluginManager.getPlugins();
 	for(size_t i = 0; i < plugins.size(); i++) {
 		ResourceLoader* loader = dynamic_cast<ResourceLoader*>(plugins[i]);
 
 		if(loader)
-			loader->initialize(&compiler);
+			loader->initialize(&compiler, &manager);
 	}
 
 	TiXmlDocument document;
@@ -84,8 +79,6 @@ int compile(PluginManager& pluginManager) {
 
 			xmlResource = xmlResource->NextSiblingElement("resource");
 		}
-
-		compiler.saveResources();
 	} catch(const Exception& e) {
 		std::cout << e.getMessage() << std::endl;
 	}

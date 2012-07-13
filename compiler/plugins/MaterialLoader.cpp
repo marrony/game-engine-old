@@ -23,6 +23,7 @@ using namespace compiler;
 class MaterialLoader : public ResourceLoader {
 	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 public:
 	MaterialLoader() :
 			resources(), compiler(0) {
@@ -37,13 +38,14 @@ public:
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
 
 		compiler->registerLoader(this, "Material Loader", "material.xml");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		std::ifstream stream(fileName);
 		std::string content = file::loadFromStream(stream);
 
@@ -68,12 +70,9 @@ public:
 		std::string effectName = file::getFilename(effectSrc);
 
 		compiler->compile(effectSrc, options);
-		engine::ResourceId effectId = compiler->findResource(effectName.c_str(), Effect::TYPE);
+		Effect* effect = manager->loadEffect(effectName);
 
-		if(effectId == engine::ResourceId(-1))
-			throw Exception("Effect not found");
-
-		Material* material = new Material(file::getFilename(fileName), effectId);
+		Material* material = new Material(file::getFilename(fileName), effect);
 
 		TiXmlElement* xmlSampler = xmlEffect->FirstChildElement("sampler");
 		while(xmlSampler) {
@@ -82,22 +81,17 @@ public:
 			std::string textureName = file::getFilename(textureSrc);
 
 			compiler->compile(textureSrc, options);
-			engine::ResourceId textureId = compiler->findResource(textureName.c_str(), Texture::TYPE);
 
-			if(textureId == engine::ResourceId(-1)) {
-				delete material;
-
-				throw Exception("Texture not found");
-			}
-
-			material->addSampler(samplerName, textureId);
+			Texture* texture = manager->loadTexture(textureName);
+			material->addSampler(samplerName, texture);
 
 			xmlSampler = xmlSampler->NextSiblingElement("sampler");
 		}
 
-		resources.push_back(material);
-
-		compiler->addResource(this, material);
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".material";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		MaterialUtils::write(resourceStream, *manager, material);
 	}
 
 	virtual void destroyResource(engine::Resource* resource) {

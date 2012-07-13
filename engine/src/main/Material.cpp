@@ -8,7 +8,6 @@
 #include <fstream>
 
 #include "Material.h"
-#include "MaterialAttribute.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "SceneManager.h"
@@ -83,8 +82,19 @@ namespace engine {
 		if(usingCull) {
 		}
 
-		setupConstants(context);
+		context.graphicManager->setConstant(context, constants);
 		setupAttributes(context.model, shader, context.graphicManager);
+	}
+
+	void Effect::finalizeInitialization() {
+		shader->link();
+
+		for(int i = 0; i < AttributeOffset::MaxAttributeOffset; ++i) {
+			AttributeEnabled& attrib = attributesEnabled[i];
+
+			if(attrib.enabled)
+				attrib.index = shader->getAttributeIndex(attrib.name);
+		}
 	}
 
 	void Effect::end(ConstantContext& context) {
@@ -155,106 +165,42 @@ namespace engine {
 		}
 	}
 
-	void Effect::setupConstants(ConstantContext& context) {
-		const math::Matrix4 modelViewMatrix = context.frustum->getViewMatrix() * context.geometry->getTransformation();
-		const math::Matrix3 normalMatrix = modelViewMatrix.normalMatrix();
-
-		for(ConstantsEnabled c : constants) {
-			Constant* cc = shader->getConstant(c.name);
-
-			switch(c.constant) {
-			case Constants::ZNear:
-				cc->setValue(context.frustum->getNear());
-				break;
-
-			case Constants::ZFar:
-				cc->setValue(context.frustum->getFar());
-				break;
-
-			case Constants::ProjectionMatrix:
-				cc->setValue(context.frustum->getProjectionMatrix());
-				break;
-
-			case Constants::ModelViewMatrix:
-				cc->setValue(modelViewMatrix);
-				break;
-
-			case Constants::NormalMatrix:
-				cc->setValue(normalMatrix);
-				break;
-
-			case Constants::LightPosition:
-				if(context.light) {
-					cc->setValue(context.frustum->getViewMatrix() * context.light->getPosition());
-				} else {
-					cc->setValue(context.frustum->getViewMatrix() * math::Vector3(0, 20, 0));
-				}
-				break;
-
-			case Constants::LightColor:
-				if(context.light) {
-					cc->setValue(context.light->getDiffuse());
-				} else {
-					cc->setValue(math::Vector3(1, 1, 1));
-				}
-				break;
-
-			case Constants::ObjectId:
-				cc->setValue(context.objectId);
-				break;
-
-			case Constants::BonePallete:
-				size_t bonesCount = context.model->getAnimation().getBonesCount();
-
-				if(!context.model->geometry->boneIds.empty() && !context.model->geometry->weights.empty() && bonesCount > 0) {
-					cc->setValue(context.geometry->getBoneMatrix(), bonesCount);
-				} else {
-					cc->setValue(&math::Matrix4::IDENTITY, 1);
-				}
-
-				break;
-			}
-		}
-	}
-
 	void Effect::setupAttributes(Model* model, Shader* shader, GraphicManager* graphicManager) {
 		Geo* geometry = model->geometry;
 
-		for(int i = 0; i < AttributeOffset::MaxAttributeOffset; i++) {
-			if(!attributesEnabled[i].enabled) continue;
+		for(int offset = 0; offset < AttributeOffset::MaxAttributeOffset; ++offset) {
+			AttributeEnabled& att = attributesEnabled[offset];
 
-			Attribute* attrib = shader->getAttribute(attributesEnabled[i].name);
+			if(!att.enabled) continue;
 
-			graphicManager->setAttribute(i, attrib, attributesEnabled[i].mode, geometry->attributeOffsets[i], sizeof(float) * geometry->elementsPerVertex);
+			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, geometry->attributeOffsets[offset], sizeof(float) * geometry->elementsPerVertex);
 		}
 	}
 
-	Material::Material(const std::string& name, ResourceId effectId) :
-			Resource(name), effectId(effectId) {
+	Material::Material(const std::string& name, Effect* effect) :
+			Resource(name), effect(effect) {
 	}
 
 	Material::~Material() {
-		//delete effect;
+		manager->unloadEffect(effect);
+
+		for(auto sampler : samplers)
+			manager->unloadTexture(sampler.second);
 	}
 
-	void Material::addSampler(const std::string& samplerName, ResourceId sampler) {
+	void Material::addSampler(const std::string& samplerName, Texture* sampler) {
 		samplers[samplerName] = sampler;
 	}
 
-	ResourceId Material::getSampler(const std::string& samplerName) {
+	Texture* Material::getSampler(const std::string& samplerName) {
 		return samplers[samplerName];
 	}
 
 	void Material::begin(const std::string& aspectName, ConstantContext& context) {
-		Effect* effect = (Effect*)manager->getResource(effectId);
-
 		effect->begin(context);
 
 		for(auto sampler : samplers) {
-			Texture* texture = (Texture*)manager->getResource(sampler.second);
-
-			if(texture)
-				context.graphicManager->bindTexture(sampler.first, texture);
+			context.graphicManager->bindTexture(sampler.first, sampler.second);
 		}
 	}
 
@@ -283,7 +229,7 @@ namespace engine {
 
 		effect->manager = &manager;
 		effect->shader = new Shader(vss, fss, 0);
-		effect->shader->link();
+		//effect->shader->link();
 
 		effect->usingDephtWrite = stream.readByte("usingDephtWrite");
 		effect->usingColorWrite = stream.readByte("usingColorWrite");
@@ -303,15 +249,15 @@ namespace engine {
 			effect->attributesEnabled[i].mode = stream.readByte("");
 		}
 
-		effect->constants.push_back(Effect::ConstantsEnabled("myZNear", Constants::ZNear));
-		effect->constants.push_back(Effect::ConstantsEnabled("myZFar", Constants::ZFar));
-		effect->constants.push_back(Effect::ConstantsEnabled("myProjectionMatrix", Constants::ProjectionMatrix));
-		effect->constants.push_back(Effect::ConstantsEnabled("myModelViewMatrix", Constants::ModelViewMatrix));
-		effect->constants.push_back(Effect::ConstantsEnabled("myNormalMatrix", Constants::NormalMatrix));
-		effect->constants.push_back(Effect::ConstantsEnabled("myLightPosition", Constants::LightPosition));
-		effect->constants.push_back(Effect::ConstantsEnabled("myLightColor", Constants::LightColor));
-		effect->constants.push_back(Effect::ConstantsEnabled("myObjectId", Constants::ObjectId));
-		effect->constants.push_back(Effect::ConstantsEnabled("myBonePalete", Constants::BonePallete));
+		effect->constants.push_back(ConstantsEnabled("myZNear", Constants::ZNear));
+		effect->constants.push_back(ConstantsEnabled("myZFar", Constants::ZFar));
+		effect->constants.push_back(ConstantsEnabled("myProjectionMatrix", Constants::ProjectionMatrix));
+		effect->constants.push_back(ConstantsEnabled("myModelViewMatrix", Constants::ModelViewMatrix));
+		effect->constants.push_back(ConstantsEnabled("myNormalMatrix", Constants::NormalMatrix));
+		effect->constants.push_back(ConstantsEnabled("myLightPosition", Constants::LightPosition));
+		effect->constants.push_back(ConstantsEnabled("myLightColor", Constants::LightColor));
+		effect->constants.push_back(ConstantsEnabled("myObjectId", Constants::ObjectId));
+		effect->constants.push_back(ConstantsEnabled("myBonePalete", Constants::BonePallete));
 
 		stream.popGroup();
 
@@ -360,9 +306,7 @@ namespace engine {
 
 		Material* material = new Material(stream.readString("name"), 0);
 		material->manager = &manager;
-		std::string effectName = stream.readString("effectName");
-		ResourceId effectId = manager.registerResource(effectName, Effect::TYPE);
-		material->effectId = effectId;
+		material->effect = manager.loadEffect(stream.readString("effectName"));
 
 		int texCount = stream.readInt("textureCount");
 		for(int i = 0; i < texCount; i++) {
@@ -373,9 +317,8 @@ namespace engine {
 
 			stream.popGroup();
 
-			ResourceId textureId = manager.registerResource(resourceName, Texture::TYPE);
-
-			material->samplers.insert(std::make_pair(textureName, textureId));
+			Texture* texture = manager.loadTexture(resourceName);
+			material->samplers.insert(std::make_pair(textureName, texture));
 		}
 
 		return material;
@@ -389,25 +332,19 @@ namespace engine {
 
 		stream.pushGroup("material");
 
-		Effect* effect = (Effect*)manager.getResource(material->effectId);
-
 		stream.writeString("type", material->getType().getName());
 		stream.writeString("name", material->name);
-		stream.writeString("effectName", effect->getName());
+		stream.writeString("effectName", material->effect->getName());
 
 		stream.writeInt("textureCount", material->samplers.size());
 
-		std::map<std::string, ResourceId>::iterator texture = material->samplers.begin();
-		while(texture != material->samplers.end()) {
+		for(auto texture : material->samplers) {
 			stream.pushGroup("texture");
 
-			Texture* tex = (Texture*)manager.getResource(texture->second);
-
-			stream.writeString("textureName", texture->first);
-			stream.writeString("resourceName", tex->getName());
+			stream.writeString("textureName", texture.first);
+			stream.writeString("resourceName", texture.second->getName());
 
 			stream.popGroup();
-			texture++;
 		}
 	}
 

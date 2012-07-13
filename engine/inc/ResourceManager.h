@@ -9,6 +9,10 @@
 #define RESOURCEMANAGER_H_
 
 #include "Resource.h"
+#include "Texture.h"
+#include "Material.h"
+#include "Model.h"
+#include "Scene.h"
 
 #include <map>
 #include <vector>
@@ -17,101 +21,49 @@
 
 namespace engine {
 
-	typedef unsigned int ResourceId;
-
-	class ResourceManager;
-
-	template<typename R>
-	class ResourceGuard {
-//	public:
-//		ResourceGuard(ResourceId id) :
-//				id(id) {
-//			lock();
-//		}
-//
-//		ResourceGuard(const ResourceGuard& other) :
-//				id(other.id), manager(other.manager) {
-//			lock();
-//		}
-//
-//		~ResourceGuard() {
-//			unlock();
-//		}
-//
-//		R* operator->() const {
-//			return get();
-//		}
-//
-//		R& operator*() const {
-//			return *get();
-//		}
-//
-//		R* get() const {
-//			return (R*)manager.getResource(id);
-//		}
-//	private:
-//		void lock() {
-//			if(resource)
-//				manager.incrementReference(id);
-//		}
-//
-//		void unlock() {
-//			if(resource)
-//				manager.decrementReference(id);
-//		}
-//
-//		ResourceId id;
-//		ResourceManager& manager;
-	};
-
 	class ResourceManager {
+		std::vector<ResourceListener*> listeners;
+
+		template<typename T>
+		struct ResourceEntry {
+			T* resource;
+			int count;
+		};
+
+		std::map<std::string, ResourceEntry<Material>> scenes;
+		std::map<std::string, ResourceEntry<Material>> textures;
+		std::map<std::string, ResourceEntry<Material>> materials;
+		std::map<std::string, ResourceEntry<Material>> effects;
+		std::map<std::string, ResourceEntry<Material>> shaders;
+		std::map<std::string, ResourceEntry<Material>> models;
+
+		void unloadResource(Resource* resource, std::map<std::string, ResourceEntry<Material>>& resources);
 	public:
 		ResourceManager();
 		~ResourceManager();
 
-		void registerFactory(Type type, ResourceFactory factory);
+		Scene* loadScene(const std::string& sceneName);
+		void unloadScene(Scene* scene);
 
-		void registerReader(Type type, const char* prefix, ResourceReader reader);
-		void registerWriter(Type type, const char* prefix, ResourceWriter writer);
+		Texture* loadTexture(const std::string& textureName);
+		void unloadTexture(Texture* texture);
 
-		ResourceReader getReader(Type type);
-		ResourceWriter getWriter(Type type);
+		Material* loadMaterial(const std::string& materialName);
+		void unloadMaterial(Material* material);
 
-		ResourceId addResource(Resource* resource);
+		Effect* loadEffect(const std::string& effectName);
+		void unloadEffect(Effect* effect);
 
-		ResourceId registerResource(const std::string& resourceName, Type resourceType);
+		Shader* loadShader(const std::string& shaderName);
+		void unloadShader(Shader* shader);
 
-		Resource* getResource(ResourceId id);
+		Model* loadModel(const std::string& modelName);
+		void unloadModel(Model* model);
 
-//		void incrementReference(ResourceId id);
-//
-//		void decrementReference(ResourceId id);
-
-		ResourceId findResource(Type type, const std::string& name);
-
-		void clearResources();
-
-		void deleteUnusedResources();
-	private:
-		struct ResourceEntry {
-			bool used;
-			Type type;
-			std::string name;
-			Resource* resource;
-
-			ResourceEntry() :
-					used(false), type(0), name(), resource(0) {
-			}
-		};
-
-		std::vector<ResourceEntry> resources;
-		std::map<Type, const char*> readerPrefix;
-		std::map<Type, ResourceReader> readers;
-		std::map<Type, const char*> writerPrefix;
-		std::map<Type, ResourceWriter> writers;
-
-		std::map<Type, ResourceFactory> factories;
+		void addListener(ResourceListener* listener);
+		void removeListener(ResourceListener* listener);
 	};
 
 } /* namespace engine */
+
 #endif /* RESOURCEMANAGER_H_ */

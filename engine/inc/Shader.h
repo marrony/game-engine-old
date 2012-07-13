@@ -17,7 +17,6 @@
 
 namespace engine {
 
-	class Texture;
 	class Buffer;
 
 	class Shader;
@@ -56,6 +55,10 @@ namespace engine {
 
 		void enable();
 		void disable();
+
+		int getIndex() {
+			return attribLocation;
+		}
 	};
 
 	enum ShaderType {
@@ -119,6 +122,7 @@ namespace engine {
 
 		Constant* getConstant(const std::string& name) const;
 		Attribute* getAttribute(const std::string& name) const;
+		int getAttributeIndex(const std::string& name) const;
 		Sampler* getSampler(const std::string& name) {
 			std::map<std::string, Sampler>::iterator ite = samplers.find(name);
 

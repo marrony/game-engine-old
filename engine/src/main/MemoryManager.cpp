@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #ifndef NDEBUG
 
@@ -96,36 +97,36 @@ struct MemoryList {
 static MemoryList list = {0};
 
 static void printMemoryBlock(char* ptr, unsigned int nbytes, int maxRows) {
-	int numberOfRows = 0;
-	int numberOfCols = 0;
-	bool justPrintedLineBreak = false;
+	const int CHARS_PER_LINE = 16;
 
-	fprintf(stdout, "\t");
+	int i = 0;
+	while(i < nbytes) {
+		int x = nbytes - i;
+		int y = x > CHARS_PER_LINE ? CHARS_PER_LINE : x;
 
-	for(unsigned int i = 0; i < nbytes; i++) {
-		numberOfCols++;
+		fprintf(stdout, "\t");
 
-		if(justPrintedLineBreak)
-			fprintf(stdout, "\t");
-
-		fprintf(stdout, "%02x", ptr[i] & 0xff);
-		justPrintedLineBreak = false;
-
-		if(numberOfCols == 16) {
-			fprintf(stdout, "\n");
-			justPrintedLineBreak = true;
-			numberOfCols = 0;
-			numberOfRows++;
-		} else {
-			fprintf(stdout, " ");
+		for(int j = 0; j < y; j++) {
+			fprintf(stdout, "%02x ", ptr[i + j] & 0xff);
 		}
 
-		if(numberOfRows == maxRows)
-			break;
-	}
+		for(int j = y; j < CHARS_PER_LINE; j++)
+			fprintf(stdout, "   ");
 
-	if(!justPrintedLineBreak)
+		fprintf(stdout, "\t");
+
+		for(int j = 0; j < y; j++) {
+			int ch = ptr[i + j] & 0xff;
+			fprintf(stdout, "%c ", isprint(ch) ? ch : '.');
+		}
+
+		for(int j = y; j < CHARS_PER_LINE; j++)
+			fprintf(stdout, "  ");
+
 		fprintf(stdout, "\n");
+
+		i += y;
+	}
 }
 
 static void dumpEntries() {

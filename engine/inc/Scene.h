@@ -61,7 +61,7 @@ namespace engine {
 		class Node* createNode();
 		class Node* getRoot();
 
-		class Geometry* createGeometry(ResourceId modelId, const class AABoundingBox& aabbox, Node* node = 0);
+		class Geometry* createGeometry(class Model* model, const class AABoundingBox& aabbox, Node* node = 0);
 
 		class Light* createPointLight();
 		class Light* createSpotLight();

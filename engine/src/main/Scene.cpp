@@ -14,7 +14,6 @@
 #include "GameEntity.h"
 #include "Model.h"
 #include "EventManager.h"
-#include "TextureAttribute.h"
 #include "Light.h"
 #include "Node.h"
 #include "SceneTree.h"
@@ -104,14 +103,13 @@ namespace engine {
 		for(size_t i = 0; i < queryList.size(); i++) {
 			Geometry* geometry = (Geometry*) queryList.getObject(i);
 
-			ResourceId modelId = geometry->getModel();
-			Model* model = (Model*)manager->getResource(modelId);
+			Model* model = geometry->getModel();
 
 			for(size_t i = 0; i < model->getMeshCount(); i++) {
 				RenderQueueEntry entry;
 
 				entry.geometry = geometry;
-				entry.material = (Material*)manager->getResource(geometry->getMaterial(i));
+				entry.material = model->getIndexMesh(i)->material;
 				entry.mesh = model->getIndexMesh(i);
 
 				renderQueue.push_back(entry);
@@ -131,11 +129,11 @@ namespace engine {
 		return root;
 	}
 
-	Geometry* Scene::createGeometry(ResourceId modelId, const AABoundingBox& aabbox, Node* node) {
+	Geometry* Scene::createGeometry(Model* model, const AABoundingBox& aabbox, Node* node) {
 		if(!node)
 			node = createNode();
 
-		Geometry* geometry = new Geometry(modelId, aabbox, node);
+		Geometry* geometry = new Geometry(model, aabbox, node);
 
 		geometries.push_back(geometry);
 
@@ -273,8 +271,7 @@ namespace engine {
 			stream.readArray("aabboxMin", min.vector, 3);
 			stream.readArray("aabboxMax", max.vector, 3);
 
-			ResourceId modelId = manager.registerResource(model, Model::TYPE);
-			Geometry* geometry = new Geometry(modelId, AABoundingBox(min, max), node);
+			Geometry* geometry = new Geometry(manager.loadModel(model), AABoundingBox(min, max), node);
 
 			scene->geometries[i] = geometry;
 
@@ -370,8 +367,7 @@ namespace engine {
 
 			stream.pushGroup("geometry");
 
-			ResourceId modelId = geometry->getModel();
-			Model* model = (Model*)manager.getResource(modelId);
+			Model* model = geometry->getModel();
 
 			stream.writeString("model", model->getName());
 			stream.writeInt("modifier", getIndex((Node*)geometry->getModifier()));

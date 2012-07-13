@@ -9,6 +9,8 @@
 #include "GeneralHashFunction.h"
 #include "Exception.h"
 #include "FileUtil.h"
+#include "Image.h"
+#include "GraphicManager.h"
 
 #include <fstream>
 #include <string.h>
@@ -16,130 +18,128 @@
 namespace engine {
 
 	ResourceManager::ResourceManager() {
-		resources.reserve(1024); //FIXME o resize do vector esta dando erro, por isso ja esta reservando esse valor
 	}
 
 	ResourceManager::~ResourceManager() {
-		deleteUnusedResources();
-
-//		if(!resources.empty())
-//			throw Exception("There are some resources that could not be released");
 	}
 
-	void ResourceManager::registerFactory(Type type, ResourceFactory factory) {
-		factories[type] = factory;
+	Scene* ResourceManager::loadScene(const std::string& sceneName) {
+		FileStream fileStream("resources/scene/" + sceneName + ".scene");
+		ResourceBinStream resourceStream(fileStream);
+		Scene* scene = (Scene*)SceneUtils::read(resourceStream, *this, 0);
+
+		return scene;
 	}
 
-	void ResourceManager::registerReader(Type type, const char* prefix, ResourceReader reader) {
-		readerPrefix[type] = prefix;
-		readers[type] = reader;
+	void ResourceManager::unloadScene(Scene* scene) {
+		unloadResource(scene, scenes);
 	}
 
-	void ResourceManager::registerWriter(Type type, const char* prefix, ResourceWriter writer) {
-		writerPrefix[type] = prefix;
-		writers[type] = writer;
+	Texture* ResourceManager::loadTexture(const std::string& textureName) {
+		Texture* texture = new Texture(textureName);
+
+		FileStream fileStream("resources/images/" + textureName + ".texture");
+		ResourceBinStream resourceStream(fileStream);
+
+		Image* image = (Image*)TextureUtils::read(resourceStream, *this, 0);
+
+		for(auto listener : listeners)
+			listener->onTexture(texture, image);
+
+		delete image;
+
+		return texture;
 	}
 
-	ResourceReader ResourceManager::getReader(Type type) {
-		return readers[type];
+	void ResourceManager::unloadTexture(Texture* texture) {
+		unloadResource(texture, textures);
 	}
 
-	ResourceWriter ResourceManager::getWriter(Type type) {
-		return writers[type];
-	}
+	Material* ResourceManager::loadMaterial(const std::string& materialName) {
+		auto entry = materials.find(materialName);
 
-	ResourceId ResourceManager::addResource(Resource* resource) {
-		ResourceId id = registerResource(resource->getName(), resource->getType());
+		Material* material;
 
-		resources[id].resource = resource;
-
-		return id;
-	}
-
-	ResourceId ResourceManager::registerResource(const std::string& resourceName, Type resourceType) {
-		ResourceId id = findResource(resourceType, resourceName);
-
-		if(id == -1) {
-			for(id = 0; id < resources.size(); ++id) {
-				if(!resources[id].used)
-					break;
-			}
-
-			if(id >= resources.size()) {
-				id = resources.size();
-				resources.push_back(ResourceEntry());
-			}
-
-			ResourceEntry& entry = resources[id];
-
-			entry.used = true;
-			entry.name = resourceName;
-			entry.type = resourceType;
-		}
-
-		return id;
-	}
-
-	Resource* ResourceManager::getResource(ResourceId id) {
-		if(id >= resources.size())
-			return 0;
-
-		ResourceEntry& entry = resources[id];
-
-		if(!entry.resource) {
-			ResourceReader reader = getReader(entry.type);
-
-			const char* prefix = readerPrefix[entry.type];
-
-			FileStream fileStream(std::string(prefix) + "/" + entry.name + "." + entry.type.getName());
-
+		if(entry != materials.end())
+			material = entry->second.resource;
+		else {
+			FileStream fileStream("resources/materials/" + materialName + ".material");
 			ResourceBinStream resourceStream(fileStream);
-			entry.resource = (Resource*)reader(resourceStream, *this, 0);
 
-			entry.resource->postLoaded();
+			material = (Material*)MaterialUtils::read(resourceStream, *this, 0);
+
+			for(auto listener : listeners)
+				listener->onMaterial(material);
+
+			entry = materials.insert({materialName, {material, 0}}).first;
 		}
 
-		return entry.resource;
+		entry->second.count++;
+
+		return material;
 	}
 
-	ResourceId ResourceManager::findResource(Type type, const std::string& name) {
-		for(ResourceId id = 0; id < resources.size(); id++) {
-			if(resources[id].name == name && resources[id].type == type)
-				return id;
-		}
-
-		return ResourceId(-1);
+	void ResourceManager::unloadMaterial(Material* material) {
+		unloadResource(material, materials);
 	}
 
-	void ResourceManager::clearResources() {
-		for(ResourceEntry& entry : resources) {
-			entry.used = false;
-			entry.resource = 0;
-		}
-		resources.clear();
+	Effect* ResourceManager::loadEffect(const std::string& effectName) {
+		FileStream fileStream("resources/materials/" + effectName + ".effect");
+		ResourceBinStream resourceStream(fileStream);
+		Effect* effect = (Effect*)EffectUtils::read(resourceStream, *this, 0);
+
+		for(auto listener : listeners)
+			listener->onEffect(effect);
+
+		return effect;
 	}
 
-	void ResourceManager::deleteUnusedResources() {
-		std::vector<ResourceId> resourcesToDelete;
+	void ResourceManager::unloadEffect(Effect* effect) {
+		unloadResource(effect, effects);
+	}
 
-		for(ResourceId id = 0; id < resources.size(); id++) {
-			bool shouldDelete = resources[id].used &&
-							resources[id].resource &&
-							resources[id].resource->couldDelete();
+	Shader* ResourceManager::loadShader(const std::string& shaderName) {
+		return 0;
+	}
 
-			if(shouldDelete)
-				resourcesToDelete.push_back(id);
-		}
+	void ResourceManager::unloadShader(Shader* shader) {
+		//unloadResource(shader, shaders);
+	}
 
-		for(ResourceId id : resourcesToDelete) {
-			delete resources[id].resource;
+	Model* ResourceManager::loadModel(const std::string& modelName) {
+		FileStream fileStream("resources/scene/" + modelName + ".model");
+		ResourceBinStream resourceStream(fileStream);
+		Model* model = (Model*) ModelUtils::read(resourceStream, *this, 0);
 
-			resources[id].used = false;
-			resources[id].resource = 0;
-		}
+		for(auto listener : listeners)
+			listener->onModel(model);
 
-		if(!resourcesToDelete.empty())
-			deleteUnusedResources();
+		return model;
+	}
+
+	void ResourceManager::unloadModel(Model* model) {
+		unloadResource(model, models);
+	}
+
+	void ResourceManager::addListener(ResourceListener* listener) {
+		listeners.push_back(listener);
+	}
+
+	void ResourceManager::removeListener(ResourceListener* listener) {
+	}
+
+	void ResourceManager::unloadResource(Resource* resource, std::map<std::string, ResourceEntry<Material>>& resources) {
+		std::string resourceName = resource->getName();
+
+		auto entry = resources.find(resourceName);
+
+		if(entry == resources.end()) return;
+
+		if(--entry->second.count > 0) return;
+
+		resources.erase(entry);
+
+		delete entry->second.resource;
 	}
 
 } /* namespace engine */

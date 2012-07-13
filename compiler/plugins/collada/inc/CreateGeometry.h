@@ -14,8 +14,6 @@
 #include "ColladaPolyList.h"
 #include "ColladaTriangles.h"
 
-#include "Model.h"
-
 #include <string>
 #include <vector>
 #include <map>
@@ -27,13 +25,14 @@ class CreateGeometry : public Visitor,
 							public ColladaMeshVisitor,
 							public ColladaPolyListVisitor,
 							public ColladaTrianglesVisitor {
-	Model* model;
+	class ResourceManager* manager;
+	class Model* model;
 	std::string name;
 public:
-	CreateGeometry(const std::string& name);
+	CreateGeometry(const std::string& name, class ResourceManager* manager);
 	virtual ~CreateGeometry() {}
 
-	Model* getModel() { return model; }
+	class Model* getModel() { return model; }
 
 	virtual void visit(ColladaGeometry* geometry);
 	virtual void visit(ColladaMesh* mesh);

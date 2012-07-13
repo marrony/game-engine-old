@@ -184,7 +184,7 @@ namespace engine {
 	};
 
 	struct Geo {
-		void uploadData();
+		void uploadData(class GraphicManager* graphicManager);
 		void calculateTangent();
 		void calculateNormal();
 		void preCalculateTangent();
@@ -221,7 +221,7 @@ namespace engine {
 		unsigned short count;  //number os elements to draw
 		unsigned short start;  //minimum index in range [offset, offset+count]
 		unsigned short end;    //maximum index in range [offset, offset+count]
-		std::string material;
+		Material* material;
 		AABoundingBox aabbox;
 
 		class Model* model;
@@ -232,7 +232,7 @@ namespace engine {
 		Model(const std::string& name);
 		~Model();
 
-		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, const std::string& material, int flags);
+		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags);
 
 		Mesh* getIndexMesh(size_t index) {
 			return meshes[index];
@@ -253,6 +253,8 @@ namespace engine {
 		virtual Type getType() const {
 			return TYPE;
 		}
+
+		void uploadData(class GraphicManager* graphicManager);
 
 		static const Type TYPE;
 

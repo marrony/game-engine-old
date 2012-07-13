@@ -12,7 +12,7 @@
 
 namespace engine {
 
-	class HardwareTexture : public Texture {
+	class HardwareTexture {
 	public:
 		HardwareTexture(const std::string& name, TextureFormat format);
 		virtual ~HardwareTexture();

@@ -21,9 +21,9 @@ namespace compiler {
 	struct ResourceLoader : public Plugin {
 		virtual ~ResourceLoader() { }
 
-		virtual void initialize(ResourceCompiler* compiler) = 0;
+		virtual void initialize(ResourceCompiler* compiler, class engine::ResourceManager* manager) = 0;
 
-		virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) = 0;
+		virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) = 0;
 		virtual void destroyResource(engine::Resource* resource) = 0;
 	};
 

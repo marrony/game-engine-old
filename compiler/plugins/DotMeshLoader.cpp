@@ -39,12 +39,12 @@ public:
 		delete this;
 	}
 
-	virtual void initialize(ResourceCompiler* compiler) {
+	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
 		compiler->registerLoader(this, "Dot Mesh Loader", "mesh.xml");
 	}
 
-	virtual void loadResource(const char* fileName, std::map<std::string, std::string>& options) {
+	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		TiXmlDocument xmlDoc;
 
 		std::ifstream meshStream(fileName);
@@ -71,7 +71,6 @@ public:
 		model->geometry->calculateBoundingBox();
 
 		resources.push_back(model);
-		compiler->addResource(this, model);
 	}
 
 	virtual void destroyResource(engine::Resource* resource) {
@@ -143,7 +142,8 @@ public:
 
 		std::string material = xmlSubmesh->Attribute("material");
 
-		model->addVertexData(vertices, indices, material, flags);
+		//TODO carregar
+		model->addVertexData(vertices, indices, 0 /*material*/, flags);
 	}
 
 	std::vector<unsigned short> processFaces(Model* model, TiXmlElement* xmlFaces) {

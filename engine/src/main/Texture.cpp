@@ -14,17 +14,11 @@
 
 namespace engine {
 
-	const Type Texture::TYPE("texture");
-
-	Texture::Texture(const std::string& name) :
-			Resource(name) {
-	}
-
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("texture");
 
-		std::string type = stream.readString("type");
-		std::string name = stream.readString("name");
+//		std::string type = stream.readString("type");
+//		std::string name = stream.readString("name");
 		int width = stream.readInt("width");
 		int height = stream.readInt("height");
 		int depth = stream.readInt("depth");
@@ -36,8 +30,7 @@ namespace engine {
 
 		stream.popGroup();
 
-		Texture* texture = new HardwareTexture(name, TextureFormat::RGB8);
-		texture->setData(0, width, height, depth, data);
+		Image* texture = new Image(width, height, depth, data);
 
 		delete[] data;
 
@@ -45,7 +38,7 @@ namespace engine {
 	}
 
 	void TextureUtils::write(ResourceStream& stream, ResourceManager& manager, void* instance) {
-		Texture* texture = dynamic_cast<Texture*>((Texture*) instance);
+		Image* texture = dynamic_cast<Image*>((Image*) instance);
 
 		if(!texture)
 			throw Exception("Resource is not a texture");
@@ -54,20 +47,17 @@ namespace engine {
 		int height = texture->getHeight();
 		int depth = texture->getDepth();
 		int size = width * height * depth;
-		char* data = new char[size];
-		texture->getData(0, data);
+		const char* data = (const char*)texture->getData();
 
 		stream.pushGroup("texture");
 
-		stream.writeString("type", texture->getType().getName());
-		stream.writeString("name", texture->name);
+//		stream.writeString("type", texture->getType().getName());
+//		stream.writeString("name", texture->name);
 		stream.writeInt("width", width);
 		stream.writeInt("height", height);
 		stream.writeInt("depth", depth);
 		stream.writeArray("pixels", data, size);
 
 		stream.popGroup();
-
-		delete[] data;
 	}
 } // namespace engine

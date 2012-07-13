@@ -7,12 +7,18 @@
 
 #include "GraphicManager.h"
 #include "Texture.h"
+#include "Image.h"
+#include "Model.h"
+#include "Geometry.h"
+#include "Frustum.h"
+#include "Light.h"
 
 namespace engine {
 
 	GraphicManager::GraphicManager() :
 			width(0), height(0), framebuffer(0), shader(0) {
 		usedAttributes = 0;
+		usedTextures = 0;
 		lastUsedAttributes = 0;
 		lastUsedTextures = 0;
 		flags = 0;
@@ -29,13 +35,13 @@ namespace engine {
 		if(flags == 0) return;
 
 		if(flags & FramebufferAltered) {
-			if(!framebuffer) {
-				if(lastFramebuffer)
-					lastFramebuffer->unbind();
-			} else
-				framebuffer->bind();
-
-			lastFramebuffer = framebuffer;
+//			if(!framebuffer) {
+//				if(lastFramebuffer)
+//					lastFramebuffer->unbind();
+//			} else
+//				framebuffer->bind();
+//
+//			lastFramebuffer = framebuffer;
 		}
 
 		if(flags & ShaderAltered)
@@ -48,16 +54,19 @@ namespace engine {
 			indexBuffer->bind();
 
 		if(flags & TextureAltered) {
-			int usedTextures = 0;
-
 			for(int i = 0; i < 16; ++i) {
 				int mask = (1 << i);
 
-				if(textures[i]) {
-					usedTextures |= mask;
-
+				if(usedTextures & mask) {
 					shader->getConstant(textureName[i])->setValue(i);
-					textures[i]->bind(i);
+
+					Tex& tex = textures0.get(textures[i]->handle);
+
+					glActiveTexture(GL_TEXTURE0 + i);
+					#ifndef ANDROID
+					//glClientActiveTexture(GL_TEXTURE0 + i);
+					#endif
+					glBindTexture(GL_TEXTURE_2D, tex.texId);
 				}
 			}
 
@@ -65,14 +74,16 @@ namespace engine {
 				int mask = (1 << i);
 
 				if(!(usedTextures & mask) && (lastUsedTextures & mask)) {
-					textures[i]->unbind();
+					glActiveTexture(GL_TEXTURE0 + i);
+					#ifndef ANDROID
+					//glClientActiveTexture(GL_TEXTURE0 + i);
+					#endif
+					glBindTexture(GL_TEXTURE_2D, 0);
 				}
 			}
 
-			for(int i = 0; i < 16; ++i)
-				textures[i] = 0;
-
 			lastUsedTextures = usedTextures;
+			usedTextures = 0;
 		}
 
 		if(flags & AttributesAltered) {
@@ -80,10 +91,10 @@ namespace engine {
 				int mask = (1 << i);
 
 				if(usedAttributes & mask) {
-					Attribs& attr = attribs[i];
+					Attribs attr = attribs[i];
 
-					attr.attribute->setValue(attr.mode, attr.offset, attr.stride);
-					attr.attribute->enable();
+					glEnableVertexAttribArray(attr.attrib);
+					glVertexAttribPointer(attr.attrib, attr.mode, GL_FLOAT, GL_FALSE, attr.stride, (void*)attr.offset);
 				}
 			}
 
@@ -91,13 +102,75 @@ namespace engine {
 				int mask = (1 << i);
 
 				if(!(usedAttributes & mask) && (lastUsedAttributes & mask)) {
-					Attribs& attr = attribs[i];
-					attr.attribute->disable();
+					Attribs attr = attribs[i];
+
+					glDisableVertexAttribArray(attr.attrib);
 				}
 			}
 
 			lastUsedAttributes = usedAttributes;
 			usedAttributes = 0;
+		}
+
+		if(flags & ConstantsAltered) {
+			const math::Matrix4 modelViewMatrix = context.frustum->getViewMatrix() * context.geometry->getTransformation();
+
+			for(ConstantsEnabled c : constants) {
+				Constant* cc = shader->getConstant(c.name);
+
+				switch(c.constant) {
+				case Constants::ZNear:
+					cc->setValue(context.frustum->getNear());
+					break;
+
+				case Constants::ZFar:
+					cc->setValue(context.frustum->getFar());
+					break;
+
+				case Constants::ProjectionMatrix:
+					cc->setValue(context.frustum->getProjectionMatrix());
+					break;
+
+				case Constants::ModelViewMatrix:
+					cc->setValue(modelViewMatrix);
+					break;
+
+				case Constants::NormalMatrix:
+					cc->setValue(modelViewMatrix.normalMatrix());
+					break;
+
+				case Constants::LightPosition:
+					if(context.light) {
+						cc->setValue(context.frustum->getViewMatrix() * context.light->getPosition());
+					} else {
+						cc->setValue(context.frustum->getViewMatrix() * math::Vector3(0, 20, 0));
+					}
+					break;
+
+				case Constants::LightColor:
+					if(context.light) {
+						cc->setValue(context.light->getDiffuse());
+					} else {
+						cc->setValue(math::Vector3(1, 1, 1));
+					}
+					break;
+
+				case Constants::ObjectId:
+					cc->setValue(context.objectId);
+					break;
+
+				case Constants::BonePallete:
+					size_t bonesCount = context.model->getAnimation().getBonesCount();
+
+					if(!context.model->geometry->boneIds.empty() && !context.model->geometry->weights.empty() && bonesCount > 0) {
+						cc->setValue(context.geometry->getBoneMatrix(), bonesCount);
+					} else {
+						cc->setValue(&math::Matrix4::IDENTITY, 1);
+					}
+
+					break;
+				}
+			}
 		}
 
 		flags = 0;
@@ -234,20 +307,6 @@ namespace engine {
 		flags |= ShaderAltered;
 	}
 
-	void GraphicManager::unbindShader() {
-		if(shader != 0) {
-			shader->unbind();
-			shader = 0;
-
-			for(int i = 0; i < 16; i++) {
-				if(textures[i])
-					textures[i]->unbind();
-			}
-
-			memset(textures, 0, sizeof(textures));
-		}
-	}
-
 	void GraphicManager::enableDepthWrite() {
 		glDepthMask(GL_TRUE);
 	}
@@ -272,10 +331,11 @@ namespace engine {
 		glDisable(GL_TEXTURE_2D);
 	}
 
-	void GraphicManager::drawIndex(Buffer* indexBuffer, int start, int end, int count, int offset) {
+	void GraphicManager::drawIndex(int start, int end, int count, int offset) {
 		commitModifications();
 
-		unsigned short* ptr = (unsigned short*) indexBuffer->getPointer();
+		unsigned short* ptr = (unsigned short*) 0;
+
 #ifndef ANDROID
 		glDrawRangeElements(GL_TRIANGLES, start, end, count, GL_UNSIGNED_SHORT, ptr + offset);
 #endif
@@ -290,7 +350,10 @@ namespace engine {
 
 	void GraphicManager::bindTexture(const std::string& name, Texture* texture) {
 		for(int i = 0; i < 16; i++) {
-			if(textures[i] == 0) {
+			int mask = (1 << i);
+
+			if(!(usedTextures & mask)) {
+				usedTextures |= mask;
 				textures[i] = texture;
 				textureName[i] = name;
 				break;
@@ -298,14 +361,6 @@ namespace engine {
 		}
 
 		flags |= TextureAltered;
-	}
-
-	void GraphicManager::addSampler(const std::string& name, Texture* sampler) {
-		samplers[name] = sampler;
-	}
-
-	void GraphicManager::removeSamplers() {
-		samplers.clear();
 	}
 
 	void GraphicManager::setVertexBuffer(Buffer* vertexBuffer) {
@@ -322,17 +377,133 @@ namespace engine {
 		flags |= IndexBufferAltered;
 	}
 
-	void GraphicManager::setAttribute(int index, Attribute* attr, int mode, int offset, int stride) {
-		Attribs& attrib = attribs[index];
+	void GraphicManager::setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride) {
+		attribs[attributeOffset].attrib = index;
+		attribs[attributeOffset].mode = mode;
+		attribs[attributeOffset].offset = offset;
+		attribs[attributeOffset].stride = stride;
 
-		attrib.attribute = attr;
-		attrib.mode = mode;
-		attrib.offset = offset;
-		attrib.stride = stride;
-
-		usedAttributes |= (1 << index);
+		usedAttributes |= (1 << attributeOffset);
 
 		flags |= AttributesAltered;
 	}
 
+	void GraphicManager::onTexture(Texture* texture, Image* image) {
+		texture->handle = createTexture2D();
+
+		TextureFormat format = image->getDepth() == 3 ? TextureFormat::RGB8 : TextureFormat::RGBA8;
+
+		setTextureData(texture->handle, image->getWidth(), image->getHeight(), image->getDepth(), format, image->getData());
+	}
+
+	void GraphicManager::onMaterial(Material* material) {
+	}
+
+	void GraphicManager::onEffect(Effect* effect) {
+		effect->finalizeInitialization();
+	}
+
+	void GraphicManager::onShader(Shader* shader) {
+	}
+
+	void GraphicManager::onModel(Model* model) {
+		model->uploadData(this);
+	}
+
+	int GraphicManager::createTexture2D() {
+		Tex tex;
+
+		tex.type = Texture2D;
+		tex.height = 0;
+		tex.width = 0;
+		tex.format = TextureFormat::NONE;
+
+		glGenTextures(1, &tex.texId);
+
+		return (int)textures0.add(tex);
+	}
+
+	void GraphicManager::destroyTexture(int handle) {
+		if(handle == 0) return;
+
+		Tex& tex = textures0.get(handle);
+		glDeleteTextures(1, &tex.texId);
+
+		textures0.remove(handle);
+	}
+
+	void GraphicManager::setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data) {
+		if(handle == 0) return;
+
+		Tex& tex = textures0.get(handle);
+
+		tex.width = width;
+		tex.height = height;
+		tex.depth = depth;
+		tex.format = format;
+
+		int textureUnit = 15;
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &textureUnit);
+
+		glActiveTexture(GL_TEXTURE0 + textureUnit);
+		glBindTexture(tex.type, tex.texId);
+
+		int pixelType = data == 0 ? GL_FLOAT : GL_UNSIGNED_BYTE;
+
+		int pixelFormat;
+		int internalFormat;
+
+		switch(depth) {
+			case 3:
+				pixelFormat = GL_RGB;
+				break;
+
+			case 4:
+				pixelFormat = GL_RGBA;
+				break;
+
+			default:
+				throw Exception("Unknow depth");
+		}
+
+		switch(format) {
+			case TextureFormat::RGB8:
+				internalFormat = GL_RGB;
+				break;
+
+			case TextureFormat::RGBA8:
+				internalFormat = GL_RGBA;
+				break;
+
+#ifndef ANDROID
+			case TextureFormat::RGBA16F:
+				pixelType = GL_FLOAT;
+				internalFormat = GL_RGBA16F;
+				break;
+
+			case TextureFormat::RGBA32F:
+				pixelType = GL_FLOAT;
+				internalFormat = GL_RGBA32F;
+				break;
+#endif
+
+			case TextureFormat::DEPTH:
+				break;
+
+			default:
+				throw Exception("Unknow format");
+		}
+
+		glTexParameteri(tex.type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(tex.type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(tex.type, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(tex.type, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(tex.type, 0, internalFormat, width, height, 0, pixelFormat, pixelType, data);
+
+		glBindTexture(tex.type, 0);
+	}
+
+	Buffer* GraphicManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
+		return new HardwareBuffer(count, bufferType, frequencyAccess, natureAccess);
+	}
 }  // namespace engine

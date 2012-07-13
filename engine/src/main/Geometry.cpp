@@ -15,16 +15,11 @@
 
 namespace engine {
 
-	Geometry::Geometry(ResourceId modelId, const AABoundingBox& aabbox, TransformationModifier* modifier) :
-		modelId(modelId), model(0), modifier(modifier), material(), boundingBoxDirty(false), aabbox(aabbox) {
+	Geometry::Geometry(Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier) :
+		model(model), modifier(modifier), boundingBoxDirty(false), aabbox(aabbox) {
 	}
 
 	Geometry::~Geometry() {
-		material.clear();
-	}
-
-	ResourceId Geometry::getMaterial(int index) const {
-		return material[index];
 	}
 
 	AABoundingBox Geometry::getNonTransformedBoundingBox() const {
@@ -75,8 +70,8 @@ namespace engine {
 		}
 	}
 
-	ResourceId Geometry::getModel() const {
-		return modelId;
+	Model* Geometry::getModel() const {
+		return model;
 	}
 
 	const math::Matrix4* Geometry::getBoneMatrix() const {
@@ -120,16 +115,7 @@ namespace engine {
 	}
 
 	void Geometry::notifyVisibility(ResourceManager& manager) {
-		if(model) return;
-
-		model = (Model*)manager.getResource(modelId);
-
 		if(model) {
-			material.resize(model->getMeshCount());
-			for(size_t i = 0; i < model->getMeshCount(); ++i) {
-				material[i] = manager.registerResource(model->getIndexMesh(i)->material, Material::TYPE);
-			}
-
 			global.resize(model->getAnimation().getBonesCount(), math::Matrix4::IDENTITY);
 		}
 	}
