@@ -125,6 +125,8 @@ static void printMemoryBlock(char* ptr, unsigned int nbytes, int maxRows) {
 
 		fprintf(stdout, "\n");
 
+		if(--maxRows <= 0) break;
+
 		i += y;
 	}
 }
