@@ -296,6 +296,8 @@ namespace engine {
 	}
 
 	Model::~Model() {
+		for(Mesh* mesh : meshes)
+			manager->unloadMaterial(mesh->material);
 	}
 
 	void Model::uploadData(GraphicManager* graphicManager) {

@@ -30,14 +30,18 @@ namespace engine {
 			int count;
 		};
 
-		std::map<std::string, ResourceEntry<Material>> scenes;
-		std::map<std::string, ResourceEntry<Material>> textures;
+		std::map<std::string, ResourceEntry<Scene>> scenes;
+		std::map<std::string, ResourceEntry<Texture>> textures;
 		std::map<std::string, ResourceEntry<Material>> materials;
-		std::map<std::string, ResourceEntry<Material>> effects;
-		std::map<std::string, ResourceEntry<Material>> shaders;
-		std::map<std::string, ResourceEntry<Material>> models;
+		std::map<std::string, ResourceEntry<Effect>> effects;
+		std::map<std::string, ResourceEntry<Shader>> shaders;
+		std::map<std::string, ResourceEntry<Model>> models;
 
-		void unloadResource(Resource* resource, std::map<std::string, ResourceEntry<Material>>& resources);
+		template<typename T>
+		T* loadResource(const std::string& resourceName, std::map<std::string, ResourceEntry<T>>& resources, const std::function<T*(const std::string&)>& callback);
+
+		template<typename T>
+		void unloadResource(Resource* resource, std::map<std::string, ResourceEntry<T>>& resources);
 	public:
 		ResourceManager();
 		~ResourceManager();

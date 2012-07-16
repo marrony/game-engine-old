@@ -33,7 +33,7 @@ namespace engine {
 			indexBuffer->bind();
 
 			for(size_t i = 0; i < model->getMeshCount(); i++) {
-				Mesh* indexMesh = model->getIndexMesh(i);
+				Mesh* indexMesh = model->getMesh(i);
 
 				Material* material = indexMesh->material;
 

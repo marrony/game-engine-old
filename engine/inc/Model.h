@@ -234,7 +234,7 @@ namespace engine {
 
 		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags);
 
-		Mesh* getIndexMesh(size_t index) {
+		Mesh* getMesh(size_t index) {
 			return meshes[index];
 		}
 
