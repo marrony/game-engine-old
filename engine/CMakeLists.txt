@@ -58,6 +58,7 @@ set(ENGINE_COMMON_SRC
 	src/main/EventManager.cpp
 	
 	src/main/Terrain.cpp
+	src/main/File.cpp
 	
 	src/main/grammar/Grammar.cpp
 	src/main/grammar/Tokenizer.cpp

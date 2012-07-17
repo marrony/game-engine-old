@@ -177,9 +177,6 @@ public:
 		ResourceBinStream resourceStream(fileStream);
 		TextureUtils::write(resourceStream, *manager, texture);
 	}
-
-	virtual void destroyResource(engine::Resource* resource) {
-	}
 };
 
 static Module* dynamicLib;

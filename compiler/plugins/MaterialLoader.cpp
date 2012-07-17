@@ -21,17 +21,14 @@ using namespace engine;
 using namespace compiler;
 
 class MaterialLoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
 	ResourceManager* manager;
 public:
 	MaterialLoader() :
-			resources(), compiler(0) {
+			compiler(0) {
 	}
 
 	virtual ~MaterialLoader() {
-		for(size_t i = 0; i < resources.size(); i++)
-			delete resources[i];
 	}
 
 	virtual void release() {
@@ -92,15 +89,6 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 		MaterialUtils::write(resourceStream, *manager, material);
-	}
-
-	virtual void destroyResource(engine::Resource* resource) {
-		std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-		if(ite != resources.end()) {
-			resources.erase(ite);
-			delete resource;
-		}
 	}
 };
 

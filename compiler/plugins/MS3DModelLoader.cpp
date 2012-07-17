@@ -22,15 +22,12 @@ using namespace engine;
 using namespace compiler;
 
 class MS3DModelLoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
 public:
 	MS3DModelLoader() {
 	}
 
 	virtual ~MS3DModelLoader() {
-		for(size_t i = 0; i < resources.size(); i++)
-			delete resources[i];
 	}
 
 	virtual void release() {
@@ -167,17 +164,6 @@ public:
 			}
 
 			model->getAnimation().updateBones();
-		}
-
-		resources.push_back(model);
-	}
-
-	virtual void destroyResource(Resource* resource) {
-		std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-		if(ite != resources.end()) {
-			resources.erase(ite);
-			delete resource;
 		}
 	}
 };

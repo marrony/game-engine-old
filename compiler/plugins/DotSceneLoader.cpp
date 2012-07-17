@@ -20,8 +20,6 @@ DotSceneLoader::DotSceneLoader() :
 }
 
 DotSceneLoader::~DotSceneLoader() {
-	for(size_t i = 0; i < resources.size(); i++)
-		delete resources[i];
 }
 
 void DotSceneLoader::release() {
@@ -61,20 +59,14 @@ void DotSceneLoader::compileResource(const char* fileName, std::map<std::string,
 
 		scene->createSceneTree();
 
-		resources.push_back(scene);
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".scene";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		SceneUtils::write(resourceStream, *manager, scene);
 	} catch(...) {
-		if(scene)
-			delete scene;
 	}
-}
 
-void DotSceneLoader::destroyResource(Resource* resource) {
-	std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-	if(ite != resources.end()) {
-		resources.erase(ite);
-		delete resource;
-	}
+	delete scene;
 }
 
 void DotSceneLoader::processScene(TiXmlElement* xmlRoot) {

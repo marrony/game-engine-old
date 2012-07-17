@@ -21,13 +21,10 @@ using namespace engine;
 using namespace compiler;
 
 class EffectLoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
 	ResourceManager* manager;
 public:
 	virtual ~EffectLoader() {
-		for(size_t i = 0; i < resources.size(); i++)
-			delete resources[i];
 	}
 
 	virtual void release() {
@@ -115,15 +112,6 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 		EffectUtils::write(resourceStream, *manager, effect);
-	}
-
-	virtual void destroyResource(engine::Resource* resource) {
-		std::vector<Resource*>::iterator ite = std::find(resources.begin(), resources.end(), resource);
-
-		if(ite != resources.end()) {
-			resources.erase(ite);
-			delete resource;
-		}
 	}
 };
 

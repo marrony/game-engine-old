@@ -24,7 +24,6 @@ namespace compiler {
 		virtual void initialize(ResourceCompiler* compiler, class engine::ResourceManager* manager) = 0;
 
 		virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) = 0;
-		virtual void destroyResource(engine::Resource* resource) = 0;
 	};
 
 }  // namespace compiler

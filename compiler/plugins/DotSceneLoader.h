@@ -23,7 +23,6 @@ using namespace engine;
 using namespace compiler;
 
 class DotSceneLoader : public ResourceLoader {
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
 	ResourceManager* manager;
 	Scene* scene;
@@ -35,7 +34,6 @@ public:
 	void release();
 	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager);
 	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options);
-	virtual void destroyResource(Resource* resource);
 protected:
 	std::vector<std::string> staticObjects;
 	std::vector<std::string> dynamicObjects;

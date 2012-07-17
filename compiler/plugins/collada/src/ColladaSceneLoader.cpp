@@ -143,9 +143,6 @@ public:
 			throw;
 		}
 	}
-
-	virtual void destroyResource(engine::Resource* resource) {
-	}
 };
 
 static Module* dynamicLib;
