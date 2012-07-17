@@ -24,11 +24,18 @@ namespace engine {
 	}
 
 	Scene* ResourceManager::loadScene(const std::string& sceneName) {
-		FileStream fileStream("resources/scene/" + sceneName + ".scene");
-		ResourceBinStream resourceStream(fileStream);
-		Scene* scene = (Scene*)SceneUtils::read(resourceStream, *this, 0);
+		std::function<Scene*(const std::string&)> callback = [&](const std::string& sceneName) {
+			FileStream fileStream("resources/scene/" + sceneName + ".scene");
+			ResourceBinStream resourceStream(fileStream);
+			Scene* scene = (Scene*)SceneUtils::read(resourceStream, *this, 0);
 
-		return scene;
+//			for(ResourceListener* listener : listeners)
+//				listener->onScene(scene);
+
+			return scene;
+		};
+
+		return loadResource(sceneName, scenes, callback);
 	}
 
 	void ResourceManager::unloadScene(Scene* scene) {
