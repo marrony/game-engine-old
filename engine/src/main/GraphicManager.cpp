@@ -388,7 +388,10 @@ namespace engine {
 		flags |= AttributesAltered;
 	}
 
-	void GraphicManager::onTexture(Texture* texture, Image* image) {
+	void GraphicManager::onSceneLoaded(Scene* scene) {
+	}
+
+	void GraphicManager::onTextureLoaded(Texture* texture, Image* image) {
 		texture->handle = createTexture2D();
 
 		TextureFormat format = image->getDepth() == 3 ? TextureFormat::RGB8 : TextureFormat::RGBA8;
@@ -396,19 +399,26 @@ namespace engine {
 		setTextureData(texture->handle, image->getWidth(), image->getHeight(), image->getDepth(), format, image->getData());
 	}
 
-	void GraphicManager::onMaterial(Material* material) {
+	void GraphicManager::onMaterialLoaded(Material* material) {
 	}
 
-	void GraphicManager::onEffect(Effect* effect) {
+	void GraphicManager::onEffectLoaded(Effect* effect) {
 		effect->finalizeInitialization();
 	}
 
-	void GraphicManager::onShader(Shader* shader) {
+	void GraphicManager::onShaderLoaded(Shader* shader) {
 	}
 
-	void GraphicManager::onModel(Model* model) {
+	void GraphicManager::onModelLoaded(Model* model) {
 		model->uploadData(this);
 	}
+
+	void GraphicManager::onSceneUnloaded(Scene* scene) {}
+	void GraphicManager::onTextureUnloaded(Texture* texture) {}
+	void GraphicManager::onMaterialUnloaded(Material* material) {}
+	void GraphicManager::onEffectUnloaded(Effect* effect) {}
+	void GraphicManager::onShaderUnloaded(Shader* shader) {}
+	void GraphicManager::onModelUnloaded(Model* model) {}
 
 	int GraphicManager::createTexture2D() {
 		Tex tex;

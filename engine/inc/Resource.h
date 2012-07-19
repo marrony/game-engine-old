@@ -146,19 +146,22 @@ namespace engine {
 		virtual void readArray(const char* label, float* array, size_t count);
 	};
 
-	typedef std::function<void*(ResourceStream&, class ResourceManager&, void*)> ResourceReader;
-	typedef std::function<void(ResourceStream&, class ResourceManager&, void*)> ResourceWriter;
-	typedef std::function<void*(const char*)> ResourceFactory;
-
-
 	struct ResourceListener {
 		virtual ~ResourceListener() {}
 
-		virtual void onTexture(class Texture* texture, class Image* image) = 0;
-		virtual void onMaterial(class Material* material) = 0;
-		virtual void onEffect(class Effect* effect) = 0;
-		virtual void onShader(class Shader* shader) = 0;
-		virtual void onModel(class Model* model) = 0;
+		virtual void onSceneLoaded(class Scene* scene) = 0;
+		virtual void onTextureLoaded(class Texture* texture, class Image* image) = 0;
+		virtual void onMaterialLoaded(class Material* material) = 0;
+		virtual void onEffectLoaded(class Effect* effect) = 0;
+		virtual void onShaderLoaded(class Shader* shader) = 0;
+		virtual void onModelLoaded(class Model* model) = 0;
+
+		virtual void onSceneUnloaded(class Scene* scene) = 0;
+		virtual void onTextureUnloaded(class Texture* texture) = 0;
+		virtual void onMaterialUnloaded(class Material* material) = 0;
+		virtual void onEffectUnloaded(class Effect* effect) = 0;
+		virtual void onShaderUnloaded(class Shader* shader) = 0;
+		virtual void onModelUnloaded(class Model* model) = 0;
 	};
 
 } // namespace engine

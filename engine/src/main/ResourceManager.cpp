@@ -29,8 +29,8 @@ namespace engine {
 			ResourceBinStream resourceStream(fileStream);
 			Scene* scene = (Scene*)SceneUtils::read(resourceStream, *this, 0);
 
-//			for(ResourceListener* listener : listeners)
-//				listener->onScene(scene);
+			for(ResourceListener* listener : listeners)
+				listener->onSceneLoaded(scene);
 
 			return scene;
 		};
@@ -51,8 +51,8 @@ namespace engine {
 
 			Image* image = (Image*)TextureUtils::read(resourceStream, *this, 0);
 
-			for(auto listener : listeners)
-				listener->onTexture(texture, image);
+			for(ResourceListener* listener : listeners)
+				listener->onTextureLoaded(texture, image);
 
 			delete image;
 
@@ -74,7 +74,7 @@ namespace engine {
 			Material* material = (Material*)MaterialUtils::read(resourceStream, *this, 0);
 
 			for(ResourceListener* listener : listeners)
-				listener->onMaterial(material);
+				listener->onMaterialLoaded(material);
 
 			return material;
 		};
@@ -92,8 +92,8 @@ namespace engine {
 			ResourceBinStream resourceStream(fileStream);
 			Effect* effect = (Effect*)EffectUtils::read(resourceStream, *this, 0);
 
-			for(auto listener : listeners)
-				listener->onEffect(effect);
+			for(ResourceListener* listener : listeners)
+				listener->onEffectLoaded(effect);
 
 			return effect;
 		};
@@ -119,8 +119,8 @@ namespace engine {
 			ResourceBinStream resourceStream(fileStream);
 			Model* model = (Model*) ModelUtils::read(resourceStream, *this, 0);
 
-			for(auto listener : listeners)
-				listener->onModel(model);
+			for(ResourceListener* listener : listeners)
+				listener->onModelLoaded(model);
 
 			return model;
 		};
@@ -137,6 +137,10 @@ namespace engine {
 	}
 
 	void ResourceManager::removeListener(ResourceListener* listener) {
+		auto ite = std::find(listeners.begin(), listeners.end(), listener);
+
+		if(ite != listeners.end())
+			listeners.erase(ite);
 	}
 
 	template<typename T>
@@ -158,7 +162,7 @@ namespace engine {
 	}
 
 	template<typename T>
-	void ResourceManager::unloadResource(Resource* resource, std::map<std::string, ResourceEntry<T>>& resources) {
+	void ResourceManager::unloadResource(T* resource, std::map<std::string, ResourceEntry<T>>& resources) {
 		std::string resourceName = resource->getName();
 
 		auto entry = resources.find(resourceName);

@@ -41,7 +41,7 @@ namespace engine {
 		T* loadResource(const std::string& resourceName, std::map<std::string, ResourceEntry<T>>& resources, const std::function<T*(const std::string&)>& callback);
 
 		template<typename T>
-		void unloadResource(Resource* resource, std::map<std::string, ResourceEntry<T>>& resources);
+		void unloadResource(T* resource, std::map<std::string, ResourceEntry<T>>& resources);
 	public:
 		ResourceManager();
 		~ResourceManager();
