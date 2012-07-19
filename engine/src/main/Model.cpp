@@ -415,6 +415,7 @@ namespace engine {
 
 		Model* model = new Model(name);
 
+		model->manager = &manager;
 		model->geometry = new Geo;
 
 		model->meshes = indicesMesh;

@@ -44,11 +44,11 @@ namespace engine {
 			return referenceCount == 0;
 		}
 
-		virtual void release() {
-			delete this;
+		virtual void postLoaded() {
 		}
 
-		virtual void postLoaded() {
+		class ResourceManager* getManager() {
+			return manager;
 		}
 	protected:
 		Resource(const std::string& name) :

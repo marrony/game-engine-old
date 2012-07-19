@@ -167,9 +167,9 @@ namespace engine {
 
 		if(--entry->second.count > 0) return;
 
-		resources.erase(entry);
-
 		delete entry->second.resource;
+
+		resources.erase(entry);
 	}
 
 } /* namespace engine */

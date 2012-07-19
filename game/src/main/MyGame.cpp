@@ -132,6 +132,8 @@ void MyGame::create(Application& app) {
 }
 
 void MyGame::destroy() {
+	application->getResourceManager().unloadScene(scene);
+
 	delete renderer;
 }
 
