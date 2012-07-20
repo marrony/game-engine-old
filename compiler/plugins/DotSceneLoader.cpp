@@ -582,7 +582,7 @@ void DotSceneLoader::processEntity(TiXmlElement *xmlNode, Node *parent) {
 		options["geometry-name"] = file::getFilename(meshFile);
 
 		compiler->compile(meshFile.c_str(), options);
-		Model* model = manager->loadModel(file::getFilename(meshFile));
+		Model* model = (Model*)manager->loadResource(ModelKey(file::getFilename(meshFile)));
 
 		Geometry* entity = scene->createGeometry(model, model->getBoundingBox(), parent);
 	} catch(Exception &/*e*/) {

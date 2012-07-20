@@ -274,6 +274,21 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
+	struct ModelEvent : public ResourceEvent {
+		Model* model;
+	};
+
+	class ModelKey : public ResourceKey {
+	public:
+		ModelKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "model/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
+	};
+
 } /* namespace engine */
 
 #endif /* MODEL_H_ */

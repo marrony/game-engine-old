@@ -147,6 +147,21 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
+	struct EffectEvent : public ResourceEvent {
+		Effect* effect;
+	};
+
+	class EffectKey : public ResourceKey {
+	public:
+		EffectKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "effect/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
+	};
+
 	class Material : public Resource {
 	public:
 		Material(const std::string& name, Effect* effect);
@@ -177,6 +192,21 @@ namespace engine {
 	struct MaterialUtils {
 		static void* read(ResourceStream&, class ResourceManager&, void*);
 		static void write(ResourceStream&, class ResourceManager&, void*);
+	};
+
+	struct MaterialEvent : public ResourceEvent {
+		Material* material;
+	};
+
+	class MaterialKey : public ResourceKey {
+	public:
+		MaterialKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "material/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
 	};
 
 }  // namespace engine

@@ -97,7 +97,7 @@ void MyGame::create(Application& app) {
 	Node* node;
 	Geometry* geometry;
 
-	scene = application->getResourceManager().loadScene("large-scene");
+	scene = (Scene*)application->getResourceManager().loadResource(SceneKey("large-scene"));
 
 //	ResourceId modelId = application->getResourceManager().registerResource("duck_triangulate", Model::TYPE);
 //	Model* model = (Model*)application->getResourceManager().getResource(modelId);
@@ -132,7 +132,7 @@ void MyGame::create(Application& app) {
 }
 
 void MyGame::destroy() {
-	application->getResourceManager().unloadScene(scene);
+	application->getResourceManager().unloadResource(scene);
 
 	delete renderer;
 }

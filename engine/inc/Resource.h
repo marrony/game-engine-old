@@ -149,19 +149,35 @@ namespace engine {
 	struct ResourceListener {
 		virtual ~ResourceListener() {}
 
-		virtual void onSceneLoaded(class Scene* scene) = 0;
-		virtual void onTextureLoaded(class Texture* texture, class Image* image) = 0;
-		virtual void onMaterialLoaded(class Material* material) = 0;
-		virtual void onEffectLoaded(class Effect* effect) = 0;
-		virtual void onShaderLoaded(class Shader* shader) = 0;
-		virtual void onModelLoaded(class Model* model) = 0;
+		virtual void onResourceLoaded(const class ResourceEvent& event) = 0;
+		virtual void onResourceUnloaded(const class ResourceEvent& event) = 0;
+	};
 
-		virtual void onSceneUnloaded(class Scene* scene) = 0;
-		virtual void onTextureUnloaded(class Texture* texture) = 0;
-		virtual void onMaterialUnloaded(class Material* material) = 0;
-		virtual void onEffectUnloaded(class Effect* effect) = 0;
-		virtual void onShaderUnloaded(class Shader* shader) = 0;
-		virtual void onModelUnloaded(class Model* model) = 0;
+	struct ResourceEvent {
+		std::string type;
+	};
+
+	class ResourceKey {
+		std::string name;
+	public:
+		ResourceKey(const std::string& name) {
+			size_t index = name.find('/');
+
+			if(index != std::string::npos)
+				this->name = name.substr(index + 1);
+			else
+				this->name = name;
+		}
+
+		virtual ~ResourceKey() {}
+
+		virtual std::string getName() const {
+			return name;
+		}
+
+		virtual std::string getKeyName() const = 0;
+
+		virtual Resource* loadResource(class ResourceManager& manager) const = 0;
 	};
 
 } // namespace engine

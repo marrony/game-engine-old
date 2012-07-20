@@ -49,6 +49,22 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
+	struct TextureEvent : public ResourceEvent {
+		Texture* texture;
+		Image* image;
+	};
+
+	class TextureKey : public ResourceKey {
+	public:
+		TextureKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "texture/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
+	};
+
 }  // namespace engine
 
 #endif /* TEXTURE_H_ */

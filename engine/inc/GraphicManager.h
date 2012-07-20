@@ -172,19 +172,8 @@ namespace engine {
 			TextureCube = GL_TEXTURE_CUBE_MAP
 		};
 
-		virtual void onSceneLoaded(class Scene* scene);
-		virtual void onTextureLoaded(class Texture* texture, class Image* image);
-		virtual void onMaterialLoaded(class Material* material);
-		virtual void onEffectLoaded(class Effect* effect);
-		virtual void onShaderLoaded(class Shader* shader);
-		virtual void onModelLoaded(class Model* model);
-
-		virtual void onSceneUnloaded(class Scene* scene);
-		virtual void onTextureUnloaded(class Texture* texture);
-		virtual void onMaterialUnloaded(class Material* material);
-		virtual void onEffectUnloaded(class Effect* effect);
-		virtual void onShaderUnloaded(class Shader* shader);
-		virtual void onModelUnloaded(class Model* model);
+		virtual void onResourceLoaded(const ResourceEvent& event);
+		virtual void onResourceUnloaded(const ResourceEvent& event);
 
 		struct Tex {
 			unsigned int texId;

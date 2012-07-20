@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Image.h"
 #include "HardwareTexture.h"
+#include "ResourceManager.h"
 #include "Exception.h"
 
 #include <fstream>
@@ -60,4 +61,27 @@ namespace engine {
 
 		stream.popGroup();
 	}
+
+	Resource* TextureKey::loadResource(ResourceManager& manager) const {
+		std::string textureName = getName();
+
+		Texture* texture = new Texture("texture/" + textureName);
+
+		FileStream fileStream("resources/images/" + textureName + ".texture");
+		ResourceBinStream resourceStream(fileStream);
+
+		Image* image = (Image*)TextureUtils::read(resourceStream, manager, 0);
+
+		TextureEvent event;
+		event.type = "texture";
+		event.image = image;
+		event.texture = texture;
+
+		manager.dispatchLoadedEvent(event);
+
+		delete image;
+
+		return texture;
+	}
+
 } // namespace engine

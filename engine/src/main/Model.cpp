@@ -297,7 +297,7 @@ namespace engine {
 
 	Model::~Model() {
 		for(Mesh* mesh : meshes)
-			manager->unloadMaterial(mesh->material);
+			manager->unloadResource(mesh->material);
 	}
 
 	void Model::uploadData(GraphicManager* graphicManager) {
@@ -365,7 +365,7 @@ namespace engine {
 			indexMesh->count = stream.readShort("count");
 			indexMesh->start = stream.readShort("start");
 			indexMesh->end = stream.readShort("end");
-			indexMesh->material = manager.loadMaterial(stream.readString("material"));
+			indexMesh->material = (Material*)manager.loadResource(MaterialKey(stream.readString("material")));
 
 			stream.popGroup();
 		}
@@ -413,7 +413,7 @@ namespace engine {
 
 		stream.popGroup();
 
-		Model* model = new Model(name);
+		Model* model = new Model(type + "/" + name);
 
 		model->manager = &manager;
 		model->geometry = new Geo;
@@ -546,6 +546,22 @@ namespace engine {
 		stream.writeInt("totalFrames", model->animation.totalFrames);
 
 		stream.popGroup();
+	}
+
+	Resource* ModelKey::loadResource(class ResourceManager& manager) const {
+		std::string modelName = getName();
+
+		FileStream fileStream("resources/scene/" + modelName + ".model");
+		ResourceBinStream resourceStream(fileStream);
+		Model* model = (Model*) ModelUtils::read(resourceStream, manager, 0);
+
+		ModelEvent event;
+		event.type = "model";
+		event.model = model;
+
+		manager.dispatchLoadedEvent(event);
+
+		return model;
 	}
 
 } /* namespace engine */

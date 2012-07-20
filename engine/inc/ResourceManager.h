@@ -9,10 +9,6 @@
 #define RESOURCEMANAGER_H_
 
 #include "Resource.h"
-#include "Texture.h"
-#include "Material.h"
-#include "Model.h"
-#include "Scene.h"
 
 #include <map>
 #include <vector>
@@ -24,45 +20,21 @@ namespace engine {
 	class ResourceManager {
 		std::vector<ResourceListener*> listeners;
 
-		template<typename T>
 		struct ResourceEntry {
-			T* resource;
+			Resource* resource;
 			int count;
 		};
 
-		std::map<std::string, ResourceEntry<Scene>> scenes;
-		std::map<std::string, ResourceEntry<Texture>> textures;
-		std::map<std::string, ResourceEntry<Material>> materials;
-		std::map<std::string, ResourceEntry<Effect>> effects;
-		std::map<std::string, ResourceEntry<Shader>> shaders;
-		std::map<std::string, ResourceEntry<Model>> models;
-
-		template<typename T>
-		T* loadResource(const std::string& resourceName, std::map<std::string, ResourceEntry<T>>& resources, const std::function<T*(const std::string&)>& callback);
-
-		template<typename T>
-		void unloadResource(T* resource, std::map<std::string, ResourceEntry<T>>& resources);
+		std::map<std::string, ResourceEntry> resources;
 	public:
 		ResourceManager();
 		~ResourceManager();
 
-		Scene* loadScene(const std::string& sceneName);
-		void unloadScene(Scene* scene);
+		Resource* loadResource(const ResourceKey& key);
+		void unloadResource(Resource* resource);
 
-		Texture* loadTexture(const std::string& textureName);
-		void unloadTexture(Texture* texture);
-
-		Material* loadMaterial(const std::string& materialName);
-		void unloadMaterial(Material* material);
-
-		Effect* loadEffect(const std::string& effectName);
-		void unloadEffect(Effect* effect);
-
-		Shader* loadShader(const std::string& shaderName);
-		void unloadShader(Shader* shader);
-
-		Model* loadModel(const std::string& modelName);
-		void unloadModel(Model* model);
+		void dispatchLoadedEvent(const ResourceEvent& event);
+		void dispatchUnloadedEvent(const ResourceEvent& event);
 
 		void addListener(ResourceListener* listener);
 		void removeListener(ResourceListener* listener);

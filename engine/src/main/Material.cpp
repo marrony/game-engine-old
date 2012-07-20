@@ -182,10 +182,10 @@ namespace engine {
 	}
 
 	Material::~Material() {
-		manager->unloadEffect(effect);
+		manager->unloadResource(effect);
 
 		for(auto sampler : samplers)
-			manager->unloadTexture(sampler.second);
+			manager->unloadResource(sampler.second);
 	}
 
 	void Material::addSampler(const std::string& samplerName, Texture* sampler) {
@@ -225,7 +225,7 @@ namespace engine {
 		Source* vss = new Source(vs);
 		Source* fss = new Source(fs);
 
-		Effect* effect = new Effect(name);
+		Effect* effect = new Effect(type + "/" + name);
 
 		effect->manager = &manager;
 		effect->shader = new Shader(vss, fss, 0);
@@ -298,15 +298,36 @@ namespace engine {
 		stream.popGroup();
 	}
 
+	Resource* EffectKey::loadResource(class ResourceManager& manager) const {
+		std::string effectName = getName();
+
+		FileStream fileStream("resources/materials/" + effectName + ".effect");
+		ResourceBinStream resourceStream(fileStream);
+		Effect* effect = (Effect*)EffectUtils::read(resourceStream, manager, 0);
+
+		EffectEvent event;
+		event.type = "effect";
+		event.effect = effect;
+
+		manager.dispatchLoadedEvent(event);
+
+		return effect;
+	}
+
 	void* MaterialUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("material");
 
-		if(stream.readString("type") != "material")
+		std::string type = stream.readString("type");
+		std::string name = stream.readString("name");
+
+		if(type != "material")
 			throw Exception("Resource is not a material");
 
-		Material* material = new Material(stream.readString("name"), 0);
+		Material* material = new Material(type + "/" + name, 0);
 		material->manager = &manager;
-		material->effect = manager.loadEffect(stream.readString("effectName"));
+
+		std::string effectName = stream.readString("effectName");
+		material->effect = (Effect*) manager.loadResource(EffectKey(effectName));
 
 		int texCount = stream.readInt("textureCount");
 		for(int i = 0; i < texCount; i++) {
@@ -317,7 +338,7 @@ namespace engine {
 
 			stream.popGroup();
 
-			Texture* texture = manager.loadTexture(resourceName);
+			Texture* texture = (Texture*)manager.loadResource(TextureKey(resourceName));
 			material->samplers.insert(std::make_pair(textureName, texture));
 		}
 
@@ -346,6 +367,23 @@ namespace engine {
 
 			stream.popGroup();
 		}
+	}
+
+	Resource* MaterialKey::loadResource(ResourceManager& manager) const {
+		std::string materialName = getName();
+
+		FileStream fileStream("resources/materials/" + materialName + ".material");
+		ResourceBinStream resourceStream(fileStream);
+
+		Material* material = (Material*)MaterialUtils::read(resourceStream, manager, 0);
+
+		MaterialEvent event;
+		event.type = "material";
+		event.material = material;
+
+		manager.dispatchLoadedEvent(event);
+
+		return material;
 	}
 
 }  // namespace engine

@@ -81,6 +81,21 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
+	struct SceneEvent : public ResourceEvent {
+		Scene* scene;
+	};
+
+	class SceneKey : public ResourceKey {
+	public:
+		SceneKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "scene/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
+	};
+
 } /* namespace engine */
 
 #endif /* SCENE_H_ */

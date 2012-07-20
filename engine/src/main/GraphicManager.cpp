@@ -388,37 +388,31 @@ namespace engine {
 		flags |= AttributesAltered;
 	}
 
-	void GraphicManager::onSceneLoaded(Scene* scene) {
+	void GraphicManager::onResourceLoaded(const ResourceEvent& event) {
+		if(event.type == "texture") {
+			const TextureEvent& textureEvent = static_cast<const TextureEvent&>(event);
+
+			Texture* texture = textureEvent.texture;
+			Image* image = textureEvent.image;
+
+			texture->handle = createTexture2D();
+
+			TextureFormat format = image->getDepth() == 3 ? TextureFormat::RGB8 : TextureFormat::RGBA8;
+
+			setTextureData(texture->handle, image->getWidth(), image->getHeight(), image->getDepth(), format, image->getData());
+		} else if(event.type == "effect") {
+			const EffectEvent& effectEvent = static_cast<const EffectEvent&>(event);
+
+			effectEvent.effect->finalizeInitialization();
+		} else if(event.type == "model") {
+			const ModelEvent& modelEvent = static_cast<const ModelEvent&>(event);
+
+			modelEvent.model->uploadData(this);
+		}
 	}
 
-	void GraphicManager::onTextureLoaded(Texture* texture, Image* image) {
-		texture->handle = createTexture2D();
-
-		TextureFormat format = image->getDepth() == 3 ? TextureFormat::RGB8 : TextureFormat::RGBA8;
-
-		setTextureData(texture->handle, image->getWidth(), image->getHeight(), image->getDepth(), format, image->getData());
+	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
 	}
-
-	void GraphicManager::onMaterialLoaded(Material* material) {
-	}
-
-	void GraphicManager::onEffectLoaded(Effect* effect) {
-		effect->finalizeInitialization();
-	}
-
-	void GraphicManager::onShaderLoaded(Shader* shader) {
-	}
-
-	void GraphicManager::onModelLoaded(Model* model) {
-		model->uploadData(this);
-	}
-
-	void GraphicManager::onSceneUnloaded(Scene* scene) {}
-	void GraphicManager::onTextureUnloaded(Texture* texture) {}
-	void GraphicManager::onMaterialUnloaded(Material* material) {}
-	void GraphicManager::onEffectUnloaded(Effect* effect) {}
-	void GraphicManager::onShaderUnloaded(Shader* shader) {}
-	void GraphicManager::onModelUnloaded(Model* model) {}
 
 	int GraphicManager::createTexture2D() {
 		Tex tex;

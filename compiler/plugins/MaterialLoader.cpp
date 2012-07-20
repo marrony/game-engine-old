@@ -67,7 +67,7 @@ public:
 		std::string effectName = file::getFilename(effectSrc);
 
 		compiler->compile(effectSrc, options);
-		Effect* effect = manager->loadEffect(effectName);
+		Effect* effect = (Effect*)manager->loadResource(EffectKey(effectName));
 
 		Material* material = new Material(file::getFilename(fileName), effect);
 
@@ -79,7 +79,7 @@ public:
 
 			compiler->compile(textureSrc, options);
 
-			Texture* texture = manager->loadTexture(textureName);
+			Texture* texture = (Texture*)manager->loadResource(TextureKey(textureName));
 			material->addSampler(samplerName, texture);
 
 			xmlSampler = xmlSampler->NextSiblingElement("sampler");

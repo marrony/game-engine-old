@@ -226,7 +226,7 @@ namespace engine {
 		std::string name = stream.readString("name");
 
 		Scene* scene = new Scene;
-		scene->name = name;
+		scene->name = type + "/" + name;
 		scene->manager = &manager;
 
 		scene->nodes.resize(stream.readInt("nodesCount"));
@@ -262,7 +262,7 @@ namespace engine {
 
 			stream.pushGroup("geometry");
 
-			std::string model = stream.readString("model");
+			std::string modelName = stream.readString("model");
 			int nodeIndex = stream.readInt("modifier");
 			Node* node = nodeIndex != -1 ? scene->nodes[nodeIndex] : 0;
 
@@ -271,7 +271,8 @@ namespace engine {
 			stream.readArray("aabboxMin", min.vector, 3);
 			stream.readArray("aabboxMax", max.vector, 3);
 
-			Geometry* geometry = new Geometry(manager.loadModel(model), AABoundingBox(min, max), node);
+			Model* model = (Model*)manager.loadResource(ModelKey(modelName));
+			Geometry* geometry = new Geometry(model, AABoundingBox(min, max), node);
 
 			scene->geometries[i] = geometry;
 
@@ -423,6 +424,22 @@ namespace engine {
 
 			stream.popGroup();
 		}
+	}
+
+	Resource* SceneKey::loadResource(ResourceManager& manager) const {
+		std::string sceneName = getName();
+
+		FileStream fileStream("resources/scene/" + sceneName + ".scene");
+		ResourceBinStream resourceStream(fileStream);
+		Scene* scene = (Scene*)SceneUtils::read(resourceStream, manager, 0);
+
+		SceneEvent event;
+		event.type = "scene";
+		event.scene = scene;
+
+		manager.dispatchLoadedEvent(event);
+
+		return scene;
 	}
 
 } /* namespace engine */

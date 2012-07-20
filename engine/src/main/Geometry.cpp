@@ -20,7 +20,7 @@ namespace engine {
 	}
 
 	Geometry::~Geometry() {
-		model->getManager()->unloadModel(model);
+		model->getManager()->unloadResource(model);
 	}
 
 	AABoundingBox Geometry::getNonTransformedBoundingBox() const {

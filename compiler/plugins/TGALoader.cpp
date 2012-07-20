@@ -9,6 +9,7 @@
 #include "ResourceCompiler.h"
 #include "MemoryTexture.h"
 #include "Image.h"
+#include "Texture.h"
 #include "FileUtil.h"
 
 #include <fstream>

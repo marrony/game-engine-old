@@ -12,9 +12,6 @@
 #include "Image.h"
 #include "GraphicManager.h"
 
-#include <fstream>
-#include <string.h>
-
 namespace engine {
 
 	ResourceManager::ResourceManager() {
@@ -23,136 +20,17 @@ namespace engine {
 	ResourceManager::~ResourceManager() {
 	}
 
-	Scene* ResourceManager::loadScene(const std::string& sceneName) {
-		std::function<Scene*(const std::string&)> callback = [&](const std::string& sceneName) {
-			FileStream fileStream("resources/scene/" + sceneName + ".scene");
-			ResourceBinStream resourceStream(fileStream);
-			Scene* scene = (Scene*)SceneUtils::read(resourceStream, *this, 0);
+	Resource* ResourceManager::loadResource(const ResourceKey& key) {
+		std::string resourceName = key.getKeyName();
 
-			for(ResourceListener* listener : listeners)
-				listener->onSceneLoaded(scene);
-
-			return scene;
-		};
-
-		return loadResource(sceneName, scenes, callback);
-	}
-
-	void ResourceManager::unloadScene(Scene* scene) {
-		unloadResource(scene, scenes);
-	}
-
-	Texture* ResourceManager::loadTexture(const std::string& textureName) {
-		std::function<Texture*(const std::string&)> callback = [&](const std::string& textureName) {
-			Texture* texture = new Texture(textureName);
-
-			FileStream fileStream("resources/images/" + textureName + ".texture");
-			ResourceBinStream resourceStream(fileStream);
-
-			Image* image = (Image*)TextureUtils::read(resourceStream, *this, 0);
-
-			for(ResourceListener* listener : listeners)
-				listener->onTextureLoaded(texture, image);
-
-			delete image;
-
-			return texture;
-		};
-
-		return loadResource(textureName, textures, callback);
-	}
-
-	void ResourceManager::unloadTexture(Texture* texture) {
-		unloadResource(texture, textures);
-	}
-
-	Material* ResourceManager::loadMaterial(const std::string& materialName) {
-		std::function<Material*(const std::string&)> callback = [&](const std::string& materialName) {
-			FileStream fileStream("resources/materials/" + materialName + ".material");
-			ResourceBinStream resourceStream(fileStream);
-
-			Material* material = (Material*)MaterialUtils::read(resourceStream, *this, 0);
-
-			for(ResourceListener* listener : listeners)
-				listener->onMaterialLoaded(material);
-
-			return material;
-		};
-
-		return loadResource(materialName, materials, callback);
-	}
-
-	void ResourceManager::unloadMaterial(Material* material) {
-		unloadResource(material, materials);
-	}
-
-	Effect* ResourceManager::loadEffect(const std::string& effectName) {
-		std::function<Effect*(const std::string&)> callback = [&](const std::string& effectName) {
-			FileStream fileStream("resources/materials/" + effectName + ".effect");
-			ResourceBinStream resourceStream(fileStream);
-			Effect* effect = (Effect*)EffectUtils::read(resourceStream, *this, 0);
-
-			for(ResourceListener* listener : listeners)
-				listener->onEffectLoaded(effect);
-
-			return effect;
-		};
-
-		return loadResource(effectName, effects, callback);
-	}
-
-	void ResourceManager::unloadEffect(Effect* effect) {
-		unloadResource(effect, effects);
-	}
-
-	Shader* ResourceManager::loadShader(const std::string& shaderName) {
-		return 0;
-	}
-
-	void ResourceManager::unloadShader(Shader* shader) {
-		//unloadResource(shader, shaders);
-	}
-
-	Model* ResourceManager::loadModel(const std::string& modelName) {
-		std::function<Model*(const std::string&)> callback = [&](const std::string& modelName) {
-			FileStream fileStream("resources/scene/" + modelName + ".model");
-			ResourceBinStream resourceStream(fileStream);
-			Model* model = (Model*) ModelUtils::read(resourceStream, *this, 0);
-
-			for(ResourceListener* listener : listeners)
-				listener->onModelLoaded(model);
-
-			return model;
-		};
-
-		return loadResource(modelName, models, callback);
-	}
-
-	void ResourceManager::unloadModel(Model* model) {
-		unloadResource(model, models);
-	}
-
-	void ResourceManager::addListener(ResourceListener* listener) {
-		listeners.push_back(listener);
-	}
-
-	void ResourceManager::removeListener(ResourceListener* listener) {
-		auto ite = std::find(listeners.begin(), listeners.end(), listener);
-
-		if(ite != listeners.end())
-			listeners.erase(ite);
-	}
-
-	template<typename T>
-	T* ResourceManager::loadResource(const std::string& resourceName, std::map<std::string, ResourceEntry<T>>& resources, const std::function<T*(const std::string&)>& callback) {
 		auto entry = resources.find(resourceName);
 
-		T* resource;
+		Resource* resource;
 
 		if(entry != resources.end())
 			resource = entry->second.resource;
 		else {
-			resource = callback(resourceName);
+			resource = key.loadResource(*this);
 			entry = resources.insert({resourceName, {resource, 0}}).first;
 		}
 
@@ -161,8 +39,7 @@ namespace engine {
 		return resource;
 	}
 
-	template<typename T>
-	void ResourceManager::unloadResource(T* resource, std::map<std::string, ResourceEntry<T>>& resources) {
+	void ResourceManager::unloadResource(Resource* resource) {
 		std::string resourceName = resource->getName();
 
 		auto entry = resources.find(resourceName);
@@ -174,6 +51,27 @@ namespace engine {
 		delete entry->second.resource;
 
 		resources.erase(entry);
+	}
+
+	void ResourceManager::dispatchLoadedEvent(const ResourceEvent& event) {
+		for(ResourceListener* listener : listeners)
+			listener->onResourceLoaded(event);
+	}
+
+	void ResourceManager::dispatchUnloadedEvent(const ResourceEvent& event) {
+		for(ResourceListener* listener : listeners)
+			listener->onResourceUnloaded(event);
+	}
+
+	void ResourceManager::addListener(ResourceListener* listener) {
+		listeners.push_back(listener);
+	}
+
+	void ResourceManager::removeListener(ResourceListener* listener) {
+		auto ite = std::find(listeners.begin(), listeners.end(), listener);
+
+		if(ite != listeners.end())
+			listeners.erase(ite);
 	}
 
 } /* namespace engine */

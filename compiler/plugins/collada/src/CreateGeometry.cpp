@@ -177,7 +177,7 @@ void CreateGeometry::visit(ColladaPolyList* polylist) {
 			}
 		}
 
-		Material* material = manager->loadMaterial(polylist->getMaterial());
+		Material* material = (Material*)manager->loadResource(MaterialKey(polylist->getMaterial()));
 		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }
@@ -191,7 +191,7 @@ void CreateGeometry::visit(ColladaTriangles* triangles) {
 			vertexSoup.indices.push_back(index);
 		}
 
-		Material* material = manager->loadMaterial(triangles->getMaterial());
+		Material* material = (Material*)manager->loadResource(MaterialKey(triangles->getMaterial()));
 		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }
