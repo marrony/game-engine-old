@@ -7,7 +7,6 @@
 
 #include "Model.h"
 #include "Exception.h"
-#include "HardwareBuffer.h"
 #include "ResourceManager.h"
 #include "GraphicManager.h"
 
@@ -101,6 +100,10 @@ namespace engine {
 				geometry->weights[lastVertexCount + index] = vertexArray[index].weights;
 			}
 		}
+	}
+
+	Geo::Geo() :
+			vertexBuffer(0), indexBuffer(0) {
 	}
 
 	Geo::~Geo() {
