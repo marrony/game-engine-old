@@ -36,6 +36,7 @@ set(ENGINE_COMMON_SRC
 	
 	src/main/Shader.cpp
 	
+	src/main/Effect.cpp
 	src/main/Model.cpp
 	src/main/Geometry.cpp
 	src/main/SpatialLocation.cpp

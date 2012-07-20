@@ -8,7 +8,7 @@
 #include "ResourceCompiler.h"
 #include "Exception.h"
 #include "FileUtil.h"
-#include "Material.h"
+#include "Effect.h"
 #include "Shader.h"
 
 #include "tinyxml.h"

@@ -20,6 +20,7 @@
 #include "System.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Effect.h"
 
 namespace engine {
 

@@ -9,6 +9,7 @@
 #include "ResourceCompiler.h"
 #include "Exception.h"
 #include "Material.h"
+#include "Effect.h"
 #include "Texture.h"
 #include "FileUtil.h"
 #include "tinyxml.h"

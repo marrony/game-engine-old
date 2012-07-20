@@ -14,6 +14,7 @@
 #include "Buffer.h"
 #include "Bounding.h"
 #include "Material.h"
+#include "Effect.h"
 
 #include <vector>
 #include <string>
