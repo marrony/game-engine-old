@@ -184,9 +184,9 @@ namespace engine {
 		}
 	};
 
-	struct Geo {
-		Geo();
-		~Geo();
+	struct ModelData {
+		ModelData();
+		~ModelData();
 		void uploadData(class GraphicManager* graphicManager);
 		void calculateTangent();
 		void calculateNormal();
@@ -246,7 +246,7 @@ namespace engine {
 		}
 
 		AABoundingBox getBoundingBox() {
-			return geometry->aabbox;
+			return modelData->aabbox;
 		}
 
 		Animation& getAnimation() {
@@ -262,7 +262,7 @@ namespace engine {
 		static const Type TYPE;
 
 		std::vector<Mesh*> meshes;
-		Geo* geometry;
+		ModelData* modelData;
 	protected:
 
 	private:

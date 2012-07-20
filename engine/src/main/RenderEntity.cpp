@@ -25,8 +25,8 @@ namespace engine {
 	void RenderEntity::render(GraphicManager* graphicManager, Geometry* geometry, Frustum* frustum, Light* light, float objectId) {
 		Model* model = geometry->getModel();
 
-		Buffer *indexBuffer = model->geometry->indexBuffer;
-		Buffer *vertexBuffer = model->geometry->vertexBuffer;
+		Buffer *indexBuffer = model->modelData->indexBuffer;
+		Buffer *vertexBuffer = model->modelData->vertexBuffer;
 
 		if(indexBuffer->isOk() && vertexBuffer->isOk()) {
 			vertexBuffer->bind();

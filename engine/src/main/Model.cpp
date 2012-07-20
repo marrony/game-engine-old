@@ -16,14 +16,14 @@ namespace engine {
 	const Type Model::TYPE("model");
 
 	void Model::addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags) {
-		if(!geometry)
-			geometry = new Geo;
+		if(!modelData)
+			modelData = new ModelData;
 
 		Mesh* indexMesh = new Mesh;
 
-		size_t lastVertexCount = geometry->position.size();
+		size_t lastVertexCount = modelData->position.size();
 
-		indexMesh->offset = geometry->indices.size();
+		indexMesh->offset = modelData->indices.size();
 		indexMesh->count = newIndices.size();
 		indexMesh->start = lastVertexCount + *std::min_element(newIndices.begin(), newIndices.end());
 		indexMesh->end = lastVertexCount + *std::max_element(newIndices.begin(), newIndices.end());
@@ -32,86 +32,86 @@ namespace engine {
 		meshes.push_back(indexMesh);
 
 		for(size_t i = 0; i < newIndices.size(); i++) {
-			geometry->indices.push_back(lastVertexCount + newIndices[i]);
+			modelData->indices.push_back(lastVertexCount + newIndices[i]);
 		}
 
 		size_t vertexCount = lastVertexCount + vertexArray.size();
 
-		geometry->position.resize(vertexCount);
+		modelData->position.resize(vertexCount);
 		for(size_t i = 0; i < newIndices.size(); i++) {
 			size_t index = newIndices[i];
 
-			geometry->position[lastVertexCount + index] = vertexArray[index].position;
+			modelData->position[lastVertexCount + index] = vertexArray[index].position;
 		}
 
 		if(flags & MeshVertex::NORMAL) {
-			geometry->normal.resize(vertexCount);
+			modelData->normal.resize(vertexCount);
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->normal[lastVertexCount + index] = vertexArray[index].normal;
+				modelData->normal[lastVertexCount + index] = vertexArray[index].normal;
 			}
 		}
 
 		if(flags & MeshVertex::TEXTURE) {
-			geometry->texCoord.resize(vertexCount);
+			modelData->texCoord.resize(vertexCount);
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->texCoord[lastVertexCount + index] = vertexArray[index].texCoord;
+				modelData->texCoord[lastVertexCount + index] = vertexArray[index].texCoord;
 			}
 		}
 
 		if(flags & MeshVertex::sTANGENT) {
-			geometry->sTangent.resize(vertexCount);
+			modelData->sTangent.resize(vertexCount);
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->sTangent[lastVertexCount + index] = vertexArray[index].sTangent;
+				modelData->sTangent[lastVertexCount + index] = vertexArray[index].sTangent;
 			}
 		}
 
 		if(flags & MeshVertex::tTANGENT) {
-			geometry->tTangent.resize(vertexCount);
+			modelData->tTangent.resize(vertexCount);
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->tTangent[lastVertexCount + index] = vertexArray[index].tTangent;
+				modelData->tTangent[lastVertexCount + index] = vertexArray[index].tTangent;
 			}
 		}
 
 		if(flags & MeshVertex::COLOR) {
-			geometry->color.resize(vertexCount);
+			modelData->color.resize(vertexCount);
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->color[lastVertexCount + index] = vertexArray[index].color;
+				modelData->color[lastVertexCount + index] = vertexArray[index].color;
 			}
 		}
 
 		if(flags & MeshVertex::BONES) {
-			geometry->boneIds.resize(vertexCount);
-			geometry->weights.resize(vertexCount);
+			modelData->boneIds.resize(vertexCount);
+			modelData->weights.resize(vertexCount);
 
 			for(size_t i = 0; i < newIndices.size(); i++) {
 				size_t index = newIndices[i];
 
-				geometry->boneIds[lastVertexCount + index] = vertexArray[index].boneIds;
-				geometry->weights[lastVertexCount + index] = vertexArray[index].weights;
+				modelData->boneIds[lastVertexCount + index] = vertexArray[index].boneIds;
+				modelData->weights[lastVertexCount + index] = vertexArray[index].weights;
 			}
 		}
 	}
 
-	Geo::Geo() :
+	ModelData::ModelData() :
 			vertexBuffer(0), indexBuffer(0) {
 	}
 
-	Geo::~Geo() {
+	ModelData::~ModelData() {
 		delete vertexBuffer;
 		delete indexBuffer;
 	}
 
-	void Geo::uploadData(GraphicManager* graphicManager) {
+	void ModelData::uploadData(GraphicManager* graphicManager) {
 		elementsPerVertex = 3;
 
 		attributeOffsets[PositionOffset] = 0;
@@ -225,7 +225,7 @@ namespace engine {
 		vertexBuffer->unmap();
 	}
 
-	void Geo::calculateTangent() {
+	void ModelData::calculateTangent() {
 		if(texCoord.empty()) {
 			return;
 		}
@@ -255,7 +255,7 @@ namespace engine {
 		}
 	}
 
-	void Geo::preCalculateTangent() {
+	void ModelData::preCalculateTangent() {
 		for(size_t j = 0; j < indices.size(); j += 3) {
 			unsigned int i1 = indices[j+0];
 			unsigned int i2 = indices[j+1];
@@ -293,14 +293,14 @@ namespace engine {
 		}
 	}
 
-	void Geo::calculateNormal() {
+	void ModelData::calculateNormal() {
 		if(!normal.empty()) {
 			return;
 		}
 	}
 
 	Model::Model(const std::string& name) :
-			Resource(name), geometry(0) {
+			Resource(name), modelData(0) {
 	}
 
 	Model::~Model() {
@@ -308,11 +308,11 @@ namespace engine {
 			manager->unloadResource(mesh->material);
 			delete mesh;
 		}
-		delete geometry;
+		delete modelData;
 	}
 
 	void Model::uploadData(GraphicManager* graphicManager) {
-		geometry->uploadData(graphicManager);
+		modelData->uploadData(graphicManager);
 	}
 
 	void* ModelUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
@@ -427,18 +427,18 @@ namespace engine {
 		Model* model = new Model(type + "/" + name);
 
 		model->manager = &manager;
-		model->geometry = new Geo;
+		model->modelData = new ModelData;
 
 		model->meshes = indicesMesh;
-		model->geometry->position = position;
-		model->geometry->normal = normal;
-		model->geometry->color = color;
-		model->geometry->sTangent = sTangent;
-		model->geometry->tTangent = tTangent;
-		model->geometry->texCoord = texCoord;
-		model->geometry->boneIds = boneIds;
-		model->geometry->weights = weights;
-		model->geometry->indices = indices;
+		model->modelData->position = position;
+		model->modelData->normal = normal;
+		model->modelData->color = color;
+		model->modelData->sTangent = sTangent;
+		model->modelData->tTangent = tTangent;
+		model->modelData->texCoord = texCoord;
+		model->modelData->boneIds = boneIds;
+		model->modelData->weights = weights;
+		model->modelData->indices = indices;
 
 		model->animation.bones = bones;
 		model->animation.animationFps = animationFps;
@@ -447,16 +447,16 @@ namespace engine {
 
 		model->animation.updateBones();
 
-		model->geometry->bindPose.resize(model->animation.bones.size());
+		model->modelData->bindPose.resize(model->animation.bones.size());
 		for(size_t i = 0; i < model->animation.bones.size(); i++) {
 			Bone& bone = model->animation.bones[i];
 
-			model->geometry->bindPose[i] = bone.globalSkeleton.inverse();
-			model->geometry->bindPose[i] = math::Matrix4::IDENTITY;
+			model->modelData->bindPose[i] = bone.globalSkeleton.inverse();
+			model->modelData->bindPose[i] = math::Matrix4::IDENTITY;
 		}
 
-		model->geometry->calculateTangent();
-		model->geometry->calculateBoundingBox();
+		model->modelData->calculateTangent();
+		model->modelData->calculateBoundingBox();
 		//model->geometry->uploadData();
 
 		return model;
@@ -473,32 +473,32 @@ namespace engine {
 		stream.writeString("type", model->getType().getName());
 		stream.writeString("name", model->name);
 
-		stream.writeInt("vertexCount", model->geometry->position.size());
-		stream.writeArray("positionData", (float*)model->geometry->position.data(), model->geometry->position.size() * 3);
+		stream.writeInt("vertexCount", model->modelData->position.size());
+		stream.writeArray("positionData", (float*)model->modelData->position.data(), model->modelData->position.size() * 3);
 
-		stream.writeInt("vertexCount", model->geometry->normal.size());
-		stream.writeArray("normalData", (float*)model->geometry->normal.data(), model->geometry->normal.size() * 3);
+		stream.writeInt("vertexCount", model->modelData->normal.size());
+		stream.writeArray("normalData", (float*)model->modelData->normal.data(), model->modelData->normal.size() * 3);
 
-		stream.writeInt("vertexCount", model->geometry->sTangent.size());
-		stream.writeArray("sTangetData", (float*)model->geometry->sTangent.data(), model->geometry->sTangent.size() * 3);
+		stream.writeInt("vertexCount", model->modelData->sTangent.size());
+		stream.writeArray("sTangetData", (float*)model->modelData->sTangent.data(), model->modelData->sTangent.size() * 3);
 
-		stream.writeInt("vertexCount", model->geometry->tTangent.size());
-		stream.writeArray("tTangetData", (float*)model->geometry->tTangent.data(), model->geometry->tTangent.size() * 3);
+		stream.writeInt("vertexCount", model->modelData->tTangent.size());
+		stream.writeArray("tTangetData", (float*)model->modelData->tTangent.data(), model->modelData->tTangent.size() * 3);
 
-		stream.writeInt("vertexCount", model->geometry->color.size());
-		stream.writeArray("colorData", (float*)model->geometry->color.data(), model->geometry->color.size() * 3);
+		stream.writeInt("vertexCount", model->modelData->color.size());
+		stream.writeArray("colorData", (float*)model->modelData->color.data(), model->modelData->color.size() * 3);
 
-		stream.writeInt("vertexCount", model->geometry->texCoord.size());
-		stream.writeArray("texCoordData", (float*)model->geometry->texCoord.data(), model->geometry->texCoord.size() * 2);
+		stream.writeInt("vertexCount", model->modelData->texCoord.size());
+		stream.writeArray("texCoordData", (float*)model->modelData->texCoord.data(), model->modelData->texCoord.size() * 2);
 
-		stream.writeInt("vertexCount", model->geometry->boneIds.size());
-		stream.writeArray("boneIdsData", (float*)model->geometry->boneIds.data(), model->geometry->boneIds.size() * 4);
+		stream.writeInt("vertexCount", model->modelData->boneIds.size());
+		stream.writeArray("boneIdsData", (float*)model->modelData->boneIds.data(), model->modelData->boneIds.size() * 4);
 
-		stream.writeInt("vertexCount", model->geometry->weights.size());
-		stream.writeArray("weightsData", (float*)model->geometry->weights.data(), model->geometry->weights.size() * 4);
+		stream.writeInt("vertexCount", model->modelData->weights.size());
+		stream.writeArray("weightsData", (float*)model->modelData->weights.data(), model->modelData->weights.size() * 4);
 
-		stream.writeInt("indexCount", model->geometry->indices.size());
-		stream.writeArray("indexData", (short*)model->geometry->indices.data(), model->geometry->indices.size());
+		stream.writeInt("indexCount", model->modelData->indices.size());
+		stream.writeArray("indexData", (short*)model->modelData->indices.data(), model->modelData->indices.size());
 
 		stream.writeInt("indexMeshCount", model->meshes.size());
 		for(size_t i = 0; i < model->meshes.size(); i++) {

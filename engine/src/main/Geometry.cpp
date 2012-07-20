@@ -87,16 +87,16 @@ namespace engine {
 
 		aabbox.reset();
 
-		for(size_t i = 0; i < model->geometry->position.size(); i++) {
-			math::Vector3 myVertex = model->geometry->position[i];
+		for(size_t i = 0; i < model->modelData->position.size(); i++) {
+			math::Vector3 myVertex = model->modelData->position[i];
 
 			math::Vector3 position;
 
-			if(!model->geometry->boneIds.empty() && !model->geometry->weights.empty() && !global.empty()) {
+			if(!model->modelData->boneIds.empty() && !model->modelData->weights.empty() && !global.empty()) {
 				position = {0, 0, 0};
 
-				math::Vector4 myBoneIds = model->geometry->boneIds[i];
-				math::Vector4 myWeights = model->geometry->weights[i];
+				math::Vector4 myBoneIds = model->modelData->boneIds[i];
+				math::Vector4 myWeights = model->modelData->weights[i];
 
 				int boneId = int(myBoneIds.x);
 				if(boneId >= 0) {

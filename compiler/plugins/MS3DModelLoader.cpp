@@ -123,8 +123,8 @@ public:
 			model->addVertexData(vertices, indices, 0/*material->name*/, flags);
 		}
 
-		model->geometry->calculateTangent();
-		model->geometry->calculateBoundingBox();
+		model->modelData->calculateTangent();
+		model->modelData->calculateBoundingBox();
 
 		model->getAnimation().setFrameProperties(ms3d.GetAnimationFps(), ms3d.GetTotalFrames());
 

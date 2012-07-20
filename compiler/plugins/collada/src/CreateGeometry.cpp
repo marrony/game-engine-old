@@ -31,8 +31,8 @@ void CreateGeometry::visit(ColladaGeometry* geometry) {
 
 	mesh->accept(this);
 
-	model->geometry->calculateTangent();
-	model->geometry->calculateBoundingBox();
+	model->modelData->calculateTangent();
+	model->modelData->calculateBoundingBox();
 }
 
 void CreateGeometry::visit(ColladaMesh* mesh) {

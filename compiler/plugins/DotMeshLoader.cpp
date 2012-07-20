@@ -64,8 +64,8 @@ public:
 			processSubmeshes(model, xmlSubmeshes);
 		}
 
-		model->geometry->calculateTangent();
-		model->geometry->calculateBoundingBox();
+		model->modelData->calculateTangent();
+		model->modelData->calculateBoundingBox();
 	}
 
 	bool getAttribute(TiXmlElement* xmlElement, const char* attribute, bool valueDefault) {

@@ -162,7 +162,7 @@ namespace engine {
 				case Constants::BonePallete:
 					size_t bonesCount = context.model->getAnimation().getBonesCount();
 
-					if(!context.model->geometry->boneIds.empty() && !context.model->geometry->weights.empty() && bonesCount > 0) {
+					if(!context.model->modelData->boneIds.empty() && !context.model->modelData->weights.empty() && bonesCount > 0) {
 						cc->setValue(context.geometry->getBoneMatrix(), bonesCount);
 					} else {
 						cc->setValue(&math::Matrix4::IDENTITY, 1);
