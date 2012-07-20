@@ -8,20 +8,17 @@
 #ifndef RESOURCEMANAGER_H_
 #define RESOURCEMANAGER_H_
 
-#include "Resource.h"
-
 #include <map>
 #include <vector>
 #include <string>
-#include <functional>
 
 namespace engine {
 
 	class ResourceManager {
-		std::vector<ResourceListener*> listeners;
+		std::vector<class ResourceListener*> listeners;
 
 		struct ResourceEntry {
-			Resource* resource;
+			class Resource* resource;
 			int count;
 		};
 
@@ -30,14 +27,14 @@ namespace engine {
 		ResourceManager();
 		~ResourceManager();
 
-		Resource* loadResource(const ResourceKey& key);
-		void unloadResource(Resource* resource);
+		class Resource* loadResource(const class ResourceKey& key);
+		void unloadResource(class Resource* resource);
 
-		void dispatchLoadedEvent(const ResourceEvent& event);
-		void dispatchUnloadedEvent(const ResourceEvent& event);
+		void dispatchLoadedEvent(const class ResourceEvent& event);
+		void dispatchUnloadedEvent(const class ResourceEvent& event);
 
-		void addListener(ResourceListener* listener);
-		void removeListener(ResourceListener* listener);
+		void addListener(class ResourceListener* listener);
+		void removeListener(class ResourceListener* listener);
 	};
 
 } /* namespace engine */

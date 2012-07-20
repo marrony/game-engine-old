@@ -211,6 +211,7 @@ namespace engine {
 	}
 
 	Effect::~Effect() {
+		delete shader;
 	}
 
 	void* EffectUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {

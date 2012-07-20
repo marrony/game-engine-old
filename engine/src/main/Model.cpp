@@ -103,6 +103,11 @@ namespace engine {
 		}
 	}
 
+	Geo::~Geo() {
+		delete vertexBuffer;
+		delete indexBuffer;
+	}
+
 	void Geo::uploadData(GraphicManager* graphicManager) {
 		elementsPerVertex = 3;
 
@@ -296,8 +301,11 @@ namespace engine {
 	}
 
 	Model::~Model() {
-		for(Mesh* mesh : meshes)
+		for(Mesh* mesh : meshes) {
 			manager->unloadResource(mesh->material);
+			delete mesh;
+		}
+		delete geometry;
 	}
 
 	void Model::uploadData(GraphicManager* graphicManager) {

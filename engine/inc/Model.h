@@ -184,6 +184,7 @@ namespace engine {
 	};
 
 	struct Geo {
+		~Geo();
 		void uploadData(class GraphicManager* graphicManager);
 		void calculateTangent();
 		void calculateNormal();

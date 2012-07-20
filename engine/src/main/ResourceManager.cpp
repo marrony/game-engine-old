@@ -6,11 +6,9 @@
  */
 
 #include "ResourceManager.h"
-#include "GeneralHashFunction.h"
-#include "Exception.h"
-#include "FileUtil.h"
-#include "Image.h"
-#include "GraphicManager.h"
+#include "Resource.h"
+
+#include <algorithm>
 
 namespace engine {
 

@@ -83,31 +83,9 @@ void MyGame::create(Application& app) {
 
 	renderer = new SimpleRenderer(application->getResourceManager());
 
-//		getEventManager().registerHandler(Event1::type, [&](void* sender, Event* event) {
-//			onEvent1(sender, event);
-//		});
-//
-//		getEventManager().registerHandler(Event2::type, [&](void* sender, Event* event) {
-//			onEvent2(sender, event);
-//		});
-
-	Event* event1 = application->getEventManager().createEvent<Event1>();
-	application->getEventManager().postEvent(event1, 2.0);
-
 	Node* node;
-	Geometry* geometry;
 
 	scene = (Scene*)application->getResourceManager().loadResource(SceneKey("large-scene"));
-
-//	ResourceId modelId = application->getResourceManager().registerResource("duck_triangulate", Model::TYPE);
-//	Model* model = (Model*)application->getResourceManager().getResource(modelId);
-//
-//	node = scene->createNode();
-//	node->setPosition(math::Vector3(0, 0, 25));
-//	node->setScale(math::Vector3(0.1, 0.1, 0.1));
-//	node->setOrientation(math::Quaternion(math::AxisAngle(3.14, math::Vector3(0, 1, 0))));
-//	scene->getRoot()->addChild(node);
-//	geometry = scene->createGeometry(modelId, model->getBoundingBox(), node);
 
 #if 1
 	ptLight0 = scene->createSpotLight();
