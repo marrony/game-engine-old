@@ -52,7 +52,7 @@ void DotSceneLoader::compileResource(const char* fileName, std::map<std::string,
 			return;
 		}
 
-		scene = new Scene(file::getFilename(fileName));
+		scene = new Scene(file::getFilename(fileName), manager);
 		rootNode = scene->getRoot();
 
 		processScene(xmlRoot);

@@ -30,7 +30,7 @@ class CreateGeometry : public Visitor,
 	std::string name;
 public:
 	CreateGeometry(const std::string& name, class ResourceManager* manager);
-	virtual ~CreateGeometry() {}
+	virtual ~CreateGeometry();
 
 	class Model* getModel() { return model; }
 

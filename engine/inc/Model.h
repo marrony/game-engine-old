@@ -232,7 +232,7 @@ namespace engine {
 
 	class Model : public Resource {
 	public:
-		Model(const std::string& name);
+		Model(const std::string& name, ResourceManager* manager);
 		~Model();
 
 		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags);

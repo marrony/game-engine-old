@@ -24,7 +24,7 @@ namespace engine {
 		~SceneManager();
 
 		Scene* createScene() {
-			return new Scene("");
+			return 0;
 		}
 	};
 }

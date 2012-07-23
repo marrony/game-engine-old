@@ -100,6 +100,13 @@ class ColladaLoader : public ResourceLoader {
 		ResourceBinStream resourceStream(fileStream);
 		ModelUtils::write(resourceStream, *manager, model);
 	}
+
+	void saveScene(const std::string& path, Scene* scene) {
+		std::string outputName = path + "/" + scene->getName() + ".scene";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		SceneUtils::write(resourceStream, *manager, scene);
+	}
 public:
 	virtual ~ColladaLoader() {
 	}
@@ -133,11 +140,7 @@ public:
 				CreateScene createScene(compiler, manager, this, &colladaDocument);
 				colladaDocument.scene->accept(&createScene);
 
-				for(Resource* resource : createScene.getResourcesCreated()) {
-					if(Model* model = dynamic_cast<Model*>(resource)) {
-						saveModel(file::getPath(fileName), model);
-					}
-				}
+				saveScene(file::getPath(fileName), createScene.getScene());
 			}
 		} catch(...) {
 			throw;

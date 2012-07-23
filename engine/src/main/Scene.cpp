@@ -30,12 +30,8 @@ namespace engine {
 
 	const Type Scene::TYPE("scene");
 
-	Scene::Scene() :
-			Resource(""), atualCamera(0), sceneTree(0), root(0) {
-	}
-
-	Scene::Scene(const std::string& name) :
-			Resource(name), atualCamera(0), sceneTree(0) {
+	Scene::Scene(const std::string& name, ResourceManager* manager) :
+			Resource(name, manager), atualCamera(0), sceneTree(0) {
 		root = createNode();
 	}
 
@@ -225,9 +221,7 @@ namespace engine {
 		std::string type = stream.readString("type");
 		std::string name = stream.readString("name");
 
-		Scene* scene = new Scene;
-		scene->name = type + "/" + name;
-		scene->manager = &manager;
+		Scene* scene = new Scene(type + "/" + name, &manager);
 
 		scene->nodes.resize(stream.readInt("nodesCount"));
 		for(size_t i = 0; i < scene->nodes.size(); ++i) {

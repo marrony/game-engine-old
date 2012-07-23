@@ -299,8 +299,8 @@ namespace engine {
 		}
 	}
 
-	Model::Model(const std::string& name) :
-			Resource(name), modelData(0) {
+	Model::Model(const std::string& name, ResourceManager* manager) :
+			Resource(name, manager), modelData(0) {
 	}
 
 	Model::~Model() {
@@ -424,9 +424,8 @@ namespace engine {
 
 		stream.popGroup();
 
-		Model* model = new Model(type + "/" + name);
+		Model* model = new Model(type + "/" + name, &manager);
 
-		model->manager = &manager;
 		model->modelData = new ModelData;
 
 		model->meshes = indicesMesh;

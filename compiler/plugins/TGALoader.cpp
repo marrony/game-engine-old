@@ -177,6 +177,8 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 		TextureUtils::write(resourceStream, *manager, texture);
+
+		delete texture;
 	}
 };
 

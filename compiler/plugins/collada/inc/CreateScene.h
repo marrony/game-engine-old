@@ -44,11 +44,9 @@ class CreateScene : public Visitor,
 	std::stack<Node*> nodes;
 	std::stack<math::Matrix4> matrix;
 	ColladaDocument* document;
-	std::vector<Resource*> resources;
 	ResourceCompiler* compiler;
 	class ResourceManager* manager;
 	ResourceLoader* loader;
-	//std::map<std::string, ResourceId> materials;
 
 	void pushNode(Node* node);
 	void popNode();
@@ -56,9 +54,9 @@ class CreateScene : public Visitor,
 	void concatMatrix(math::Matrix4 matrix);
 public:
 	CreateScene(ResourceCompiler* compiler, class ResourceManager* manager, ResourceLoader* loader, ColladaDocument* document);
+	~CreateScene();
 
 	Scene* getScene() const { return product; }
-	const std::vector<Resource*>& getResourcesCreated() const { return resources; }
 
 	virtual void visit(ColladaScene* scene);
 	virtual void visit(ColladaNode* node);

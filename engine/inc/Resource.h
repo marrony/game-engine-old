@@ -19,7 +19,7 @@
 
 namespace engine {
 
-	typedef unsigned int ResourceId;
+	class ResourceManager;
 
 	class Resource {
 	public:
@@ -32,32 +32,16 @@ namespace engine {
 			return name;
 		}
 
-		void incrementReference() {
-			referenceCount++;
-		}
-
-		void decrementReference() {
-			referenceCount--;
-		}
-
-		bool couldDelete() const {
-			return referenceCount == 0;
-		}
-
-		virtual void postLoaded() {
-		}
-
-		class ResourceManager* getManager() {
+		ResourceManager* getManager() {
 			return manager;
 		}
 	protected:
-		Resource(const std::string& name) :
-				name(name), referenceCount(0), manager(0) {
+		Resource(const std::string& name, ResourceManager* manager) :
+				name(name), manager(manager) {
 		}
 
 		std::string name;
-		int referenceCount;
-		class ResourceManager* manager;
+		ResourceManager* manager;
 	};
 
 
@@ -146,15 +130,15 @@ namespace engine {
 		virtual void readArray(const char* label, float* array, size_t count);
 	};
 
+	struct ResourceEvent {
+		std::string type;
+	};
+
 	struct ResourceListener {
 		virtual ~ResourceListener() {}
 
-		virtual void onResourceLoaded(const class ResourceEvent& event) = 0;
-		virtual void onResourceUnloaded(const class ResourceEvent& event) = 0;
-	};
-
-	struct ResourceEvent {
-		std::string type;
+		virtual void onResourceLoaded(const ResourceEvent& event) = 0;
+		virtual void onResourceUnloaded(const ResourceEvent& event) = 0;
 	};
 
 	class ResourceKey {
@@ -177,7 +161,7 @@ namespace engine {
 
 		virtual std::string getKeyName() const = 0;
 
-		virtual Resource* loadResource(class ResourceManager& manager) const = 0;
+		virtual Resource* loadResource(ResourceManager& manager) const = 0;
 	};
 
 } // namespace engine

@@ -43,7 +43,11 @@ void CreateScene::concatMatrix(math::Matrix4 m) {
 }
 
 CreateScene::CreateScene(ResourceCompiler* compiler, ResourceManager* manager, ResourceLoader* loader, ColladaDocument* document) :
-		compiler(compiler), manager(manager), loader(loader), document(document) {
+		compiler(compiler), manager(manager), loader(loader), document(document), product(0) {
+}
+
+CreateScene::~CreateScene() {
+	delete product;
 }
 
 void CreateScene::visit(ColladaScene* scene) {
@@ -54,7 +58,7 @@ void CreateScene::visit(ColladaScene* scene) {
 	if(!visualScene)
 		return;
 
-	product = new Scene(visualScene->getId());
+	product = new Scene(visualScene->getId(), manager);
 
 	pushNode(product->getRoot());
 

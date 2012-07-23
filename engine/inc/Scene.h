@@ -37,12 +37,10 @@ namespace engine {
 		std::vector<RenderQueueEntry> renderQueue;
 
 		class Node* root;
-
-		Scene();
 	public:
 		static const Type TYPE;
 
-		Scene(const std::string& name);
+		Scene(const std::string& name, ResourceManager* manager);
 		virtual ~Scene();
 
 		virtual Type getType() const {

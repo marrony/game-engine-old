@@ -65,7 +65,7 @@ namespace engine {
 	Resource* TextureKey::loadResource(ResourceManager& manager) const {
 		std::string textureName = getName();
 
-		Texture* texture = new Texture("texture/" + textureName);
+		Texture* texture = new Texture("texture/" + textureName, &manager);
 
 		FileStream fileStream("resources/images/" + textureName + ".texture");
 		ResourceBinStream resourceStream(fileStream);

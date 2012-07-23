@@ -152,14 +152,14 @@ namespace engine {
 	}
 
 	void Effect::setupAttributes(Model* model, Shader* shader, GraphicManager* graphicManager) {
-		Geo* geometry = model->geometry;
+		ModelData* modelData = model->modelData;
 
 		for(int offset = 0; offset < AttributeOffset::MaxAttributeOffset; ++offset) {
 			AttributeEnabled& att = attributesEnabled[offset];
 
 			if(!att.enabled) continue;
 
-			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, geometry->attributeOffsets[offset], sizeof(float) * geometry->elementsPerVertex);
+			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, modelData->attributeOffsets[offset], sizeof(float) * modelData->elementsPerVertex);
 		}
 	}
 
@@ -179,9 +179,8 @@ namespace engine {
 		Source* vss = new Source(vs);
 		Source* fss = new Source(fs);
 
-		Effect* effect = new Effect(type + "/" + name);
+		Effect* effect = new Effect(type + "/" + name, &manager);
 
-		effect->manager = &manager;
 		effect->shader = new Shader(vss, fss, 0);
 		//effect->shader->link();
 

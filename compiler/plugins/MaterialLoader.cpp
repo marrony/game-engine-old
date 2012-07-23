@@ -70,7 +70,7 @@ public:
 		compiler->compile(effectSrc, options);
 		Effect* effect = (Effect*)manager->loadResource(EffectKey(effectName));
 
-		Material* material = new Material(file::getFilename(fileName), effect);
+		Material* material = new Material(file::getFilename(fileName), manager, effect);
 
 		TiXmlElement* xmlSampler = xmlEffect->FirstChildElement("sampler");
 		while(xmlSampler) {
@@ -90,6 +90,8 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 		MaterialUtils::write(resourceStream, *manager, material);
+
+		delete material;
 	}
 };
 

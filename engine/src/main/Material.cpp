@@ -28,8 +28,8 @@ namespace engine {
 
 	const Type Material::TYPE("material");
 
-	Material::Material(const std::string& name, Effect* effect) :
-			Resource(name), effect(effect) {
+	Material::Material(const std::string& name, ResourceManager* manager, Effect* effect) :
+			Resource(name, manager), effect(effect) {
 	}
 
 	Material::~Material() {
@@ -72,8 +72,7 @@ namespace engine {
 		if(type != "material")
 			throw Exception("Resource is not a material");
 
-		Material* material = new Material(type + "/" + name, 0);
-		material->manager = &manager;
+		Material* material = new Material(type + "/" + name, &manager, 0);
 
 		std::string effectName = stream.readString("effectName");
 		material->effect = (Effect*) manager.loadResource(EffectKey(effectName));

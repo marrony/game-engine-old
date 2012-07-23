@@ -15,6 +15,10 @@ CreateGeometry::CreateGeometry(const std::string& name, ResourceManager* manager
 		manager(manager), model(0), name(name) {
 }
 
+CreateGeometry::~CreateGeometry() {
+	delete model;
+}
+
 void CreateGeometry::visit(ColladaGeometry* geometry) {
 	std::string name0;
 
@@ -25,7 +29,7 @@ void CreateGeometry::visit(ColladaGeometry* geometry) {
 	else
 		name0 = geometry->getId();
 
-	model = new Model(name0);
+	model = new Model(name0, manager);
 
 	ColladaMesh* mesh = geometry->getMesh();
 

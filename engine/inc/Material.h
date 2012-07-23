@@ -16,9 +16,11 @@
 
 namespace engine {
 
+	class Effect;
+
 	class Material : public Resource {
 	public:
-		Material(const std::string& name, class Effect* effect);
+		Material(const std::string& name, ResourceManager* manager, Effect* effect);
 		virtual ~Material();
 
 		void addSampler(const std::string& samplerName, class Texture* sampler);

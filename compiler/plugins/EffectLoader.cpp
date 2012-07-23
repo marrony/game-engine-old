@@ -56,7 +56,7 @@ public:
 			throw Exception("");
 		}
 
-		Effect* effect = new Effect(file::getFilename(fileName));
+		Effect* effect = new Effect(file::getFilename(fileName), manager);
 
 		TiXmlElement* xmlSampler = rootEffect->FirstChildElement("sampler");
 		while(xmlSampler) {
@@ -112,6 +112,8 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 		EffectUtils::write(resourceStream, *manager, effect);
+
+		delete effect;
 	}
 };
 

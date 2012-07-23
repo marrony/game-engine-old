@@ -68,7 +68,7 @@ namespace engine {
 
 	class Effect : public Resource {
 	public:
-		Effect(const std::string& name) : Resource(name) {
+		Effect(const std::string& name, ResourceManager* manager) : Resource(name, manager) {
 			usingDephtWrite = false;
 			usingColorWrite = false;
 			usingDepthTest = false;

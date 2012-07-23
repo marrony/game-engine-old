@@ -26,21 +26,13 @@ namespace engine {
 	class Texture : public Resource {
 	public:
 		int handle;
-		class GraphicManager* manager;
 	public:
-		Texture(const std::string& name) :
-				Resource(name), handle(0), manager(0) {
+		Texture(const std::string& name, ResourceManager* manager) :
+				Resource(name, manager), handle(0) {
 		}
 
 		virtual Type getType() const {
 			return Type("texture");
-		}
-
-		virtual void postLoaded() {
-//			if(!manager) return;
-//			if(handle) return;
-//
-//			handle = manager->createTexture2D();
 		}
 	};
 

@@ -23,6 +23,7 @@ using namespace compiler;
 
 class MS3DModelLoader : public ResourceLoader {
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 public:
 	MS3DModelLoader() {
 	}
@@ -36,6 +37,8 @@ public:
 
 	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
+
 		compiler->registerLoader(this, "Milkshape Loader", "ms3d");
 	}
 
@@ -49,7 +52,7 @@ public:
 
 		ms3d.Load(file);
 
-		Model* model = new Model(file::getFilename(fileName));
+		Model* model = new Model(file::getFilename(fileName), manager);
 
 		for(int i = 0; i < ms3d.GetNumMaterials(); i++) {
 			ms3d_material_t* material = ms3d.GetMaterial(i);
@@ -117,10 +120,11 @@ public:
 			}
 
 			int flags = MeshVertex::POSITION | MeshVertex::NORMAL | MeshVertex::TEXTURE | MeshVertex::BONES;
-			ms3d_material_t* material = ms3d.GetMaterial(group->materialIndex);
+			ms3d_material_t* ms3dMaterial = ms3d.GetMaterial(group->materialIndex);
 
 			//TODO carregar
-			model->addVertexData(vertices, indices, 0/*material->name*/, flags);
+			Material* material = (Material*)manager->loadResource(MaterialKey(ms3dMaterial->name));
+			model->addVertexData(vertices, indices, material, flags);
 		}
 
 		model->modelData->calculateTangent();
@@ -165,6 +169,13 @@ public:
 
 			model->getAnimation().updateBones();
 		}
+
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".model";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		ModelUtils::write(resourceStream, *manager, model);
+
+		delete model;
 	}
 };
 

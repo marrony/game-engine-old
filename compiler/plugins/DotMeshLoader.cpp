@@ -28,6 +28,7 @@ using namespace compiler;
 
 class DotMeshLoader : public ResourceLoader {
 	ResourceCompiler* compiler;
+	ResourceManager* manager;
 public:
 	virtual ~DotMeshLoader() {
 	}
@@ -38,6 +39,8 @@ public:
 
 	virtual void initialize(ResourceCompiler* compiler, ResourceManager* manager) {
 		this->compiler = compiler;
+		this->manager = manager;
+
 		compiler->registerLoader(this, "Dot Mesh Loader", "mesh.xml");
 	}
 
@@ -57,7 +60,7 @@ public:
 			throw Exception("Tag mesh not found");
 		}
 
-		Model* model = new Model(file::getFilename(fileName));
+		Model* model = new Model(file::getFilename(fileName), manager);
 
 		TiXmlElement* xmlSubmeshes = xmlMesh->FirstChildElement("submeshes");
 		if(xmlSubmeshes != 0) {
@@ -66,6 +69,13 @@ public:
 
 		model->modelData->calculateTangent();
 		model->modelData->calculateBoundingBox();
+
+		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".model";
+		FileStream fileStream(outputName);
+		ResourceBinStream resourceStream(fileStream);
+		ModelUtils::write(resourceStream, *manager, model);
+
+		delete model;
 	}
 
 	bool getAttribute(TiXmlElement* xmlElement, const char* attribute, bool valueDefault) {
