@@ -31,8 +31,7 @@ namespace engine {
 	const Type Scene::TYPE("scene");
 
 	Scene::Scene(const std::string& name, ResourceManager* manager) :
-			Resource(name, manager), atualCamera(0), sceneTree(0) {
-		root = createNode();
+			Resource(name, manager), atualCamera(0), sceneTree(0), root(0) {
 	}
 
 	template<typename T>
@@ -122,6 +121,8 @@ namespace engine {
 	}
 
 	Node* Scene::getRoot() {
+		if(!root) root = createNode();
+
 		return root;
 	}
 
