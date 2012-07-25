@@ -12,6 +12,8 @@
 #include <functional>
 #include <string>
 
+#include <memory>
+
 #include "definitions.h"
 #include "Stream.h"
 #include "StringTokenizer.h"
@@ -21,6 +23,7 @@
 #include "math/Quaternion.h"
 #include "Visitor.h"
 #include "Model.h"
+#include "Module.h"
 
 #define STRINGFY(x) #x
 
@@ -839,7 +842,38 @@ std::function<void()> teste(int x, int y, int z) {
 	};
 }
 
+struct MyTest {
+	int value;
+	std::string str;
+
+	MyTest(int value, const std::string& str) :
+			value(value), str(str) {
+	}
+};
+
+template<typename _Tp, typename... _Args>
+inline _Tp* make(_Args&&... __args) {
+	return new _Tp(std::forward<_Args>(__args)...);
+	//return new _Tp(__args...);
+}
+
 int main(int argc, char* argv[]) {
+	MyTest* tp = make<MyTest>(10, "teste");
+
+	std::weak_ptr<MyTest> w;
+
+	{
+		//std::unique_ptr<MyTest> u = std::make_unique<MyTest>(10, "teste");
+		std::shared_ptr<MyTest> ptr1 = std::make_shared<MyTest>(10, "teste");
+
+		w = ptr1;
+
+		std::shared_ptr<MyTest> ptr2 = w.lock();
+		std::shared_ptr<MyTest> ptr3 = ptr1;
+
+		std::shared_ptr<MyTest> ptr0 = std::shared_ptr<MyTest>(new MyTest(10, "teste"));
+	}
+
 	std::function<void()> f0 = teste(10);
 	std::function<void()> f1 = teste(11, 12, 13);
 
@@ -873,3 +907,6 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
+extern "C" Module* getModule() {
+	return 0;
+}

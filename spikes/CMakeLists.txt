@@ -21,4 +21,4 @@ set(SPIKES_SRC
 )
 
 add_executable(spikes ${SPIKES_SRC})
-target_link_libraries(spikes engine tinyxml glew ${COMMONS_LIB})
+target_link_libraries(spikes replacement-new memory-manager engine tinyxml glew ${COMMONS_LIB})
