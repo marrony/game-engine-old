@@ -20,6 +20,7 @@
 namespace engine {
 
 	class ResourceManager;
+	class Stream;
 
 	class Resource {
 	public:
@@ -30,6 +31,10 @@ namespace engine {
 
 		std::string getName() const {
 			return name;
+		}
+
+		std::string getKeyName() const {
+			return getType().getName() + ("/" + name);
 		}
 
 		ResourceManager* getManager() {

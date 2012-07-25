@@ -14,11 +14,16 @@
 
 namespace engine {
 
+	class Resource;
+	class ResourceEvent;
+	class ResourceKey;
+	class ResourceListener;
+
 	class ResourceManager {
-		std::vector<class ResourceListener*> listeners;
+		std::vector<ResourceListener*> listeners;
 
 		struct ResourceEntry {
-			class Resource* resource;
+			Resource* resource;
 			int count;
 		};
 
@@ -27,14 +32,14 @@ namespace engine {
 		ResourceManager();
 		~ResourceManager();
 
-		class Resource* loadResource(const class ResourceKey& key);
-		void unloadResource(class Resource* resource);
+		Resource* loadResource(const ResourceKey& key);
+		void unloadResource(Resource* resource);
 
-		void dispatchLoadedEvent(const class ResourceEvent& event);
-		void dispatchUnloadedEvent(const class ResourceEvent& event);
+		void dispatchLoadedEvent(const ResourceEvent& event);
+		void dispatchUnloadedEvent(const ResourceEvent& event);
 
-		void addListener(class ResourceListener* listener);
-		void removeListener(class ResourceListener* listener);
+		void addListener(ResourceListener* listener);
+		void removeListener(ResourceListener* listener);
 	};
 
 } /* namespace engine */

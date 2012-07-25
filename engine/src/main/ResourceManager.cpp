@@ -38,7 +38,7 @@ namespace engine {
 	}
 
 	void ResourceManager::unloadResource(Resource* resource) {
-		std::string resourceName = resource->getName();
+		std::string resourceName = resource->getKeyName();
 
 		auto entry = resources.find(resourceName);
 

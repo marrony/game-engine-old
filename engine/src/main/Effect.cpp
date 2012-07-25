@@ -179,7 +179,7 @@ namespace engine {
 		Source* vss = new Source(vs);
 		Source* fss = new Source(fs);
 
-		Effect* effect = new Effect(type + "/" + name, &manager);
+		Effect* effect = new Effect(name, &manager);
 
 		effect->shader = new Shader(vss, fss, 0);
 		//effect->shader->link();

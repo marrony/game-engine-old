@@ -424,7 +424,7 @@ namespace engine {
 
 		stream.popGroup();
 
-		Model* model = new Model(type + "/" + name, &manager);
+		Model* model = new Model(name, &manager);
 
 		model->modelData = new ModelData;
 

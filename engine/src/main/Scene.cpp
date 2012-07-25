@@ -222,7 +222,7 @@ namespace engine {
 		std::string type = stream.readString("type");
 		std::string name = stream.readString("name");
 
-		Scene* scene = new Scene(type + "/" + name, &manager);
+		Scene* scene = new Scene(name, &manager);
 
 		scene->nodes.resize(stream.readInt("nodesCount"));
 		for(size_t i = 0; i < scene->nodes.size(); ++i) {

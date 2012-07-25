@@ -72,7 +72,7 @@ namespace engine {
 		if(type != "material")
 			throw Exception("Resource is not a material");
 
-		Material* material = new Material(type + "/" + name, &manager, 0);
+		Material* material = new Material(name, &manager, 0);
 
 		std::string effectName = stream.readString("effectName");
 		material->effect = (Effect*) manager.loadResource(EffectKey(effectName));
