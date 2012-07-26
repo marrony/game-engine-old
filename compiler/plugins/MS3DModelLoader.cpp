@@ -7,6 +7,7 @@
 #include "ResourcePlugin.h"
 #include "ResourceCompiler.h"
 
+#include "Material.h"
 #include "MS3DModel.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"

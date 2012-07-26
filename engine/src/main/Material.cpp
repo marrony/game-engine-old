@@ -5,22 +5,12 @@
  *      Author: marrony.neris
  */
 
-#include <fstream>
-
 #include "Material.h"
 #include "Texture.h"
-#include "Shader.h"
-#include "SceneManager.h"
 #include "GraphicManager.h"
 #include "ResourceManager.h"
-#include "Shader.h"
+#include "Effect.h"
 #include "FileUtil.h"
-#include "tinyxml.h"
-#include "Exception.h"
-#include "Model.h"
-#include "Frustum.h"
-#include "Light.h"
-#include "Geometry.h"
 
 #include "MemoryManager.h"
 

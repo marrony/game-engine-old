@@ -9,6 +9,7 @@
 #include "ColladaArray.h"
 
 #include "Model.h"
+#include "Material.h"
 #include "ResourceManager.h"
 
 CreateGeometry::CreateGeometry(const std::string& name, ResourceManager* manager) :

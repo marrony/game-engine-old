@@ -11,9 +11,7 @@
 #include "Resource.h"
 #include "math/Vector.h"
 #include "math/Matrix.h"
-#include "Buffer.h"
 #include "Bounding.h"
-#include "Material.h"
 #include "Effect.h"
 
 #include <vector>
@@ -21,6 +19,7 @@
 
 namespace engine {
 
+	class Buffer;
 	class Material;
 
 	struct MeshVertex {
