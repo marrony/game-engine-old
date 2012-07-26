@@ -10,10 +10,10 @@
 #include "Model.h"
 #include "Material.h"
 #include "FileUtil.h"
+#include "Stream.h"
 
 #include "tinyxml.h"
 
-#include <fstream>
 #include <iterator>
 
 #include "ColladaDocument.h"
@@ -71,11 +71,8 @@ class ColladaLoader : public ResourceLoader {
 	ResourceManager* manager;
 
 	void parse(const char* fileName, ColladaDocument& colladaDocument) {
-		std::fstream sceneStream(fileName);
-		std::string scene = file::loadFromStream(sceneStream);
-
 		TiXmlDocument xmlDoc;
-		xmlDoc.Parse(scene.c_str());
+		xmlDoc.LoadFile(fileName);
 
 		if(xmlDoc.Error()) {
 			throw Exception("COLLADA: Parse error");

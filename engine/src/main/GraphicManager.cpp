@@ -48,10 +48,10 @@ namespace engine {
 			shader->bind();
 
 		if(flags & VertexBufferAltered)
-			vertexBuffer->bind();
+			glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
 		if(flags & IndexBufferAltered)
-			indexBuffer->bind();
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 		if(flags & TextureAltered) {
 			for(int i = 0; i < 16; ++i) {
@@ -363,14 +363,14 @@ namespace engine {
 		flags |= TextureAltered;
 	}
 
-	void GraphicManager::setVertexBuffer(Buffer* vertexBuffer) {
+	void GraphicManager::setVertexBuffer(unsigned int vertexBuffer) {
 		if(this->vertexBuffer == vertexBuffer) return;
 
 		this->vertexBuffer = vertexBuffer;
 		flags |= VertexBufferAltered;
 	}
 
-	void GraphicManager::setIndexBuffer(Buffer* indexBuffer) {
+	void GraphicManager::setIndexBuffer(unsigned int indexBuffer) {
 		if(this->indexBuffer == indexBuffer) return;
 
 		this->indexBuffer = indexBuffer;
@@ -378,6 +378,8 @@ namespace engine {
 	}
 
 	void GraphicManager::setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride) {
+		//TODO Colocar um tipo nos atributos
+
 		attribs[attributeOffset].attrib = index;
 		attribs[attributeOffset].mode = mode;
 		attribs[attributeOffset].offset = offset;
@@ -424,7 +426,7 @@ namespace engine {
 
 		glGenTextures(1, &tex.texId);
 
-		return (int)textures0.add(tex);
+		return textures0.add(tex);
 	}
 
 	void GraphicManager::destroyTexture(int handle) {
@@ -507,7 +509,103 @@ namespace engine {
 		glBindTexture(tex.type, 0);
 	}
 
-	Buffer* GraphicManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
-		return new HardwareBuffer(count, bufferType, frequencyAccess, natureAccess);
+	int getTarget(BufferType type) {
+		switch(type) {
+		case BufferType::VertexBuffer:
+			return GL_ARRAY_BUFFER;
+
+		case BufferType::IndexBuffer:
+			return GL_ELEMENT_ARRAY_BUFFER;
+		}
+
+		return 0;
 	}
+
+	int getUsage(FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
+		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Draw)
+			return GL_STREAM_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Read)
+			return GL_STREAM_READ;
+
+		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Copy)
+			return GL_STREAM_COPY;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Draw)
+			return GL_STATIC_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Read)
+			return GL_STATIC_READ;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Copy)
+			return GL_STATIC_COPY;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Draw)
+			return GL_DYNAMIC_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Read)
+			return GL_DYNAMIC_READ;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Copy)
+			return GL_DYNAMIC_COPY;
+
+		return 0;
+	}
+
+	int getAccess(AccessType accessType) {
+		if(accessType == AccessType::ReadOnly)
+			return GL_READ_ONLY;
+
+		if(accessType == AccessType::WriteOnly)
+			return GL_WRITE_ONLY;
+
+		if(accessType == AccessType::ReadWrite)
+			return GL_READ_WRITE;
+
+		return 0;
+	}
+
+	int GraphicManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
+		Buffer buffer;
+
+		buffer.count = count;
+		buffer.bufferType = bufferType;
+		buffer.frequencyAccess = frequencyAccess;
+		buffer.natureAccess = natureAccess;
+		buffer.target = getTarget(bufferType);
+		buffer.usage = getUsage(frequencyAccess, natureAccess);
+
+		glGenBuffers(1, &buffer.bufferId);
+		glBindBuffer(buffer.target, buffer.bufferId);
+		glBufferData(buffer.target, buffer.count, 0, buffer.usage);
+
+		return buffers.add(buffer);
+	}
+
+	void GraphicManager::destroyBuffer(int handle) {
+		if(!handle) return;
+
+		Buffer& buffer = buffers.get(handle);
+
+		glDeleteBuffers(1, &buffer.bufferId);
+
+		buffers.remove(handle);
+	}
+
+	void* GraphicManager::mapBuffer(int handle, AccessType accessType) {
+		if(!handle) return 0;
+
+		Buffer& buffer = buffers.get(handle);
+
+		return glMapBuffer(buffer.target, getAccess(accessType));
+	}
+
+	void GraphicManager::unmapBuffer(int handle) {
+		if(!handle) return;
+
+		Buffer& buffer = buffers.get(handle);
+
+		glUnmapBuffer(buffer.target);
+	}
+
 }  // namespace engine

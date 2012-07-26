@@ -29,8 +29,6 @@ set(ENGINE_COMMON_SRC
 	src/main/SoundManager.cpp
 	src/main/RenderEntity.cpp
 	src/main/Texture.cpp
-	src/main/HardwareTexture.cpp
-	src/main/HardwareBuffer.cpp
 	
 	src/main/Scene.cpp
 	

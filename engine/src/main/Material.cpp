@@ -11,6 +11,7 @@
 #include "ResourceManager.h"
 #include "Effect.h"
 #include "FileUtil.h"
+#include "Stream.h"
 
 #include "MemoryManager.h"
 

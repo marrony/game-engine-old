@@ -11,6 +11,7 @@
 #include "Image.h"
 #include "Texture.h"
 #include "FileUtil.h"
+#include "Stream.h"
 
 #include <fstream>
 #include <algorithm>

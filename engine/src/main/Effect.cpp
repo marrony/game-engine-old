@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "GraphicManager.h"
 #include "Model.h"
+#include "Stream.h"
 
 namespace engine {
 

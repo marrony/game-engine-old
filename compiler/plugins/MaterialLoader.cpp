@@ -13,8 +13,7 @@
 #include "Texture.h"
 #include "FileUtil.h"
 #include "tinyxml.h"
-
-#include <fstream>
+#include "Stream.h"
 
 #include "MemoryManager.h"
 
@@ -44,12 +43,8 @@ public:
 	}
 
 	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
-		std::ifstream stream(fileName);
-		std::string content = file::loadFromStream(stream);
-
 		TiXmlDocument document;
-
-		document.Parse(content.c_str());
+		document.LoadFile(fileName);
 
 		if(document.Error()) {
 			throw Exception(document.ErrorDesc());

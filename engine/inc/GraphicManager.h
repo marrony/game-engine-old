@@ -16,13 +16,24 @@
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Buffer.h"
-#include "HardwareBuffer.h"
 #include "System.h"
 #include "Material.h"
 #include "Texture.h"
 #include "Effect.h"
 
 namespace engine {
+
+	enum FrequencyAccess {
+		FAStream, Static, Dynamic
+	};
+
+	enum NatureAccess {
+		Draw, Read, Copy
+	};
+
+	enum BufferType {
+		VertexBuffer, IndexBuffer
+	};
 
 	struct Blend {
 		enum Equation {
@@ -38,11 +49,11 @@ namespace engine {
 		template<typename T>
 		struct Resources {
 			std::vector<T> resources;
-			std::vector<size_t> free;
+			std::vector<int> free;
 
-			size_t add(const T& resource) {
+			int add(const T& resource) {
 				if(!free.empty()) {
-					size_t handle = free.back();
+					int handle = free.back();
 					free.pop_back();
 
 					resources[handle] = resource;
@@ -53,12 +64,12 @@ namespace engine {
 				return resources.size();
 			}
 
-			void remove(size_t handle) {
+			void remove(int handle) {
 				if(handle == 0) return;
 				free.push_back(--handle);
 			}
 
-			T& get(size_t handle) {
+			T& get(int handle) {
 				return resources[--handle];
 			}
 		};
@@ -79,8 +90,8 @@ namespace engine {
 		Framebuffer* lastFramebuffer;
 		Shader* shader;
 
-		Buffer* vertexBuffer;
-		Buffer* indexBuffer;
+		unsigned int vertexBuffer;
+		unsigned int indexBuffer;
 
 		struct Attribs {
 			int attrib;
@@ -153,8 +164,8 @@ namespace engine {
 
 		VIRTUAL void bindTexture(const std::string& name, class Texture* texture);
 
-		VIRTUAL void setVertexBuffer(Buffer* vertexBuffer);
-		VIRTUAL void setIndexBuffer(Buffer* indexBuffer);
+		VIRTUAL void setVertexBuffer(unsigned int vertexBuffer);
+		VIRTUAL void setIndexBuffer(unsigned int indexBuffer);
 
 		VIRTUAL void setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride);
 
@@ -195,7 +206,22 @@ namespace engine {
 		VIRTUAL void destroyTexture(int handle);
 		VIRTUAL void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
 
-		VIRTUAL Buffer* createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
+		struct Buffer {
+			unsigned int bufferId;
+			int count;
+			int target;
+			int usage;
+			BufferType bufferType;
+			FrequencyAccess frequencyAccess;
+			NatureAccess natureAccess;
+		};
+
+		Resources<Buffer> buffers;
+
+		VIRTUAL int createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
+		VIRTUAL void destroyBuffer(int handle);
+		VIRTUAL void* mapBuffer(int handle, AccessType accessType);
+		VIRTUAL void unmapBuffer(int handle);
 	};
 
 }

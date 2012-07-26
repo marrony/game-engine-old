@@ -183,10 +183,13 @@ namespace engine {
 		}
 	};
 
+	class GraphicManager;
+
 	struct ModelData {
 		ModelData();
 		~ModelData();
-		void uploadData(class GraphicManager* graphicManager);
+		void uploadData(GraphicManager* graphicManager);
+		void calculateAttributeOffsetsAndElementsPerVertex();
 		void calculateTangent();
 		void calculateNormal();
 		void preCalculateTangent();
@@ -214,8 +217,9 @@ namespace engine {
 
 		AABoundingBox aabbox;
 
-		Buffer* vertexBuffer;
-		Buffer* indexBuffer;
+		GraphicManager* graphicManager;
+		int vertexBuffer;
+		int indexBuffer;
 	};
 
 	struct Mesh {

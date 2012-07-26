@@ -28,10 +28,10 @@ class SimpleRenderer : public Renderer {
 		for(RenderQueueEntry entry : scene->getRenderQueue()) {
 			Model* model = entry.geometry->getModel();
 
-			Buffer *indexBuffer = model->modelData->indexBuffer;
-			Buffer *vertexBuffer = model->modelData->vertexBuffer;
+			unsigned int indexBuffer = model->modelData->indexBuffer;
+			unsigned int vertexBuffer = model->modelData->vertexBuffer;
 
-			if(!indexBuffer->isOk() || !vertexBuffer->isOk())
+			if(!indexBuffer || !vertexBuffer)
 				continue;
 
 			graphicManager->setVertexBuffer(vertexBuffer);

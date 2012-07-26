@@ -13,6 +13,7 @@
 #include "ResourceManager.h"
 #include "Model.h"
 #include "FileUtil.h"
+#include "Stream.h"
 
 #include <vector>
 #include <fstream>

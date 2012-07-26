@@ -10,7 +10,6 @@
 
 #include "Type.h"
 #include "ResourceStream.h"
-#include "Stream.h"
 
 #include "tinyxml.h"
 

@@ -16,8 +16,8 @@
 #include "Exception.h"
 #include "FileUtil.h"
 #include "tinyxml.h"
+#include "Stream.h"
 
-#include <fstream>
 #include <string>
 #include <vector>
 
@@ -46,10 +46,7 @@ public:
 
 	virtual void compileResource(const char* fileName, std::map<std::string, std::string>& options) {
 		TiXmlDocument xmlDoc;
-
-		std::ifstream meshStream(fileName);
-		std::string data = file::loadFromStream(meshStream);
-		xmlDoc.Parse(data.c_str());
+		xmlDoc.LoadFile(fileName);
 
 		if(xmlDoc.Error()) {
 			throw Exception("Parse error");

@@ -21,6 +21,7 @@
 #include "Texture.h"
 #include "Image.h"
 #include "Shader.h"
+#include "Stream.h"
 
 #include "Exception.h"
 

@@ -9,6 +9,7 @@
 #include "Exception.h"
 #include "ResourceManager.h"
 #include "GraphicManager.h"
+#include "Stream.h"
 
 #include "MemoryManager.h"
 
@@ -107,52 +108,25 @@ namespace engine {
 	}
 
 	ModelData::~ModelData() {
-		delete vertexBuffer;
-		delete indexBuffer;
+		if(graphicManager) {
+			graphicManager->destroyBuffer(vertexBuffer);
+			graphicManager->destroyBuffer(indexBuffer);
+		}
 	}
 
 	void ModelData::uploadData(GraphicManager* graphicManager) {
-		elementsPerVertex = 3;
+		this->graphicManager = graphicManager;
 
-		attributeOffsets[PositionOffset] = 0;
-
-		attributeOffsets[BoneIdsOffset] = elementsPerVertex * sizeof(float);
-		elementsPerVertex += 4;
-
-		attributeOffsets[WeigthsOffset] = elementsPerVertex * sizeof(float);
-		elementsPerVertex += 4;
-
-		if(!normal.empty()) {
-			attributeOffsets[NormalOffset] = elementsPerVertex * sizeof(float);
-			elementsPerVertex += 3;
-		}
-
-		if(!sTangent.empty() && !tTangent.empty()) {
-			attributeOffsets[STangentOffset] = elementsPerVertex * sizeof(float);
-			elementsPerVertex += 3;
-
-			attributeOffsets[TTangentOffset] = elementsPerVertex * sizeof(float);
-			elementsPerVertex += 3;
-		}
-
-		if(!color.empty()) {
-			attributeOffsets[ColorOffset] = elementsPerVertex * sizeof(float);
-			elementsPerVertex += 3;
-		}
-
-		if(!texCoord.empty()) {
-			attributeOffsets[TexCoordOffset] = elementsPerVertex * sizeof(float);
-			elementsPerVertex += 2;
-		}
+		calculateAttributeOffsetsAndElementsPerVertex();
 
 		vertexBuffer = graphicManager->createBuffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
 		indexBuffer = graphicManager->createBuffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
 
-		void* indexPtr = indexBuffer->map(AccessType::WriteOnly);
+		void* indexPtr = graphicManager->mapBuffer(indexBuffer, AccessType::WriteOnly);
 		memcpy(indexPtr, indices.data(), indices.size() * sizeof(unsigned short));
-		indexBuffer->unmap();
+		graphicManager->unmapBuffer(indexBuffer);
 
-		float* vertexPtr = (float*) vertexBuffer->map(AccessType::WriteOnly);
+		float* vertexPtr = (float*) graphicManager->mapBuffer(vertexBuffer, AccessType::WriteOnly);
 		float* begin = vertexPtr;
 
 		for(size_t i = 0; i < position.size(); i++) {
@@ -222,7 +196,42 @@ namespace engine {
 			}
 		}
 
-		vertexBuffer->unmap();
+		graphicManager->unmapBuffer(vertexBuffer);
+	}
+
+	void ModelData::calculateAttributeOffsetsAndElementsPerVertex() {
+		elementsPerVertex = 3;
+
+		attributeOffsets[PositionOffset] = 0;
+
+		attributeOffsets[BoneIdsOffset] = elementsPerVertex * sizeof(float);
+		elementsPerVertex += 4;
+
+		attributeOffsets[WeigthsOffset] = elementsPerVertex * sizeof(float);
+		elementsPerVertex += 4;
+
+		if(!normal.empty()) {
+			attributeOffsets[NormalOffset] = elementsPerVertex * sizeof(float);
+			elementsPerVertex += 3;
+		}
+
+		if(!sTangent.empty() && !tTangent.empty()) {
+			attributeOffsets[STangentOffset] = elementsPerVertex * sizeof(float);
+			elementsPerVertex += 3;
+
+			attributeOffsets[TTangentOffset] = elementsPerVertex * sizeof(float);
+			elementsPerVertex += 3;
+		}
+
+		if(!color.empty()) {
+			attributeOffsets[ColorOffset] = elementsPerVertex * sizeof(float);
+			elementsPerVertex += 3;
+		}
+
+		if(!texCoord.empty()) {
+			attributeOffsets[TexCoordOffset] = elementsPerVertex * sizeof(float);
+			elementsPerVertex += 2;
+		}
 	}
 
 	void ModelData::calculateTangent() {

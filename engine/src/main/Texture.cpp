@@ -7,11 +7,9 @@
 
 #include "Texture.h"
 #include "Image.h"
-#include "HardwareTexture.h"
 #include "ResourceManager.h"
 #include "Exception.h"
-
-#include <fstream>
+#include "Stream.h"
 
 namespace engine {
 

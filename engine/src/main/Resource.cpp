@@ -5,6 +5,7 @@
  *      Author: Marrony
  */
 #include "Resource.h"
+#include "Stream.h"
 
 #include <sstream>
 

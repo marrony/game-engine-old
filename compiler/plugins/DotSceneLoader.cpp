@@ -10,10 +10,9 @@
 #include "Light.h"
 #include "Model.h"
 #include "Scene.h"
+#include "Stream.h"
 
 #include "tinyxml.h"
-
-#include <fstream>
 
 DotSceneLoader::DotSceneLoader() :
 		rootNode(0) {
