@@ -857,7 +857,78 @@ inline _Tp* make(_Args&&... __args) {
 	//return new _Tp(__args...);
 }
 
+typedef std::function<double(double)> F;
+
+double derivada(const F& f, double x) {
+	double h = 0.0000000001;
+
+	double a = f(x + h);
+	double b = f(x);
+
+	return (a - b) / h;
+}
+
+double newtonRaphson(const F& f) {
+	double x0 = 1;
+
+	while(true) {
+		double fx = f(x0);
+		double dfx = derivada(f, x0);
+		double x1 = x0 - (fx / dfx);
+
+		if(x0 == x1) break;
+
+		x0 = x1;
+	}
+
+	return x0;
+}
+
+double root(double b, double y) {
+	auto f = [=](double x) {
+		return std::pow(x, y) - b;
+	};
+
+	return newtonRaphson(f);
+}
+
+double sqRoot(double x) {
+	auto f = [=](double y) {
+		return y*y - x;
+	};
+
+	return newtonRaphson(f);
+}
+
+double cuRoot(double x) {
+	auto f = [=](double y) {
+		return y*y*y - x;
+	};
+
+	return newtonRaphson(f);
+}
+
+double cosX3() {
+	auto f = [=](double y) {
+		return std::cos(y) - y*y*y;
+	};
+
+	return newtonRaphson(f);
+}
+
 int main(int argc, char* argv[]) {
+	auto f = [](double x) {
+		return x*x;
+	};
+
+	std::cout << derivada((double(*)(double))std::cos, 2) << " " << std::sin(2) << std::endl;
+
+	std::cout << root(1000, 3) << std::endl;
+	std::cout << sqRoot(612) << std::endl;
+	std::cout << cuRoot(1000) << std::endl;
+	std::cout << cosX3() << std::endl;
+
+
 	MyTest* tp = make<MyTest>(10, "teste");
 
 	std::weak_ptr<MyTest> w;
