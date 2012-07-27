@@ -16,8 +16,8 @@ namespace engine {
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("texture");
 
-//		std::string type = stream.readString("type");
-//		std::string name = stream.readString("name");
+		std::string type = stream.readString("type");
+		std::string name = stream.readString("name");
 		int width = stream.readInt("width");
 		int height = stream.readInt("height");
 		int depth = stream.readInt("depth");
@@ -29,15 +29,18 @@ namespace engine {
 
 		stream.popGroup();
 
-		Image* texture = new Image(width, height, depth, data);
-
-		delete[] data;
+		Texture* texture = new Texture(name, &manager);
+		texture->width = width;
+		texture->height = height;
+		texture->depth = depth;
+		texture->data = data;
+		texture->uploaded = false;
 
 		return texture;
 	}
 
 	void TextureUtils::write(ResourceStream& stream, ResourceManager& manager, void* instance) {
-		Image* texture = dynamic_cast<Image*>((Image*) instance);
+		Texture* texture = dynamic_cast<Texture*>((Texture*) instance);
 
 		if(!texture)
 			throw Exception("Resource is not a texture");
@@ -50,8 +53,8 @@ namespace engine {
 
 		stream.pushGroup("texture");
 
-//		stream.writeString("type", texture->getType().getName());
-//		stream.writeString("name", texture->name);
+		stream.writeString("type", texture->getType().getName());
+		stream.writeString("name", texture->name);
 		stream.writeInt("width", width);
 		stream.writeInt("height", height);
 		stream.writeInt("depth", depth);
@@ -63,21 +66,10 @@ namespace engine {
 	Resource* TextureKey::loadResource(ResourceManager& manager) const {
 		std::string textureName = getName();
 
-		Texture* texture = new Texture(textureName, &manager);
-
 		FileStream fileStream("resources/images/" + textureName + ".texture");
 		ResourceBinStream resourceStream(fileStream);
 
-		Image* image = (Image*)TextureUtils::read(resourceStream, manager, 0);
-
-		TextureEvent event;
-		event.type = "texture";
-		event.image = image;
-		event.texture = texture;
-
-		manager.dispatchLoadedEvent(event);
-
-		delete image;
+		Texture* texture = (Texture*)TextureUtils::read(resourceStream, manager, 0);
 
 		return texture;
 	}

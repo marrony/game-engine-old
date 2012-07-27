@@ -23,26 +23,24 @@
 
 namespace engine {
 
-	enum FrequencyAccess {
-		FAStream, Static, Dynamic
+	enum class FrequencyAccess : unsigned char {
+		Stream, Static, Dynamic
 	};
 
-	enum NatureAccess {
+	enum class NatureAccess : unsigned char {
 		Draw, Read, Copy
 	};
 
-	enum BufferType {
+	enum class BufferType : unsigned char {
 		VertexBuffer, IndexBuffer
 	};
 
-	struct Blend {
-		enum Equation {
-			ADD,              // Result = (Source Color * Source Blend) + (Destination Color * Destination Blend)
-			SUBTRACT,         // Result = (Source Color * Source Blend) - (Destination Color * Destination Blend)
-			REVERSE_SUBTRACT, // Result = (Destination Color * Destination Blend) - (Source Color * Source Blend)
-			MIN,              // Result = min( (Source Color * Source Blend), (Destination Color * Destination Blend) )
-			MAX               // Result = max( (Source Color * Source Blend), (Destination Color * Destination Blend) )
-		};
+	enum class BlendEquation : unsigned char {
+		Add,              // Result = (Source Color * Source Blend) + (Destination Color * Destination Blend)
+		Subtract,         // Result = (Source Color * Source Blend) - (Destination Color * Destination Blend)
+		ReverseSubtract,  // Result = (Destination Color * Destination Blend) - (Source Color * Source Blend)
+		Min,              // Result = min( (Source Color * Source Blend), (Destination Color * Destination Blend) )
+		Max               // Result = max( (Source Color * Source Blend), (Destination Color * Destination Blend) )
 	};
 
 	class GraphicManager : public ResourceListener {
@@ -124,7 +122,7 @@ namespace engine {
 
 		VIRTUAL void enableAditiveBlend();
 
-		VIRTUAL void blend(Blend::Equation blendEquation);
+		VIRTUAL void blend(BlendEquation blendEquation);
 
 		VIRTUAL void blend(int sfactor, int dfactor);
 
@@ -196,11 +194,11 @@ namespace engine {
 			TextureFormat format;
 		};
 
-		Resources<Tex> textures0;
-		Texture* textures[16];
+		Resources<Tex> textures;
+		Texture* texturesUsed[16];
 		std::string textureName[16];
-		int usedTextures;
-		int lastUsedTextures;
+		int usedTexturesSlots;
+		int lastUsedTexturesSlots;
 
 		VIRTUAL int createTexture2D();
 		VIRTUAL void destroyTexture(int handle);

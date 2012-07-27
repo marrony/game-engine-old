@@ -252,18 +252,12 @@ namespace engine {
 		stream.popGroup();
 	}
 
-	Resource* EffectKey::loadResource(class ResourceManager& manager) const {
+	Resource* EffectKey::loadResource(ResourceManager& manager) const {
 		std::string effectName = getName();
 
 		FileStream fileStream("resources/materials/" + effectName + ".effect");
 		ResourceBinStream resourceStream(fileStream);
 		Effect* effect = (Effect*)EffectUtils::read(resourceStream, manager, 0);
-
-		EffectEvent event;
-		event.type = "effect";
-		event.effect = effect;
-
-		manager.dispatchLoadedEvent(event);
 
 		return effect;
 	}

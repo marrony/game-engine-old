@@ -79,10 +79,6 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
-	struct SceneEvent : public ResourceEvent {
-		Scene* scene;
-	};
-
 	class SceneKey : public ResourceKey {
 	public:
 		SceneKey(const std::string& name) : ResourceKey(name) {}

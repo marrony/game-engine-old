@@ -116,12 +116,6 @@ namespace engine {
 
 		Material* material = (Material*)MaterialUtils::read(resourceStream, manager, 0);
 
-		MaterialEvent event;
-		event.type = "material";
-		event.material = material;
-
-		manager.dispatchLoadedEvent(event);
-
 		return material;
 	}
 

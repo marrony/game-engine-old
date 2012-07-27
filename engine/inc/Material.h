@@ -50,10 +50,6 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
-	struct MaterialEvent : public ResourceEvent {
-		Material* material;
-	};
-
 	class MaterialKey : public ResourceKey {
 	public:
 		MaterialKey(const std::string& name) : ResourceKey(name) {}

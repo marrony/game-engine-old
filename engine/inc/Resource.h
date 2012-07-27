@@ -136,6 +136,7 @@ namespace engine {
 
 	struct ResourceEvent {
 		std::string type;
+		Resource* resource;
 	};
 
 	struct ResourceListener {

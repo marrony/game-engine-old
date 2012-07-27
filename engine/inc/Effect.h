@@ -131,10 +131,6 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
-	struct EffectEvent : public ResourceEvent {
-		Effect* effect;
-	};
-
 	class EffectKey : public ResourceKey {
 	public:
 		EffectKey(const std::string& name) : ResourceKey(name) {}

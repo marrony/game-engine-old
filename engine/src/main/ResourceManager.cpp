@@ -29,6 +29,12 @@ namespace engine {
 			resource = entry->second.resource;
 		else {
 			resource = key.loadResource(*this);
+
+			ResourceEvent event;
+			event.type = resource->getType().getName();
+			event.resource = resource;
+			dispatchLoadedEvent(event);
+
 			entry = resources.insert({resourceName, {resource, 0}}).first;
 		}
 
@@ -45,6 +51,11 @@ namespace engine {
 		if(entry == resources.end()) return;
 
 		if(--entry->second.count > 0) return;
+
+		ResourceEvent event;
+		event.type = resource->getType().getName();
+		event.resource = resource;
+		dispatchUnloadedEvent(event);
 
 		delete entry->second.resource;
 

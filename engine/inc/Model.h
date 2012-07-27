@@ -280,10 +280,6 @@ namespace engine {
 		static void write(ResourceStream&, class ResourceManager&, void*);
 	};
 
-	struct ModelEvent : public ResourceEvent {
-		Model* model;
-	};
-
 	class ModelKey : public ResourceKey {
 	public:
 		ModelKey(const std::string& name) : ResourceKey(name) {}

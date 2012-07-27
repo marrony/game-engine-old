@@ -429,12 +429,6 @@ namespace engine {
 		ResourceBinStream resourceStream(fileStream);
 		Scene* scene = (Scene*)SceneUtils::read(resourceStream, manager, 0);
 
-		SceneEvent event;
-		event.type = "scene";
-		event.scene = scene;
-
-		manager.dispatchLoadedEvent(event);
-
 		return scene;
 	}
 

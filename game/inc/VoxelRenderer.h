@@ -81,7 +81,7 @@ public:
 		if(!initialized) {
 			initialized = true;
 
-			depthTexture = new engine::Texture(new engine::TextureUnsignedNormalizedFormat(engine::TextureFormat::DEPTH, 24), 512, 512);
+			depthTexture = new engine::Texture(new engine::TextureUnsignedNormalizedFormat(engine::TextureFormat::Depth, 24), 512, 512);
 			openclTexture = new engine::Texture(new engine::TextureUnsignedNormalizedFormat(engine::TextureFormat::RGBA, 16), 512, 512);
 
 			cl_int ret;

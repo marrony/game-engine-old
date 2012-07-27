@@ -104,7 +104,7 @@ namespace engine {
 	}
 
 	ModelData::ModelData() :
-			vertexBuffer(0), indexBuffer(0) {
+			vertexBuffer(0), indexBuffer(0), graphicManager(0) {
 	}
 
 	ModelData::~ModelData() {
@@ -573,12 +573,6 @@ namespace engine {
 		FileStream fileStream("resources/scene/" + modelName + ".model");
 		ResourceBinStream resourceStream(fileStream);
 		Model* model = (Model*) ModelUtils::read(resourceStream, manager, 0);
-
-		ModelEvent event;
-		event.type = "model";
-		event.model = model;
-
-		manager.dispatchLoadedEvent(event);
 
 		return model;
 	}

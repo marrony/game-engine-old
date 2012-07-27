@@ -18,14 +18,14 @@ namespace engine {
 	GraphicManager::GraphicManager() :
 			width(0), height(0), framebuffer(0), shader(0) {
 		usedAttributes = 0;
-		usedTextures = 0;
+		usedTexturesSlots = 0;
 		lastUsedAttributes = 0;
-		lastUsedTextures = 0;
+		lastUsedTexturesSlots = 0;
 		flags = 0;
 		vertexBuffer = 0;
 		indexBuffer = 0;
 
-		memset(textures, 0, sizeof(textures));
+		memset(texturesUsed, 0, sizeof(texturesUsed));
 	}
 
 	GraphicManager::~GraphicManager() {
@@ -57,10 +57,10 @@ namespace engine {
 			for(int i = 0; i < 16; ++i) {
 				int mask = (1 << i);
 
-				if(usedTextures & mask) {
+				if(usedTexturesSlots & mask) {
 					shader->getConstant(textureName[i])->setValue(i);
 
-					Tex& tex = textures0.get(textures[i]->handle);
+					Tex& tex = textures.get(texturesUsed[i]->getHandle());
 
 					glActiveTexture(GL_TEXTURE0 + i);
 					#ifndef ANDROID
@@ -73,7 +73,7 @@ namespace engine {
 			for(int i = 0; i < 16; ++i) {
 				int mask = (1 << i);
 
-				if(!(usedTextures & mask) && (lastUsedTextures & mask)) {
+				if(!(usedTexturesSlots & mask) && (lastUsedTexturesSlots & mask)) {
 					glActiveTexture(GL_TEXTURE0 + i);
 					#ifndef ANDROID
 					//glClientActiveTexture(GL_TEXTURE0 + i);
@@ -82,8 +82,8 @@ namespace engine {
 				}
 			}
 
-			lastUsedTextures = usedTextures;
-			usedTextures = 0;
+			lastUsedTexturesSlots = usedTexturesSlots;
+			usedTexturesSlots = 0;
 		}
 
 		if(flags & AttributesAltered) {
@@ -205,29 +205,29 @@ namespace engine {
 		blend(GL_ONE, GL_ONE);
 	}
 
-	void GraphicManager::blend(Blend::Equation blendEquation) {
+	void GraphicManager::blend(BlendEquation blendEquation) {
 		glEnable(GL_BLEND);
 
 		switch(blendEquation) {
-		case Blend::ADD:
+		case BlendEquation::Add:
 			glBlendEquation(GL_FUNC_ADD);
 			break;
 
-		case Blend::SUBTRACT:
+		case BlendEquation::Subtract:
 			glBlendEquation(GL_FUNC_SUBTRACT);
 			break;
 
-		case Blend::REVERSE_SUBTRACT:
+		case BlendEquation::ReverseSubtract:
 			glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 			break;
 
-		case Blend::MIN:
+		case BlendEquation::Min:
 #ifndef ANDROID
 			glBlendEquation(GL_MIN);
 #endif
 			break;
 
-		case Blend::MAX:
+		case BlendEquation::Max:
 #ifndef ANDROID
 			glBlendEquation(GL_MAX);
 #endif
@@ -352,9 +352,9 @@ namespace engine {
 		for(int i = 0; i < 16; i++) {
 			int mask = (1 << i);
 
-			if(!(usedTextures & mask)) {
-				usedTextures |= mask;
-				textures[i] = texture;
+			if(!(usedTexturesSlots & mask)) {
+				usedTexturesSlots |= mask;
+				texturesUsed[i] = texture;
 				textureName[i] = name;
 				break;
 			}
@@ -392,28 +392,32 @@ namespace engine {
 
 	void GraphicManager::onResourceLoaded(const ResourceEvent& event) {
 		if(event.type == "texture") {
-			const TextureEvent& textureEvent = static_cast<const TextureEvent&>(event);
+			Texture* texture = (Texture*)event.resource;
 
-			Texture* texture = textureEvent.texture;
-			Image* image = textureEvent.image;
+			texture->setHandle(createTexture2D());
 
-			texture->handle = createTexture2D();
+			TextureFormat format = texture->getDepth() == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
 
-			TextureFormat format = image->getDepth() == 3 ? TextureFormat::RGB8 : TextureFormat::RGBA8;
+			setTextureData(texture->getHandle(), texture->getWidth(), texture->getHeight(), texture->getDepth(), format, texture->getData());
 
-			setTextureData(texture->handle, image->getWidth(), image->getHeight(), image->getDepth(), format, image->getData());
+			texture->markUploaded();
 		} else if(event.type == "effect") {
-			const EffectEvent& effectEvent = static_cast<const EffectEvent&>(event);
+			Effect* effect = (Effect*)event.resource;
 
-			effectEvent.effect->finalizeInitialization();
+			effect->finalizeInitialization();
 		} else if(event.type == "model") {
-			const ModelEvent& modelEvent = static_cast<const ModelEvent&>(event);
+			Model* model = (Model*)event.resource;
 
-			modelEvent.model->uploadData(this);
+			model->uploadData(this);
 		}
 	}
 
 	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
+		if(event.type == "texture") {
+			Texture* texture = (Texture*)event.resource;
+
+			destroyTexture(texture->getHandle());
+		}
 	}
 
 	int GraphicManager::createTexture2D() {
@@ -422,26 +426,26 @@ namespace engine {
 		tex.type = Texture2D;
 		tex.height = 0;
 		tex.width = 0;
-		tex.format = TextureFormat::NONE;
+		tex.format = TextureFormat::None;
 
 		glGenTextures(1, &tex.texId);
 
-		return textures0.add(tex);
+		return textures.add(tex);
 	}
 
 	void GraphicManager::destroyTexture(int handle) {
 		if(handle == 0) return;
 
-		Tex& tex = textures0.get(handle);
+		Tex& tex = textures.get(handle);
 		glDeleteTextures(1, &tex.texId);
 
-		textures0.remove(handle);
+		textures.remove(handle);
 	}
 
 	void GraphicManager::setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data) {
 		if(handle == 0) return;
 
-		Tex& tex = textures0.get(handle);
+		Tex& tex = textures.get(handle);
 
 		tex.width = width;
 		tex.height = height;
@@ -473,27 +477,27 @@ namespace engine {
 		}
 
 		switch(format) {
-			case TextureFormat::RGB8:
+			case TextureFormat::Rgb8:
 				internalFormat = GL_RGB;
 				break;
 
-			case TextureFormat::RGBA8:
+			case TextureFormat::Rgba8:
 				internalFormat = GL_RGBA;
 				break;
 
 #ifndef ANDROID
-			case TextureFormat::RGBA16F:
+			case TextureFormat::Rgba16Float:
 				pixelType = GL_FLOAT;
 				internalFormat = GL_RGBA16F;
 				break;
 
-			case TextureFormat::RGBA32F:
+			case TextureFormat::Rgba32Float:
 				pixelType = GL_FLOAT;
 				internalFormat = GL_RGBA32F;
 				break;
 #endif
 
-			case TextureFormat::DEPTH:
+			case TextureFormat::Depth:
 				break;
 
 			default:
@@ -522,13 +526,13 @@ namespace engine {
 	}
 
 	int getUsage(FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
-		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Draw)
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Draw)
 			return GL_STREAM_DRAW;
 
-		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Read)
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Read)
 			return GL_STREAM_READ;
 
-		if(frequencyAccess == FrequencyAccess::FAStream && natureAccess == NatureAccess::Copy)
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Copy)
 			return GL_STREAM_COPY;
 
 		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Draw)
