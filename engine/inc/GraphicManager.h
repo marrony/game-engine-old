@@ -12,6 +12,7 @@
 #include <string>
 
 #include "definitions.h"
+#include "GraphicManagerExtra.h"
 #include "math/Vector.h"
 #include "Framebuffer.h"
 #include "Shader.h"
@@ -23,55 +24,73 @@
 
 namespace engine {
 
-	enum class FrequencyAccess : unsigned char {
-		Stream, Static, Dynamic
+	template<typename T>
+	struct Resources {
+		std::vector<T> resources;
+		std::vector<int> free;
+
+		int add(const T& resource) {
+			if(!free.empty()) {
+				int handle = free.back();
+				free.pop_back();
+
+				resources[handle] = resource;
+				return handle + 1;
+			}
+
+			resources.push_back(resource);
+			return resources.size();
+		}
+
+		void remove(int handle) {
+			if(handle == 0) return;
+			free.push_back(--handle);
+		}
+
+		T& get(int handle) {
+			return resources[--handle];
+		}
 	};
 
-	enum class NatureAccess : unsigned char {
-		Draw, Read, Copy
+	class TextureManager {
+	public:
+		struct Tex {
+			unsigned int texId;
+			int width;
+			int height;
+			int depth;
+			TexType type;
+			TextureFormat format;
+		};
+
+		Resources<Tex> textures;
+
+		VIRTUAL int createTexture2D();
+		VIRTUAL void destroyTexture(int handle);
+		VIRTUAL void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
 	};
 
-	enum class BufferType : unsigned char {
-		VertexBuffer, IndexBuffer
-	};
+	class BufferManager {
+	public:
+		struct Buffer {
+			unsigned int bufferId;
+			int count;
+			int target;
+			int usage;
+			BufferType bufferType;
+			FrequencyAccess frequencyAccess;
+			NatureAccess natureAccess;
+		};
 
-	enum class BlendEquation : unsigned char {
-		Add,              // Result = (Source Color * Source Blend) + (Destination Color * Destination Blend)
-		Subtract,         // Result = (Source Color * Source Blend) - (Destination Color * Destination Blend)
-		ReverseSubtract,  // Result = (Destination Color * Destination Blend) - (Source Color * Source Blend)
-		Min,              // Result = min( (Source Color * Source Blend), (Destination Color * Destination Blend) )
-		Max               // Result = max( (Source Color * Source Blend), (Destination Color * Destination Blend) )
+		Resources<Buffer> buffers;
+
+		VIRTUAL int createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
+		VIRTUAL void destroyBuffer(int handle);
+		VIRTUAL void* mapBuffer(int handle, AccessType accessType);
+		VIRTUAL void unmapBuffer(int handle);
 	};
 
 	class GraphicManager : public ResourceListener {
-		template<typename T>
-		struct Resources {
-			std::vector<T> resources;
-			std::vector<int> free;
-
-			int add(const T& resource) {
-				if(!free.empty()) {
-					int handle = free.back();
-					free.pop_back();
-
-					resources[handle] = resource;
-					return handle + 1;
-				}
-
-				resources.push_back(resource);
-				return resources.size();
-			}
-
-			void remove(int handle) {
-				if(handle == 0) return;
-				free.push_back(--handle);
-			}
-
-			T& get(int handle) {
-				return resources[--handle];
-			}
-		};
-
 		enum PendingFlags {
 			VertexBufferAltered = 0x01,
 			IndexBufferAltered  = 0x02,
@@ -102,6 +121,14 @@ namespace engine {
 		int lastUsedAttributes;
 		int usedAttributes;
 		Attribs attribs[AttributeOffset::MaxAttributeOffset];
+
+		Texture* texturesUsed[16];
+		std::string textureName[16];
+		int usedTexturesSlots;
+		int lastUsedTexturesSlots;
+
+		ConstantContext context;
+		std::vector<ConstantsEnabled> constants;
 
 		void commitModifications();
 	public:
@@ -167,8 +194,6 @@ namespace engine {
 
 		VIRTUAL void setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride);
 
-		ConstantContext context;
-		std::vector<ConstantsEnabled> constants;
 		VIRTUAL void setConstant(ConstantContext& context, std::vector<ConstantsEnabled>& constants) {
 			this->context = context;
 			this->constants = constants;
@@ -176,50 +201,11 @@ namespace engine {
 			flags |= ConstantsAltered;
 		}
 
-		enum TexType {
-			Texture2D = GL_TEXTURE_2D,
-			Texture3D = GL_TEXTURE_3D,
-			TextureCube = GL_TEXTURE_CUBE_MAP
-		};
-
 		virtual void onResourceLoaded(const ResourceEvent& event);
 		virtual void onResourceUnloaded(const ResourceEvent& event);
 
-		struct Tex {
-			unsigned int texId;
-			int width;
-			int height;
-			int depth;
-			TexType type;
-			TextureFormat format;
-		};
-
-		Resources<Tex> textures;
-		Texture* texturesUsed[16];
-		std::string textureName[16];
-		int usedTexturesSlots;
-		int lastUsedTexturesSlots;
-
-		VIRTUAL int createTexture2D();
-		VIRTUAL void destroyTexture(int handle);
-		VIRTUAL void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
-
-		struct Buffer {
-			unsigned int bufferId;
-			int count;
-			int target;
-			int usage;
-			BufferType bufferType;
-			FrequencyAccess frequencyAccess;
-			NatureAccess natureAccess;
-		};
-
-		Resources<Buffer> buffers;
-
-		VIRTUAL int createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
-		VIRTUAL void destroyBuffer(int handle);
-		VIRTUAL void* mapBuffer(int handle, AccessType accessType);
-		VIRTUAL void unmapBuffer(int handle);
+		TextureManager textureManager;
+		BufferManager bufferManager;
 	};
 
 }

@@ -104,29 +104,23 @@ namespace engine {
 	}
 
 	ModelData::ModelData() :
-			vertexBuffer(0), indexBuffer(0), graphicManager(0) {
+			vertexBuffer(0), indexBuffer(0) {
 	}
 
 	ModelData::~ModelData() {
-		if(graphicManager) {
-			graphicManager->destroyBuffer(vertexBuffer);
-			graphicManager->destroyBuffer(indexBuffer);
-		}
 	}
 
 	void ModelData::uploadData(GraphicManager* graphicManager) {
-		this->graphicManager = graphicManager;
-
 		calculateAttributeOffsetsAndElementsPerVertex();
 
-		vertexBuffer = graphicManager->createBuffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
-		indexBuffer = graphicManager->createBuffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
+		vertexBuffer = graphicManager->bufferManager.createBuffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
+		indexBuffer = graphicManager->bufferManager.createBuffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer, FrequencyAccess::Static, NatureAccess::Draw);
 
-		void* indexPtr = graphicManager->mapBuffer(indexBuffer, AccessType::WriteOnly);
+		void* indexPtr = graphicManager->bufferManager.mapBuffer(indexBuffer, AccessType::WriteOnly);
 		memcpy(indexPtr, indices.data(), indices.size() * sizeof(unsigned short));
-		graphicManager->unmapBuffer(indexBuffer);
+		graphicManager->bufferManager.unmapBuffer(indexBuffer);
 
-		float* vertexPtr = (float*) graphicManager->mapBuffer(vertexBuffer, AccessType::WriteOnly);
+		float* vertexPtr = (float*) graphicManager->bufferManager.mapBuffer(vertexBuffer, AccessType::WriteOnly);
 		float* begin = vertexPtr;
 
 		for(size_t i = 0; i < position.size(); i++) {
@@ -196,7 +190,12 @@ namespace engine {
 			}
 		}
 
-		graphicManager->unmapBuffer(vertexBuffer);
+		graphicManager->bufferManager.unmapBuffer(vertexBuffer);
+	}
+
+	void ModelData::unloadData(GraphicManager* graphicManager) {
+		graphicManager->bufferManager.destroyBuffer(vertexBuffer);
+		graphicManager->bufferManager.destroyBuffer(indexBuffer);
 	}
 
 	void ModelData::calculateAttributeOffsetsAndElementsPerVertex() {
@@ -322,6 +321,10 @@ namespace engine {
 
 	void Model::uploadData(GraphicManager* graphicManager) {
 		modelData->uploadData(graphicManager);
+	}
+
+	void Model::unloadData(GraphicManager* graphicManager) {
+		modelData->unloadData(graphicManager);
 	}
 
 	void* ModelUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {

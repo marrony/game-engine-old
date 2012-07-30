@@ -8,10 +8,85 @@
 #include "Texture.h"
 #include "Image.h"
 #include "ResourceManager.h"
+#include "GraphicManager.h"
 #include "Exception.h"
 #include "Stream.h"
 
 namespace engine {
+
+	void Texture::cleanData() {
+		if(data) {
+			delete[] data;
+			data = 0;
+		}
+	}
+
+	Texture::Texture(const std::string& name, ResourceManager* manager) :
+			Resource(name, manager), handle(0) {
+	}
+
+	Texture::~Texture() {
+		cleanData();
+	}
+
+	Type Texture::getType() const {
+		return Type("texture");
+	}
+
+	void Texture::markUploaded() {
+		uploaded = true;
+		cleanData();
+	}
+
+	void Texture::setHandle(int handle) {
+		this->handle = handle;
+	}
+
+	int Texture::getHandle() const {
+		return handle;
+	}
+
+	const void* Texture::getData() const {
+		return data;
+	}
+
+	int Texture::getWidth() const {
+		return width;
+	}
+
+	int Texture::getHeight() const {
+		return height;
+	}
+
+	int Texture::getDepth() const {
+		return depth;
+	}
+
+	void Texture::setData(int width, int height, int depth, const void* data) {
+		this->width = width;
+		this->height = height;
+		this->depth = depth;
+
+		size_t size = width * height * depth;
+
+		this->data = new char[size];
+		memcpy(this->data, data, size * sizeof(char));
+	}
+
+	void Texture::initialize(GraphicManager* graphicManager) {
+		handle = graphicManager->textureManager.createTexture2D();
+
+		TextureFormat format = depth == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
+
+		graphicManager->textureManager.setTextureData(handle, width, height, depth, format, data);
+
+		markUploaded();
+	}
+
+	void Texture::finalize(GraphicManager* graphicManager) {
+		graphicManager->textureManager.destroyTexture(handle);
+	}
+
 
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("texture");

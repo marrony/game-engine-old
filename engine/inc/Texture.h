@@ -9,6 +9,7 @@
 #define TEXTURE_H_
 
 #include "Resource.h"
+#include "GraphicManagerExtra.h"
 
 namespace engine {
 
@@ -23,7 +24,7 @@ namespace engine {
 		Depth
 	};
 
-	class Texture : public Resource {
+	class Texture : public Resource, public Initializable, public Finalizable {
 		int width;
 		int height;
 		int depth;
@@ -31,64 +32,32 @@ namespace engine {
 		char* data;
 		int handle;
 
-		void cleanData() {
-			if(data) {
-				delete[] data;
-				data = 0;
-			}
-		}
+		void cleanData();
 	public:
-		Texture(const std::string& name, ResourceManager* manager) :
-				Resource(name, manager), handle(0) {
-		}
+		Texture(const std::string& name, ResourceManager* manager);
 
-		virtual ~Texture() {
-			cleanData();
-		}
+		virtual ~Texture();
 
-		virtual Type getType() const {
-			return Type("texture");
-		}
+		virtual Type getType() const;
 
-		void markUploaded() {
-			uploaded = true;
-			cleanData();
-		}
+		void markUploaded();
 
-		void setHandle(int handle) {
-			this->handle = handle;
-		}
+		void setHandle(int handle);
 
-		int getHandle() const {
-			return handle;
-		}
+		int getHandle() const;
 
-		const void* getData() const {
-			return data;
-		}
+		const void* getData() const;
 
-		int getWidth() const {
-			return width;
-		}
+		int getWidth() const;
 
-		int getHeight() const {
-			return height;
-		}
+		int getHeight() const;
 
-		int getDepth() const {
-			return depth;
-		}
+		int getDepth() const;
 
-		void setData(int width, int height, int depth, const void* data) {
-			this->width = width;
-			this->height = height;
-			this->depth = depth;
+		void setData(int width, int height, int depth, const void* data);
 
-			size_t size = width * height * depth;
-
-			this->data = new char[size];
-			memcpy(this->data, data, size * sizeof(char));
-		}
+		virtual void initialize(GraphicManager* graphicManager);
+		virtual void finalize(GraphicManager* graphicManager);
 
 		friend class TextureUtils;
 	};

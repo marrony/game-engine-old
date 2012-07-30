@@ -14,22 +14,22 @@
 
 namespace engine {
 
+	class Connection {
+	};
+
 	template<typename T>
 	class TypedEvent {
 		std::vector<std::function<void(void*, T)>> handlers;
 	public:
 		TypedEvent() : handlers() { }
 
-		void operator+=(std::function<void(void*, T)> eventHandler) {
+		//TODO Retornar um objeto (Connections) para poder remover
+		Connection operator+=(std::function<void(void*, T)> eventHandler) {
 			handlers.push_back(eventHandler);
 		}
 
-		void operator-=(std::function<void(void*, T)> eventHandler) {
-			auto ite = std::find(handlers.begin(), handlers.end(), eventHandler);
-
-			if(ite != handlers.end()) {
-				handlers.erase(ite);
-			}
+		//TODO Remover a conexao
+		void operator-=(const Connection& connection) {
 		}
 
 		void operator()(void* sender, T event) {

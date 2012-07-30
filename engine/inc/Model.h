@@ -189,6 +189,7 @@ namespace engine {
 		ModelData();
 		~ModelData();
 		void uploadData(GraphicManager* graphicManager);
+		void unloadData(GraphicManager* graphicManager);
 		void calculateAttributeOffsetsAndElementsPerVertex();
 		void calculateTangent();
 		void calculateNormal();
@@ -217,7 +218,6 @@ namespace engine {
 
 		AABoundingBox aabbox;
 
-		GraphicManager* graphicManager;
 		int vertexBuffer;
 		int indexBuffer;
 	};
@@ -261,6 +261,7 @@ namespace engine {
 		}
 
 		void uploadData(class GraphicManager* graphicManager);
+		void unloadData(class GraphicManager* graphicManager);
 
 		static const Type TYPE;
 

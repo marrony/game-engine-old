@@ -858,22 +858,32 @@ inline _Tp* make(_Args&&... __args) {
 }
 
 typedef std::function<double(double)> F;
+typedef std::function<double(const F&, double)> DFdx;
 
 double derivada(const F& f, double x) {
 	double h = 0.0000000001;
 
+#if 0
 	double a = f(x + h);
-	double b = f(x);
+	double b = f(x - h);
 
-	return (a - b) / h;
+	return (a - b) / (2*h);
+#else
+	double a = f(x - 2*h);
+	double b = f(x - h);
+	double c = f(x + h);
+	double d = f(x + 2*h);
+
+	return (a - 8*b + 8*c - d) / (12*h);
+#endif
 }
 
-double newtonRaphson(const F& f) {
+double newtonRaphson(const F& f, const DFdx& dfdx = derivada) {
 	double x0 = 1;
 
 	while(true) {
 		double fx = f(x0);
-		double dfx = derivada(f, x0);
+		double dfx = dfdx(f, x0);
 		double x1 = x0 - (fx / dfx);
 
 		if(x0 == x1) break;

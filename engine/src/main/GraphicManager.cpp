@@ -60,7 +60,7 @@ namespace engine {
 				if(usedTexturesSlots & mask) {
 					shader->getConstant(textureName[i])->setValue(i);
 
-					Tex& tex = textures.get(texturesUsed[i]->getHandle());
+					TextureManager::Tex& tex = textureManager.textures.get(texturesUsed[i]->getHandle());
 
 					glActiveTexture(GL_TEXTURE0 + i);
 					#ifndef ANDROID
@@ -394,13 +394,7 @@ namespace engine {
 		if(event.type == "texture") {
 			Texture* texture = (Texture*)event.resource;
 
-			texture->setHandle(createTexture2D());
-
-			TextureFormat format = texture->getDepth() == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
-
-			setTextureData(texture->getHandle(), texture->getWidth(), texture->getHeight(), texture->getDepth(), format, texture->getData());
-
-			texture->markUploaded();
+			texture->initialize(this);
 		} else if(event.type == "effect") {
 			Effect* effect = (Effect*)event.resource;
 
@@ -416,14 +410,18 @@ namespace engine {
 		if(event.type == "texture") {
 			Texture* texture = (Texture*)event.resource;
 
-			destroyTexture(texture->getHandle());
+			texture->finalize(this);
+		} else if(event.type == "model") {
+			Model* model = (Model*)event.resource;
+
+			model->unloadData(this);
 		}
 	}
 
-	int GraphicManager::createTexture2D() {
-		Tex tex;
+	int TextureManager::createTexture2D() {
+		TextureManager::Tex tex;
 
-		tex.type = Texture2D;
+		tex.type = TexType::Texture2D;
 		tex.height = 0;
 		tex.width = 0;
 		tex.format = TextureFormat::None;
@@ -433,19 +431,19 @@ namespace engine {
 		return textures.add(tex);
 	}
 
-	void GraphicManager::destroyTexture(int handle) {
+	void TextureManager::destroyTexture(int handle) {
 		if(handle == 0) return;
 
-		Tex& tex = textures.get(handle);
+		TextureManager::Tex& tex = textures.get(handle);
 		glDeleteTextures(1, &tex.texId);
 
 		textures.remove(handle);
 	}
 
-	void GraphicManager::setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data) {
+	void TextureManager::setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data) {
 		if(handle == 0) return;
 
-		Tex& tex = textures.get(handle);
+		TextureManager::Tex& tex = textures.get(handle);
 
 		tex.width = width;
 		tex.height = height;
@@ -455,8 +453,24 @@ namespace engine {
 		int textureUnit = 15;
 		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &textureUnit);
 
+		GLenum type;
+
+		switch(tex.type) {
+			case TexType::Texture2D:
+				type = GL_TEXTURE_2D;
+				break;
+
+			case TexType::Texture3D:
+				type = GL_TEXTURE_3D;
+				break;
+
+			case TexType::TextureCube:
+				type = GL_TEXTURE_CUBE_MAP;
+				break;
+		}
+
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
-		glBindTexture(tex.type, tex.texId);
+		glBindTexture(type, tex.texId);
 
 		int pixelType = data == 0 ? GL_FLOAT : GL_UNSIGNED_BYTE;
 
@@ -504,13 +518,13 @@ namespace engine {
 				throw Exception("Unknow format");
 		}
 
-		glTexParameteri(tex.type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(tex.type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameterf(tex.type, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameterf(tex.type, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexImage2D(tex.type, 0, internalFormat, width, height, 0, pixelFormat, pixelType, data);
+		glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(type, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(type, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(type, 0, internalFormat, width, height, 0, pixelFormat, pixelType, data);
 
-		glBindTexture(tex.type, 0);
+		glBindTexture(type, 0);
 	}
 
 	int getTarget(BufferType type) {
@@ -569,7 +583,7 @@ namespace engine {
 		return 0;
 	}
 
-	int GraphicManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
+	int BufferManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
 		Buffer buffer;
 
 		buffer.count = count;
@@ -586,7 +600,7 @@ namespace engine {
 		return buffers.add(buffer);
 	}
 
-	void GraphicManager::destroyBuffer(int handle) {
+	void BufferManager::destroyBuffer(int handle) {
 		if(!handle) return;
 
 		Buffer& buffer = buffers.get(handle);
@@ -596,7 +610,7 @@ namespace engine {
 		buffers.remove(handle);
 	}
 
-	void* GraphicManager::mapBuffer(int handle, AccessType accessType) {
+	void* BufferManager::mapBuffer(int handle, AccessType accessType) {
 		if(!handle) return 0;
 
 		Buffer& buffer = buffers.get(handle);
@@ -604,7 +618,7 @@ namespace engine {
 		return glMapBuffer(buffer.target, getAccess(accessType));
 	}
 
-	void GraphicManager::unmapBuffer(int handle) {
+	void BufferManager::unmapBuffer(int handle) {
 		if(!handle) return;
 
 		Buffer& buffer = buffers.get(handle);
