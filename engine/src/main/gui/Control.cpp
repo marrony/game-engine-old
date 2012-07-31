@@ -27,17 +27,17 @@ namespace engine {
 			isMouseOver = rect.contains(mouseState.x, mouseState.y);
 
 			if(isMouseOver)
-				onMouseOver(this, MouseEvent(mouseState));
+				onMouseOver(MouseEvent(mouseState));
 
 			if(!isPressed) {
 				if(mouseState.leftKey == MouseState::PRESSED && isMouseOver) {
 					isPressed = true;
-					onPressed(this, MouseEvent(mouseState));
+					onPressed(MouseEvent(mouseState));
 				}
 			} else {
 				if(mouseState.leftKey == MouseState::RELESEAD) {
 					isPressed = false;
-					onReleased(this, MouseEvent(mouseState));
+					onReleased(MouseEvent(mouseState));
 				}
 			}
 		}
@@ -70,7 +70,7 @@ namespace engine {
 		void Control::resize(const Size& size) {
 			rect.resize(size);
 
-			onResize(this, ResizeEvent());
+			onResize(ResizeEvent());
 		}
 
 		void Control::setParent(Control* parent) {

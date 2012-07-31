@@ -42,15 +42,15 @@ namespace engine {
 
 		resourceManager->addListener(graphicManager);
 
-		window->onKeyUp += [=](void* sender, KeyEvent event) {
+		window->onKeyUp += [=](KeyEvent event) {
 			keyboardManager->keyUp(event.keyCode);
 		};
 
-		window->onKeyDown += [=](void* sender, KeyEvent event) {
+		window->onKeyDown += [=](KeyEvent event) {
 			keyboardManager->keyDown(event.keyCode);
 		};
 
-		window->onResize += [=](void* sender, ResizeEvent event) {
+		window->onResize += [=](ResizeEvent event) {
 			graphicManager->resize(event.width, event.height);
 		};
 

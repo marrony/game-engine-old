@@ -53,49 +53,49 @@ namespace engine {
 		VIRTUAL void setMousePosition(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
-			onMouseMove(this, MouseEvent(getMouseState()));
+			onMouseMove(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseLeftDown(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.leftKey = MouseState::PRESSED;
-			onMouseDown(this, MouseEvent(getMouseState()));
+			onMouseDown(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseLeftUp(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.leftKey = MouseState::RELESEAD;
-			onMouseUp(this, MouseEvent(getMouseState()));
+			onMouseUp(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseLeftDoubleClick(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.leftKey = MouseState::DOUBLE_PRESSED;
-			onDoubleClick(this, MouseEvent(getMouseState()));
+			onDoubleClick(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseRightDown(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.rightKey = MouseState::PRESSED;
-			onMouseDown(this, MouseEvent(getMouseState()));
+			onMouseDown(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseRightUp(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.rightKey = MouseState::RELESEAD;
-			onMouseUp(this, MouseEvent(getMouseState()));
+			onMouseUp(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL void mouseRightDoubleClick(int x, int y) {
 			mouseState.x = x;
 			mouseState.y = y;
 			mouseState.rightKey = MouseState::DOUBLE_PRESSED;
-			onDoubleClick(this, MouseEvent(getMouseState()));
+			onDoubleClick(MouseEvent(getMouseState()));
 		}
 
 		VIRTUAL MouseState getMouseState() {

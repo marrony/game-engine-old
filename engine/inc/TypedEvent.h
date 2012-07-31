@@ -17,14 +17,14 @@ namespace engine {
 	class Connection {
 	};
 
-	template<typename T>
+	template<typename... Args>
 	class TypedEvent {
-		std::vector<std::function<void(void*, T)>> handlers;
+		std::vector<std::function<void(Args...)>> handlers;
 	public:
 		TypedEvent() : handlers() { }
 
 		//TODO Retornar um objeto (Connections) para poder remover
-		Connection operator+=(std::function<void(void*, T)> eventHandler) {
+		Connection operator+=(const std::function<void(Args...)>& eventHandler) {
 			handlers.push_back(eventHandler);
 		}
 
@@ -32,9 +32,9 @@ namespace engine {
 		void operator-=(const Connection& connection) {
 		}
 
-		void operator()(void* sender, T event) {
+		void operator()(Args&&... args) {
 			for(auto& h : handlers) {
-				h(sender, event);
+				h(std::forward<Args>(args)...);
 			}
 		}
 	};

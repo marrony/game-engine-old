@@ -29,13 +29,13 @@ namespace engine {
 		VIRTUAL void keyUp(int key) {
 			keysPressed[key] = false;
 
-			onKeyUp(this, KeyEvent(key));
+			onKeyUp(KeyEvent(key));
 		}
 
 		VIRTUAL void keyDown(int key) {
 			keysPressed[key] = true;
 
-			onKeyDown(this, KeyEvent(key));
+			onKeyDown(KeyEvent(key));
 		}
 
 		VIRTUAL bool isKeyPressed(int key) {

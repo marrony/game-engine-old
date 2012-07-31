@@ -108,15 +108,15 @@ namespace engine {
 
 		switch(msg) {
 		case WM_SIZE:
-			onResize(this, ResizeEvent(LOWORD(lParam), HIWORD(lParam)));
+			onResize(ResizeEvent(LOWORD(lParam), HIWORD(lParam)));
 			break;
 
 		case WM_KEYDOWN:
-			onKeyDown(this, KeyEvent(wParam));
+			onKeyDown(KeyEvent(wParam));
 			break;
 
 		case WM_KEYUP:
-			onKeyUp(this, KeyEvent(wParam));
+			onKeyUp(KeyEvent(wParam));
 			break;
 
 		case WM_MOUSEMOVE:
