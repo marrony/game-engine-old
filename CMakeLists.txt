@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(Game CXX C)
 
+add_definitions(-D__GXX_EXPERIMENTAL_CXX0X__)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 	
 if(CMAKE_BUILD_TYPE STREQUAL "debug")
