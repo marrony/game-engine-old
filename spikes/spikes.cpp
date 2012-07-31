@@ -857,36 +857,38 @@ inline _Tp* make(_Args&&... __args) {
 	//return new _Tp(__args...);
 }
 
-typedef std::function<double(double)> F;
-typedef std::function<double(const F&, double)> DFdx;
+typedef std::function<float(float)> F;
+typedef std::function<float(const F&, float)> DFdx;
 
-double derivada(const F& f, double x) {
-	double h = 0.0000000001;
+float derivada(const F& f, float x) {
+	float h = 0.0005;
 
 #if 0
-	double a = f(x + h);
-	double b = f(x - h);
+	float a = f(x + h);
+	float b = f(x - h);
 
 	return (a - b) / (2*h);
 #else
-	double a = f(x - 2*h);
-	double b = f(x - h);
-	double c = f(x + h);
-	double d = f(x + 2*h);
+	float a = f(x - 2*h);
+	float b = f(x - h);
+	float c = f(x + h);
+	float d = f(x + 2*h);
 
 	return (a - 8*b + 8*c - d) / (12*h);
 #endif
 }
 
-double newtonRaphson(const F& f, const DFdx& dfdx = derivada) {
-	double x0 = 1;
+float newtonRaphson(const F& f, const DFdx& dfdx = derivada) {
+	float x0 = 1;
 
 	while(true) {
-		double fx = f(x0);
-		double dfx = dfdx(f, x0);
-		double x1 = x0 - (fx / dfx);
+		float fx = f(x0);
+		float dfx = dfdx(f, x0);
+		float x1 = x0 - (fx / dfx);
 
-		if(x0 == x1) break;
+		std::cout << x1 << std::endl;
+
+		if(std::abs(x1 - x0) / std::abs(x1) <= 1e-5) break;
 
 		x0 = x1;
 	}
@@ -894,32 +896,32 @@ double newtonRaphson(const F& f, const DFdx& dfdx = derivada) {
 	return x0;
 }
 
-double root(double b, double y) {
-	auto f = [=](double x) {
+float root(float b, float y) {
+	auto f = [=](float x) {
 		return std::pow(x, y) - b;
 	};
 
 	return newtonRaphson(f);
 }
 
-double sqRoot(double x) {
-	auto f = [=](double y) {
+float sqRoot(float x) {
+	auto f = [=](float y) {
 		return y*y - x;
 	};
 
 	return newtonRaphson(f);
 }
 
-double cuRoot(double x) {
-	auto f = [=](double y) {
+float cuRoot(float x) {
+	auto f = [=](float y) {
 		return y*y*y - x;
 	};
 
 	return newtonRaphson(f);
 }
 
-double cosX3() {
-	auto f = [=](double y) {
+float cosX3() {
+	auto f = [=](float y) {
 		return std::cos(y) - y*y*y;
 	};
 
@@ -927,11 +929,13 @@ double cosX3() {
 }
 
 int main(int argc, char* argv[]) {
-	auto f = [](double x) {
+	std::cout << sqRoot(2) << std::endl;
+
+	auto f = [](float x) {
 		return x*x;
 	};
 
-	std::cout << derivada((double(*)(double))std::cos, 2) << " " << std::sin(2) << std::endl;
+	std::cout << derivada((float(*)(float))std::cos, 2) << " " << std::sin(2) << std::endl;
 
 	std::cout << root(1000, 3) << std::endl;
 	std::cout << sqRoot(612) << std::endl;
