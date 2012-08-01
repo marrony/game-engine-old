@@ -24,6 +24,7 @@ set(ENGINE_COMMON_SRC
 	src/main/MouseManager.cpp
 	src/main/GraphicManager.cpp
 	src/main/ResourceManager.cpp
+	src/main/TextureManager.cpp
 	src/main/PluginManager.cpp
 	
 	src/main/SoundManager.cpp

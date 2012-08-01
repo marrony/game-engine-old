@@ -14,6 +14,7 @@
 namespace engine {
 
 	class Image;
+	class TextureManager;
 
 	enum class TextureFormat : unsigned char {
 		None,
@@ -32,9 +33,11 @@ namespace engine {
 		char* data;
 		int handle;
 
+		TextureManager* textureManamger;
+
 		void cleanData();
 	public:
-		Texture(const std::string& name, ResourceManager* manager);
+		Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManamger);
 
 		virtual ~Texture();
 

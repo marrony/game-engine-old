@@ -52,24 +52,6 @@ namespace engine {
 		}
 	};
 
-	class TextureManager {
-	public:
-		struct Tex {
-			unsigned int texId;
-			int width;
-			int height;
-			int depth;
-			TexType type;
-			TextureFormat format;
-		};
-
-		Resources<Tex> textures;
-
-		VIRTUAL int createTexture2D();
-		VIRTUAL void destroyTexture(int handle);
-		VIRTUAL void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
-	};
-
 	class BufferManager {
 	public:
 		struct Buffer {
@@ -204,7 +186,6 @@ namespace engine {
 		virtual void onResourceLoaded(const ResourceEvent& event);
 		virtual void onResourceUnloaded(const ResourceEvent& event);
 
-		TextureManager textureManager;
 		BufferManager bufferManager;
 	};
 

@@ -18,6 +18,7 @@ namespace engine {
 	class ResourceEvent;
 	class ResourceKey;
 	class ResourceListener;
+	class ResourceLoader;
 
 	class ResourceManager {
 		std::vector<ResourceListener*> listeners;
@@ -28,10 +29,14 @@ namespace engine {
 		};
 
 		std::map<std::string, ResourceEntry> resources;
+		std::map<std::string, ResourceLoader*> loaders;
 	public:
 		ResourceManager();
 		~ResourceManager();
 
+		void registerLoader(const std::string& type, ResourceLoader* loader);
+
+		Resource* loadResource(const std::string& type, const std::string& name);
 		Resource* loadResource(const ResourceKey& key);
 		void unloadResource(Resource* resource);
 

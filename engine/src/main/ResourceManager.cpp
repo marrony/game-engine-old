@@ -6,6 +6,7 @@
  */
 
 #include "ResourceManager.h"
+#include "ResourceLoader.h"
 #include "Resource.h"
 
 #include <algorithm>
@@ -16,6 +17,39 @@ namespace engine {
 	}
 
 	ResourceManager::~ResourceManager() {
+	}
+
+	void ResourceManager::registerLoader(const std::string& type, ResourceLoader* loader) {
+		loaders[type] = loader;
+	}
+
+	Resource* ResourceManager::loadResource(const std::string& type, const std::string& name) {
+		std::string resourceName = type + "/" + name;
+
+		auto entry = resources.find(resourceName);
+
+		Resource* resource;
+
+		if(entry != resources.end())
+			resource = entry->second.resource;
+		else {
+			ResourceLoader* loader = loaders[type];
+
+			if(loader == nullptr) return 0;
+
+			resource = loader->loadResource(name);
+
+			ResourceEvent event;
+			event.type = type;
+			event.resource = resource;
+			dispatchLoadedEvent(event);
+
+			entry = resources.insert({resourceName, {resource, 0}}).first;
+		}
+
+		entry->second.count++;
+
+		return resource;
 	}
 
 	Resource* ResourceManager::loadResource(const ResourceKey& key) {
