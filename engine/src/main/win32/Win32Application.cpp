@@ -40,7 +40,6 @@ namespace engine {
 		mouseManager = new MouseManager;
 		resourceManager = new ResourceManager;
 		sceneManager = new SceneManager;
-		textureManager = new TextureManager(*resourceManager);
 
 		resourceManager->addListener(graphicManager);
 

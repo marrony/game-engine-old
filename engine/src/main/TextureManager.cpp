@@ -13,38 +13,6 @@
 
 namespace engine {
 
-	TextureManager::TextureManager(ResourceManager& resourceManager) :
-			resourceManager(resourceManager) {
-		resourceManager.registerLoader("texture", this);
-	}
-
-	Resource* TextureManager::readResource(const std::string& textureName) {
-		FileStream fileStream("resources/images/" + textureName + ".texture");
-		ResourceBinStream stream(fileStream);
-
-		stream.pushGroup("texture");
-
-		std::string type = stream.readString("type");
-		std::string name = stream.readString("name");
-		int width = stream.readInt("width");
-		int height = stream.readInt("height");
-		int depth = stream.readInt("depth");
-
-		size_t length = width * height * depth;
-		char* data = new char[length];
-
-		stream.readArray("pixels", data, length);
-
-		stream.popGroup();
-
-		Texture* texture = new Texture(name, &resourceManager, this);
-		texture->setData(width, height, depth, data);
-
-		delete[] data;
-
-		return texture;
-	}
-
 	int TextureManager::createTexture2D() {
 		TextureManager::Tex tex;
 

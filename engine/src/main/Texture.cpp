@@ -22,8 +22,8 @@ namespace engine {
 		}
 	}
 
-	Texture::Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManager) :
-			Resource(name, manager), handle(0), textureManager(textureManager) {
+	Texture::Texture(const std::string& name, ResourceManager* manager) :
+			Resource(name, manager), handle(0) {
 	}
 
 	Texture::~Texture() {
@@ -72,15 +72,20 @@ namespace engine {
 
 		this->data = new char[size];
 		memcpy(this->data, data, size * sizeof(char));
-
-		TextureFormat format = depth == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
-
-		this->handle = textureManager->createTexture2D();
-		textureManager->setTextureData(handle, width, height, depth, format, data);
 	}
 
-	void Texture::bind(int unit) {
-		textureManager->bindTexture(handle, unit);
+	void Texture::initialize(GraphicManager* graphicManager) {
+		handle = graphicManager->textureManager.createTexture2D();
+
+		TextureFormat format = TextureFormat::Rgb8;
+
+		graphicManager->textureManager.setTextureData(handle, width, height, depth, format, data);
+
+		markUploaded();
+	}
+
+	void Texture::finalize(GraphicManager* graphicManager) {
+		graphicManager->textureManager.destroyTexture(handle);
 	}
 
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
@@ -99,7 +104,7 @@ namespace engine {
 
 		stream.popGroup();
 
-		Texture* texture = new Texture(name, &manager, 0);
+		Texture* texture = new Texture(name, &manager);
 		texture->width = width;
 		texture->height = height;
 		texture->depth = depth;

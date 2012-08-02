@@ -85,8 +85,6 @@ void MyGame::create(Application& app) {
 
 	Node* node;
 
-	Texture* texture = (Texture*)application->getResourceManager().loadResource("texture", "casaamarela");
-
 	scene = (Scene*)application->getResourceManager().loadResource(SceneKey("large-scene"));
 
 #if 1

@@ -19,39 +19,6 @@ namespace engine {
 	ResourceManager::~ResourceManager() {
 	}
 
-	void ResourceManager::registerLoader(const std::string& type, ResourceReader* loader) {
-		readers[type] = loader;
-	}
-
-	Resource* ResourceManager::loadResource(const std::string& type, const std::string& name) {
-		std::string resourceName = type + "/" + name;
-
-		auto entry = resources.find(resourceName);
-
-		Resource* resource;
-
-		if(entry != resources.end())
-			resource = entry->second.resource;
-		else {
-			ResourceReader* reader = readers[type];
-
-			if(reader == nullptr) return 0;
-
-			resource = reader->readResource(name);
-
-			ResourceEvent event;
-			event.type = type;
-			event.resource = resource;
-			dispatchLoadedEvent(event);
-
-			entry = resources.insert({resourceName, {resource, 0}}).first;
-		}
-
-		entry->second.count++;
-
-		return resource;
-	}
-
 	Resource* ResourceManager::loadResource(const ResourceKey& key) {
 		std::string resourceName = key.getKeyName();
 

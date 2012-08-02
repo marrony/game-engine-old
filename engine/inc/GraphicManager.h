@@ -21,6 +21,7 @@
 #include "Material.h"
 #include "Texture.h"
 #include "Effect.h"
+#include "TextureManager.h"
 
 #include "Resources.h"
 
@@ -161,6 +162,7 @@ namespace engine {
 		virtual void onResourceUnloaded(const ResourceEvent& event);
 
 		BufferManager bufferManager;
+		TextureManager textureManager;
 	};
 
 }

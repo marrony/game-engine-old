@@ -17,18 +17,14 @@
 
 namespace engine {
 
-	class ResourceManager;
 	class Texture;
 
 	enum class TexType : unsigned short {
 		Texture2D, Texture3D, TextureCube
 	};
 
-	class TextureManager : public ResourceReader {
-		ResourceManager& resourceManager;
+	class TextureManager {
 	public:
-		TextureManager(ResourceManager& resourceManager);
-
 		struct Tex {
 			unsigned int texId;
 			int width;
@@ -44,8 +40,6 @@ namespace engine {
 		void destroyTexture(int handle);
 		void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
 		void bindTexture(int handle, int unit);
-
-		virtual Resource* readResource(const std::string& name);
 	};
 
 } /* namespace engine */

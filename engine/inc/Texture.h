@@ -14,7 +14,6 @@
 namespace engine {
 
 	class Image;
-	class TextureManager;
 
 	enum class TextureFormat : unsigned char {
 		None,
@@ -25,7 +24,7 @@ namespace engine {
 		Depth
 	};
 
-	class Texture : public Resource {
+	class Texture : public Resource, public Initializable, public Finalizable {
 		int width;
 		int height;
 		int depth;
@@ -33,11 +32,9 @@ namespace engine {
 		char* data;
 		int handle;
 
-		TextureManager* textureManager;
-
 		void cleanData();
 	public:
-		Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManager);
+		Texture(const std::string& name, ResourceManager* manager);
 
 		virtual ~Texture();
 
@@ -59,7 +56,8 @@ namespace engine {
 
 		void setData(int width, int height, int depth, const void* data);
 
-		void bind(int unit);
+		virtual void initialize(GraphicManager* graphicManager);
+		virtual void finalize(GraphicManager* graphicManager);
 
 		friend class TextureUtils;
 	};

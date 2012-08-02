@@ -81,7 +81,6 @@ namespace engine {
 		ControllerManager* controllerManager;
 		KeyboardManager* keyboardManager;
 		MouseManager* mouseManager;
-		TextureManager* textureManager;
 	};
 
 } /* namespace engine */
