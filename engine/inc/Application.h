@@ -22,6 +22,7 @@ namespace engine {
 	class ControllerManager;
 	class KeyboardManager;
 	class MouseManager;
+	class TextureManager;
 
 	class Game;
 	class GameTime;
@@ -80,6 +81,7 @@ namespace engine {
 		ControllerManager* controllerManager;
 		KeyboardManager* keyboardManager;
 		MouseManager* mouseManager;
+		TextureManager* textureManager;
 	};
 
 } /* namespace engine */

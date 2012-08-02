@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 #include "Stream.h"
+#include "System.h"
 
 namespace engine {
 
@@ -17,7 +18,7 @@ namespace engine {
 		resourceManager.registerLoader("texture", this);
 	}
 
-	Resource* TextureManager::loadResource(const std::string& textureName) {
+	Resource* TextureManager::readResource(const std::string& textureName) {
 		FileStream fileStream("resources/images/" + textureName + ".texture");
 		ResourceBinStream stream(fileStream);
 
@@ -37,16 +38,13 @@ namespace engine {
 		stream.popGroup();
 
 		Texture* texture = new Texture(name, &resourceManager, this);
-//		texture->width = width;
-//		texture->height = height;
-//		texture->depth = depth;
-//		texture->data = data;
-//		texture->uploaded = false;
+		texture->setData(width, height, depth, data);
+
+		delete[] data;
 
 		return texture;
 	}
 
-#if 0
 	int TextureManager::createTexture2D() {
 		TextureManager::Tex tex;
 
@@ -155,5 +153,13 @@ namespace engine {
 
 		glBindTexture(type, 0);
 	}
+
+	void TextureManager::bindTexture(int handle, int unit) {
+		glActiveTexture(GL_TEXTURE0 + unit);
+#ifndef ANDROID
+		//glClientActiveTexture(GL_TEXTURE0 + unit);
 #endif
+		glBindTexture(GL_TEXTURE_2D, handle);
+	}
+
 } /* namespace engine */

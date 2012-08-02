@@ -5,16 +5,16 @@
 
 class KeyboardManagerTest : public testing::Test {
 public:
-	MOCK_METHOD2(onKeyDown, void(void*, engine::KeyEvent));
-	MOCK_METHOD2(onKeyUp, void(void*, engine::KeyEvent));
+	MOCK_METHOD1(onKeyDown, void(engine::KeyEvent));
+	MOCK_METHOD1(onKeyUp, void(engine::KeyEvent));
 
 	virtual void SetUp() {
-		manager.onKeyDown += [&](void* sender, engine::KeyEvent event) {
-			onKeyDown(sender, event);
+		manager.onKeyDown += [&](engine::KeyEvent event) {
+			onKeyDown(event);
 		};
 
-		manager.onKeyUp += [&](void* sender, engine::KeyEvent event) {
-			onKeyUp(sender, event);
+		manager.onKeyUp += [&](engine::KeyEvent event) {
+			onKeyUp(event);
 		};
 	}
 
@@ -22,7 +22,7 @@ public:
 };
 
 TEST_F(KeyboardManagerTest, OnKeyDown) {
-	EXPECT_CALL(*this, onKeyDown(&manager, engine::KeyEvent('a')));
+	EXPECT_CALL(*this, onKeyDown(engine::KeyEvent('a')));
 
 	manager.keyDown('a');
 
@@ -30,7 +30,7 @@ TEST_F(KeyboardManagerTest, OnKeyDown) {
 }
 
 TEST_F(KeyboardManagerTest, OnKeyUp) {
-	EXPECT_CALL(*this, onKeyUp(&manager, engine::KeyEvent('a')));
+	EXPECT_CALL(*this, onKeyUp(engine::KeyEvent('a')));
 
 	manager.keyUp('a');
 
@@ -38,8 +38,8 @@ TEST_F(KeyboardManagerTest, OnKeyUp) {
 }
 
 TEST_F(KeyboardManagerTest, TwoKeysDown) {
-	EXPECT_CALL(*this, onKeyDown(&manager, engine::KeyEvent('w')));
-	EXPECT_CALL(*this, onKeyDown(&manager, engine::KeyEvent('s')));
+	EXPECT_CALL(*this, onKeyDown(engine::KeyEvent('w')));
+	EXPECT_CALL(*this, onKeyDown(engine::KeyEvent('s')));
 
 	manager.keyDown('w');
 	manager.keyDown('s');
@@ -49,13 +49,13 @@ TEST_F(KeyboardManagerTest, TwoKeysDown) {
 }
 
 TEST_F(KeyboardManagerTest, PressTwoKeysAndReleaseOne) {
-	EXPECT_CALL(*this, onKeyDown(&manager, engine::KeyEvent('w')));
-	EXPECT_CALL(*this, onKeyDown(&manager, engine::KeyEvent('s')));
+	EXPECT_CALL(*this, onKeyDown(engine::KeyEvent('w')));
+	EXPECT_CALL(*this, onKeyDown(engine::KeyEvent('s')));
 
 	manager.keyDown('w');
 	manager.keyDown('s');
 
-	EXPECT_CALL(*this, onKeyUp(&manager, engine::KeyEvent('w')));
+	EXPECT_CALL(*this, onKeyUp(engine::KeyEvent('w')));
 
 	manager.keyUp('w');
 

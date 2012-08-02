@@ -17,6 +17,7 @@
 #include "MouseManager.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "TextureManager.h"
 
 #include "MemoryManager.h"
 
@@ -39,6 +40,7 @@ namespace engine {
 		mouseManager = new MouseManager;
 		resourceManager = new ResourceManager;
 		sceneManager = new SceneManager;
+		textureManager = new TextureManager(*resourceManager);
 
 		resourceManager->addListener(graphicManager);
 

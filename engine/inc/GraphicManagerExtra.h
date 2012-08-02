@@ -44,10 +44,6 @@ namespace engine {
 		Max               // Result = max( (Source Color * Source Blend), (Destination Color * Destination Blend) )
 	};
 
-	enum class TexType : unsigned short {
-			Texture2D, Texture3D, TextureCube
-	};
-
 }  // namespace engine
 
 #endif /* GRAPHICMANAGEREXTRA_H_ */

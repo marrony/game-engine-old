@@ -19,9 +19,9 @@ using namespace engine::gui;
 
 class MockListener {
 public:
-	MOCK_METHOD2(onResize, void(void*, ResizeEvent));
-	MOCK_METHOD2(onPressed, void(void*, MouseEvent));
-	MOCK_METHOD2(onReleased, void(void*, MouseEvent));
+	MOCK_METHOD1(onResize, void(ResizeEvent));
+	MOCK_METHOD1(onPressed, void(MouseEvent));
+	MOCK_METHOD1(onReleased, void(MouseEvent));
 };
 
 class MockKeyboardManager : public KeyboardManager {
@@ -53,11 +53,11 @@ protected:
 TEST_F(ControlTest, OnResize) {
 	MockListener mockListener;
 
-	ctrl->onResize += [&](void* sender, ResizeEvent event) {
-		mockListener.onResize(sender, event);
+	ctrl->onResize += [&](ResizeEvent event) {
+		mockListener.onResize(event);
 	};
 
-	EXPECT_CALL(mockListener, onResize(ctrl, ResizeEvent()));
+	EXPECT_CALL(mockListener, onResize(ResizeEvent()));
 
 	ctrl->resize(Size(10, 10));
 }
@@ -65,13 +65,13 @@ TEST_F(ControlTest, OnResize) {
 TEST_F(ControlTest, OnPressed) {
 	MockListener mockListener;
 
-	ctrl->onPressed += [&](void* sender, MouseEvent event) {
-		mockListener.onPressed(sender, event);
+	ctrl->onPressed += [&](MouseEvent event) {
+		mockListener.onPressed(event);
 	};
 
 	ON_CALL(mouseManager, getMouseState()).WillByDefault(Return(MouseState(10, 10, MouseState::PRESSED)));
 	EXPECT_CALL(mouseManager, getMouseState());
-	EXPECT_CALL(mockListener, onPressed(ctrl, MouseEvent(MouseState(10, 10, MouseState::PRESSED))));
+	EXPECT_CALL(mockListener, onPressed(MouseEvent(MouseState(10, 10, MouseState::PRESSED))));
 
 	ctrl->update();
 }
@@ -79,13 +79,13 @@ TEST_F(ControlTest, OnPressed) {
 TEST_F(ControlTest, TwoUpdadesPressedDontGenerateMoreThanOnePressedEvent) {
 	MockListener mockListener;
 
-	ctrl->onPressed += [&](void* sender, MouseEvent event) {
-		mockListener.onPressed(sender, event);
+	ctrl->onPressed += [&](MouseEvent event) {
+		mockListener.onPressed(event);
 	};
 
 	ON_CALL(mouseManager, getMouseState()).WillByDefault(Return(MouseState(10, 10, MouseState::PRESSED)));
 	EXPECT_CALL(mouseManager, getMouseState());
-	EXPECT_CALL(mockListener, onPressed(ctrl, MouseEvent(MouseState(10, 10, MouseState::PRESSED))));
+	EXPECT_CALL(mockListener, onPressed(MouseEvent(MouseState(10, 10, MouseState::PRESSED))));
 
 	ctrl->update();
 
@@ -98,8 +98,8 @@ TEST_F(ControlTest, TwoUpdadesPressedDontGenerateMoreThanOnePressedEvent) {
 TEST_F(ControlTest, PressAndRelease) {
 	MockListener mockListener;
 
-	ctrl->onReleased += [&](void* sender, MouseEvent event) {
-		mockListener.onReleased(sender, event);
+	ctrl->onReleased += [&](MouseEvent event) {
+		mockListener.onReleased(event);
 	};
 
 	ON_CALL(mouseManager, getMouseState()).WillByDefault(Return(MouseState(10, 10, MouseState::PRESSED)));
@@ -109,7 +109,7 @@ TEST_F(ControlTest, PressAndRelease) {
 
 	ON_CALL(mouseManager, getMouseState()).WillByDefault(Return(MouseState(10, 10, MouseState::RELESEAD)));
 	EXPECT_CALL(mouseManager, getMouseState());
-	EXPECT_CALL(mockListener, onReleased(ctrl, MouseEvent(MouseState(10, 10, MouseState::RELESEAD))));
+	EXPECT_CALL(mockListener, onReleased(MouseEvent(MouseState(10, 10, MouseState::RELESEAD))));
 
 	ctrl->update();
 }

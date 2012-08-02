@@ -9,35 +9,43 @@
 #define TEXTUREMANAGER_H_
 
 #include <string>
+#include <vector>
 
-#include "ResourceLoader.h"
+#include "ResourceReader.h"
+#include "Resources.h"
+#include "Texture.h"
 
 namespace engine {
 
 	class ResourceManager;
 	class Texture;
 
-	class TextureManager : public ResourceLoader {
+	enum class TexType : unsigned short {
+		Texture2D, Texture3D, TextureCube
+	};
+
+	class TextureManager : public ResourceReader {
 		ResourceManager& resourceManager;
 	public:
 		TextureManager(ResourceManager& resourceManager);
 
-//		struct Tex {
-//			unsigned int texId;
-//			int width;
-//			int height;
-//			int depth;
-//			TexType type;
-//			TextureFormat format;
-//		};
-//
-//		Resources<Tex> textures;
-//
-//		int createTexture2D();
-//		void destroyTexture(int handle);
-//		void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
+		struct Tex {
+			unsigned int texId;
+			int width;
+			int height;
+			int depth;
+			TexType type;
+			TextureFormat format;
+		};
 
-		virtual Resource* loadResource(const std::string& name);
+		Resources<Tex> textures;
+
+		int createTexture2D();
+		void destroyTexture(int handle);
+		void setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data);
+		void bindTexture(int handle, int unit);
+
+		virtual Resource* readResource(const std::string& name);
 	};
 
 } /* namespace engine */

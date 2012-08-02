@@ -60,13 +60,7 @@ namespace engine {
 				if(usedTexturesSlots & mask) {
 					shader->getConstant(textureName[i])->setValue(i);
 
-//					TextureManager::Tex& tex = textureManager.textures.get(texturesUsed[i]->getHandle());
-//
-//					glActiveTexture(GL_TEXTURE0 + i);
-//					#ifndef ANDROID
-//					//glClientActiveTexture(GL_TEXTURE0 + i);
-//					#endif
-//					glBindTexture(GL_TEXTURE_2D, tex.texId);
+					texturesUsed[i]->bind(i);
 				}
 			}
 
@@ -391,11 +385,7 @@ namespace engine {
 	}
 
 	void GraphicManager::onResourceLoaded(const ResourceEvent& event) {
-		if(event.type == "texture") {
-			Texture* texture = (Texture*)event.resource;
-
-			texture->initialize(this);
-		} else if(event.type == "effect") {
+		if(event.type == "effect") {
 			Effect* effect = (Effect*)event.resource;
 
 			effect->finalizeInitialization();
@@ -407,11 +397,7 @@ namespace engine {
 	}
 
 	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
-		if(event.type == "texture") {
-			Texture* texture = (Texture*)event.resource;
-
-			texture->finalize(this);
-		} else if(event.type == "model") {
+		if(event.type == "model") {
 			Model* model = (Model*)event.resource;
 
 			model->unloadData(this);

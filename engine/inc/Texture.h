@@ -25,7 +25,7 @@ namespace engine {
 		Depth
 	};
 
-	class Texture : public Resource, public Initializable, public Finalizable {
+	class Texture : public Resource {
 		int width;
 		int height;
 		int depth;
@@ -33,11 +33,11 @@ namespace engine {
 		char* data;
 		int handle;
 
-		TextureManager* textureManamger;
+		TextureManager* textureManager;
 
 		void cleanData();
 	public:
-		Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManamger);
+		Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManager);
 
 		virtual ~Texture();
 
@@ -59,8 +59,7 @@ namespace engine {
 
 		void setData(int width, int height, int depth, const void* data);
 
-		virtual void initialize(GraphicManager* graphicManager);
-		virtual void finalize(GraphicManager* graphicManager);
+		void bind(int unit);
 
 		friend class TextureUtils;
 	};

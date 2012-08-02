@@ -22,35 +22,9 @@
 #include "Texture.h"
 #include "Effect.h"
 
+#include "Resources.h"
+
 namespace engine {
-
-	template<typename T>
-	struct Resources {
-		std::vector<T> resources;
-		std::vector<int> free;
-
-		int add(const T& resource) {
-			if(!free.empty()) {
-				int handle = free.back();
-				free.pop_back();
-
-				resources[handle] = resource;
-				return handle + 1;
-			}
-
-			resources.push_back(resource);
-			return resources.size();
-		}
-
-		void remove(int handle) {
-			if(handle == 0) return;
-			free.push_back(--handle);
-		}
-
-		T& get(int handle) {
-			return resources[--handle];
-		}
-	};
 
 	class BufferManager {
 	public:

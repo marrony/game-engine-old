@@ -9,6 +9,7 @@
 #include "Image.h"
 #include "ResourceManager.h"
 #include "GraphicManager.h"
+#include "TextureManager.h"
 #include "Exception.h"
 #include "Stream.h"
 
@@ -21,8 +22,8 @@ namespace engine {
 		}
 	}
 
-	Texture::Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManamger) :
-			Resource(name, manager), handle(0) {
+	Texture::Texture(const std::string& name, ResourceManager* manager, TextureManager* textureManager) :
+			Resource(name, manager), handle(0), textureManager(textureManager) {
 	}
 
 	Texture::~Texture() {
@@ -71,22 +72,16 @@ namespace engine {
 
 		this->data = new char[size];
 		memcpy(this->data, data, size * sizeof(char));
+
+		TextureFormat format = depth == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
+
+		this->handle = textureManager->createTexture2D();
+		textureManager->setTextureData(handle, width, height, depth, format, data);
 	}
 
-	void Texture::initialize(GraphicManager* graphicManager) {
-//		handle = textureManager.createTexture2D();
-//
-//		TextureFormat format = depth == 3 ? TextureFormat::Rgb8 : TextureFormat::Rgba8;
-//
-//		textureManager.setTextureData(handle, width, height, depth, format, data);
-
-		markUploaded();
+	void Texture::bind(int unit) {
+		textureManager->bindTexture(handle, unit);
 	}
-
-	void Texture::finalize(GraphicManager* graphicManager) {
-//		textureManager.destroyTexture(handle);
-	}
-
 
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("texture");
