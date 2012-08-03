@@ -16,7 +16,7 @@ namespace engine {
 	int TextureManager::createTexture2D() {
 		TextureManager::Tex tex;
 
-		tex.type = TexType::Texture2D;
+		tex.type = TextureType::Texture2D;
 		tex.height = 0;
 		tex.width = 0;
 		tex.format = TextureFormat::None;
@@ -51,15 +51,15 @@ namespace engine {
 		GLenum type;
 
 		switch(tex.type) {
-			case TexType::Texture2D:
+			case TextureType::Texture2D:
 				type = GL_TEXTURE_2D;
 				break;
 
-			case TexType::Texture3D:
+			case TextureType::Texture3D:
 				type = GL_TEXTURE_3D;
 				break;
 
-			case TexType::TextureCube:
+			case TextureType::TextureCube:
 				type = GL_TEXTURE_CUBE_MAP;
 				break;
 		}
@@ -120,14 +120,6 @@ namespace engine {
 		glTexImage2D(type, 0, internalFormat, width, height, 0, pixelFormat, pixelType, data);
 
 		glBindTexture(type, 0);
-	}
-
-	void TextureManager::bindTexture(int handle, int unit) {
-		glActiveTexture(GL_TEXTURE0 + unit);
-#ifndef ANDROID
-		//glClientActiveTexture(GL_TEXTURE0 + unit);
-#endif
-		glBindTexture(GL_TEXTURE_2D, handle);
 	}
 
 } /* namespace engine */

@@ -54,24 +54,31 @@ namespace engine {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 		if(flags & TextureAltered) {
-			for(int i = 0; i < 16; ++i) {
-				int mask = (1 << i);
+			for(int unit = 0; unit < 16; ++unit) {
+				int mask = (1 << unit);
 
 				if(usedTexturesSlots & mask) {
-					shader->getConstant(textureName[i])->setValue(i);
+					shader->getConstant(textureName[unit])->setValue(unit);
 
-					textureManager.bindTexture(texturesUsed[i]->getHandle(), i);
+					updateTexture(texturesUsed[unit]);
+
+					glActiveTexture(GL_TEXTURE0 + unit);
+#ifndef ANDROID
+					//glClientActiveTexture(GL_TEXTURE0 + unit);
+#endif
+					glBindTexture(GL_TEXTURE_2D, texturesUsed[unit]->getHandle());
+
 				}
 			}
 
-			for(int i = 0; i < 16; ++i) {
-				int mask = (1 << i);
+			for(int unit = 0; unit < 16; ++unit) {
+				int mask = (1 << unit);
 
 				if(!(usedTexturesSlots & mask) && (lastUsedTexturesSlots & mask)) {
-					glActiveTexture(GL_TEXTURE0 + i);
-					#ifndef ANDROID
-					//glClientActiveTexture(GL_TEXTURE0 + i);
-					#endif
+					glActiveTexture(GL_TEXTURE0 + unit);
+#ifndef ANDROID
+					//glClientActiveTexture(GL_TEXTURE0 + unit);
+#endif
 					glBindTexture(GL_TEXTURE_2D, 0);
 				}
 			}
@@ -168,6 +175,101 @@ namespace engine {
 		}
 
 		flags = 0;
+	}
+
+	void GraphicManager::updateTexture(Texture* texture) {
+		if(!texture->needUpdate()) return;
+
+		int handle = texture->getHandle();
+
+		if(!handle) {
+			GLuint texId;
+			glGenTextures(1, &texId);
+
+			texture->setHandle(texId);
+
+			handle = texId;
+		}
+
+		int textureUnit = 15;
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS, &textureUnit);
+
+		GLenum type;
+
+		switch(texture->getTextureType()) {
+			case TextureType::Texture2D:
+				type = GL_TEXTURE_2D;
+				break;
+
+			case TextureType::Texture3D:
+				type = GL_TEXTURE_3D;
+				break;
+
+			case TextureType::TextureCube:
+				type = GL_TEXTURE_CUBE_MAP;
+				break;
+		}
+
+		glActiveTexture(GL_TEXTURE0 + textureUnit);
+		glBindTexture(type, handle);
+
+		const void* data = texture->getData();
+
+		int pixelType = data == 0 ? GL_FLOAT : GL_UNSIGNED_BYTE;
+
+		int pixelFormat;
+		int internalFormat;
+
+		switch(texture->getDepth()) {
+			case 3:
+				pixelFormat = GL_RGB;
+				break;
+
+			case 4:
+				pixelFormat = GL_RGBA;
+				break;
+
+			default:
+				throw Exception("Unknow depth");
+		}
+
+		switch(texture->getFormat()) {
+			case TextureFormat::Rgb8:
+				internalFormat = GL_RGB;
+				break;
+
+			case TextureFormat::Rgba8:
+				internalFormat = GL_RGBA;
+				break;
+
+#ifndef ANDROID
+			case TextureFormat::Rgba16Float:
+				pixelType = GL_FLOAT;
+				internalFormat = GL_RGBA16F;
+				break;
+
+			case TextureFormat::Rgba32Float:
+				pixelType = GL_FLOAT;
+				internalFormat = GL_RGBA32F;
+				break;
+#endif
+
+			case TextureFormat::Depth:
+				break;
+
+			default:
+				throw Exception("Unknow format");
+		}
+
+		glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(type, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(type, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(type, 0, internalFormat, texture->getWidth(), texture->getHeight(), 0, pixelFormat, pixelType, data);
+
+		glBindTexture(type, 0);
+
+		texture->setUpdated();
 	}
 
 	void GraphicManager::resize(int newWidth, int newHeight) {

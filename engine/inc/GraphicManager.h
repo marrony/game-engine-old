@@ -88,6 +88,7 @@ namespace engine {
 		std::vector<ConstantsEnabled> constants;
 
 		void commitModifications();
+		void updateTexture(Texture* texture);
 	public:
 		GraphicManager();
 		VIRTUAL ~GraphicManager();
@@ -162,7 +163,7 @@ namespace engine {
 		virtual void onResourceUnloaded(const ResourceEvent& event);
 
 		BufferManager bufferManager;
-		TextureManager textureManager;
+//		TextureManager textureManager;
 	};
 
 }

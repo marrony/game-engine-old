@@ -23,7 +23,7 @@ namespace engine {
 	}
 
 	Texture::Texture(const std::string& name, ResourceManager* manager) :
-			Resource(name, manager), handle(0) {
+			Resource(name, manager), handle(0), dirty(true) {
 	}
 
 	Texture::~Texture() {
@@ -75,17 +75,17 @@ namespace engine {
 	}
 
 	void Texture::initialize(GraphicManager* graphicManager) {
-		handle = graphicManager->textureManager.createTexture2D();
-
-		TextureFormat format = TextureFormat::Rgb8;
-
-		graphicManager->textureManager.setTextureData(handle, width, height, depth, format, data);
-
-		markUploaded();
+//		handle = graphicManager->textureManager.createTexture2D();
+//
+//		TextureFormat format = TextureFormat::Rgb8;
+//
+//		graphicManager->textureManager.setTextureData(handle, width, height, depth, format, data);
+//
+//		markUploaded();
 	}
 
 	void Texture::finalize(GraphicManager* graphicManager) {
-		graphicManager->textureManager.destroyTexture(handle);
+//		graphicManager->textureManager.destroyTexture(handle);
 	}
 
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
