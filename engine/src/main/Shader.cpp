@@ -90,18 +90,6 @@ namespace engine {
 			program(program), attribLocation(attribLocation) {
 	}
 
-	void Attribute::setValue(int mode, int offset, int stride, engine::Buffer* buffer) {
-		if(buffer->isOk()) {
-			if(attribLocation != -1) {
-				enableAttribute();
-
-				void* pointer = (char*) buffer->getPointer() + offset;
-
-				glVertexAttribPointer(attribLocation, mode, GL_FLOAT, GL_FALSE, stride, pointer);
-			}
-		}
-	}
-
 	void Attribute::setValue(int mode, int offset, int stride) {
 		if(attribLocation != -1) {
 			glVertexAttribPointer(attribLocation, mode, GL_FLOAT, GL_FALSE, stride, (void*)offset);

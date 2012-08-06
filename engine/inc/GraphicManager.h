@@ -89,6 +89,7 @@ namespace engine {
 
 		void commitModifications();
 		void updateTexture(Texture* texture);
+		void updateBuffer(Buffer* buffer);
 	public:
 		GraphicManager();
 		VIRTUAL ~GraphicManager();

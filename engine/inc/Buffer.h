@@ -11,67 +11,47 @@
 #include <vector>
 #include <stddef.h>
 
+#include "DeviceObject.h"
+
 namespace engine {
 
-	enum AccessType {
-		ReadOnly,
-		WriteOnly,
-		ReadWrite
+	enum class AccessType : unsigned char {
+		ReadOnly, WriteOnly, ReadWrite
 	};
 
-	struct Buffer {
-		virtual ~Buffer() {}
-
-		virtual void bind() = 0;
-		virtual void unbind() = 0;
-
-		virtual int getCount() const = 0;
-		virtual void* getPointer() const = 0;
-		virtual bool isOk() const = 0;
-
-		virtual void* map(AccessType accessType) = 0;
-		virtual void unmap() = 0;
+	enum class FrequencyAccess : unsigned char {
+		Stream, Static, Dynamic
 	};
 
-	class MemoryBuffer : public Buffer {
-		std::vector<char> buffer;
+	enum class NatureAccess : unsigned char {
+		Draw, Read, Copy
+	};
+
+	enum class BufferType : unsigned char {
+		VertexBuffer, IndexBuffer
+	};
+
+	class Buffer : public DeviceObject {
+		int handle;
+		void* data;
+		int size;
+		BufferType bufferType;
+		FrequencyAccess frequencyAccess;
+		NatureAccess natureAccess;
 	public:
-		template<typename T>
-		MemoryBuffer(const T* data, int elementCount) :
-				buffer((char*)data, (char*)(data + elementCount)) {
-		}
+		Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
+		virtual ~Buffer();
 
-		MemoryBuffer(int size) :
-				buffer(size) {
-		}
+		virtual int getHandle() const;
+		virtual void setHandle(int handle);
 
-		virtual ~MemoryBuffer() {
-		}
+		int getSize() const { return size; }
+		BufferType getBufferType() const { return bufferType; }
+		FrequencyAccess getFrequencyAccess() const { return frequencyAccess; }
+		NatureAccess getNatureAccess() const { return natureAccess; }
 
-		virtual int getCount() const {
-			return buffer.size();
-		}
-
-		virtual void* getPointer() const {
-			return (void*) buffer.data();
-		}
-
-		virtual bool isOk() const {
-			return getCount() != 0;
-		}
-
-		virtual void bind() {
-		}
-
-		virtual void unbind() {
-		}
-
-		virtual void* map(AccessType accessType) {
-			return getPointer();
-		}
-
-		virtual void unmap() {
-		}
+		void* map(AccessType accessType);
+		void unmap();
 	};
 
 }  // namespace engine

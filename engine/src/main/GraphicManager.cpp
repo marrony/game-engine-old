@@ -60,7 +60,8 @@ namespace engine {
 				if(usedTexturesSlots & mask) {
 					shader->getConstant(textureName[unit])->setValue(unit);
 
-					updateTexture(texturesUsed[unit]);
+					if(texturesUsed[unit]->needUpdate())
+						updateTexture(texturesUsed[unit]);
 
 					glActiveTexture(GL_TEXTURE0 + unit);
 #ifndef ANDROID
@@ -178,8 +179,6 @@ namespace engine {
 	}
 
 	void GraphicManager::updateTexture(Texture* texture) {
-		if(!texture->needUpdate()) return;
-
 		int handle = texture->getHandle();
 
 		if(!handle) {
@@ -270,6 +269,81 @@ namespace engine {
 		glBindTexture(type, 0);
 
 		texture->setUpdated();
+	}
+
+	int getTarget(BufferType type) {
+		switch(type) {
+		case BufferType::VertexBuffer:
+			return GL_ARRAY_BUFFER;
+
+		case BufferType::IndexBuffer:
+			return GL_ELEMENT_ARRAY_BUFFER;
+		}
+
+		return 0;
+	}
+
+	int getUsage(FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Draw)
+			return GL_STREAM_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Read)
+			return GL_STREAM_READ;
+
+		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Copy)
+			return GL_STREAM_COPY;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Draw)
+			return GL_STATIC_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Read)
+			return GL_STATIC_READ;
+
+		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Copy)
+			return GL_STATIC_COPY;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Draw)
+			return GL_DYNAMIC_DRAW;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Read)
+			return GL_DYNAMIC_READ;
+
+		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Copy)
+			return GL_DYNAMIC_COPY;
+
+		return 0;
+	}
+
+	int getAccess(AccessType accessType) {
+		if(accessType == AccessType::ReadOnly)
+			return GL_READ_ONLY;
+
+		if(accessType == AccessType::WriteOnly)
+			return GL_WRITE_ONLY;
+
+		if(accessType == AccessType::ReadWrite)
+			return GL_READ_WRITE;
+
+		return 0;
+	}
+
+	void GraphicManager::updateBuffer(Buffer* buffer) {
+		int handle = buffer->getHandle();
+
+		if(!handle) {
+			GLuint bufferId;
+			glGenBuffers(1, &bufferId);
+
+			handle = bufferId;
+			buffer->setHandle(handle);
+		}
+
+		GLuint count = buffer->getSize();
+		GLint target = getTarget(buffer->getBufferType());
+		GLint usage = getUsage(buffer->getFrequencyAccess(), buffer->getNatureAccess());
+
+		glBindBuffer(target, handle);
+		glBufferData(target, count, 0, usage);
 	}
 
 	void GraphicManager::resize(int newWidth, int newHeight) {
@@ -490,7 +564,7 @@ namespace engine {
 		if(event.type == "texture") {
 			Texture* texture = (Texture*)event.resource;
 
-			texture->initialize(this);
+			updateTexture(texture);
 		} else if(event.type == "effect") {
 			Effect* effect = (Effect*)event.resource;
 
@@ -506,69 +580,12 @@ namespace engine {
 		if(event.type == "texture") {
 			Texture* texture = (Texture*)event.resource;
 
-			texture->finalize(this);
+			//texture->finalize(this);
 		} else if(event.type == "model") {
 			Model* model = (Model*)event.resource;
 
 			model->unloadData(this);
 		}
-	}
-
-
-	int getTarget(BufferType type) {
-		switch(type) {
-		case BufferType::VertexBuffer:
-			return GL_ARRAY_BUFFER;
-
-		case BufferType::IndexBuffer:
-			return GL_ELEMENT_ARRAY_BUFFER;
-		}
-
-		return 0;
-	}
-
-	int getUsage(FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
-		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Draw)
-			return GL_STREAM_DRAW;
-
-		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Read)
-			return GL_STREAM_READ;
-
-		if(frequencyAccess == FrequencyAccess::Stream && natureAccess == NatureAccess::Copy)
-			return GL_STREAM_COPY;
-
-		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Draw)
-			return GL_STATIC_DRAW;
-
-		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Read)
-			return GL_STATIC_READ;
-
-		if(frequencyAccess == FrequencyAccess::Static && natureAccess == NatureAccess::Copy)
-			return GL_STATIC_COPY;
-
-		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Draw)
-			return GL_DYNAMIC_DRAW;
-
-		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Read)
-			return GL_DYNAMIC_READ;
-
-		if(frequencyAccess == FrequencyAccess::Dynamic && natureAccess == NatureAccess::Copy)
-			return GL_DYNAMIC_COPY;
-
-		return 0;
-	}
-
-	int getAccess(AccessType accessType) {
-		if(accessType == AccessType::ReadOnly)
-			return GL_READ_ONLY;
-
-		if(accessType == AccessType::WriteOnly)
-			return GL_WRITE_ONLY;
-
-		if(accessType == AccessType::ReadWrite)
-			return GL_READ_WRITE;
-
-		return 0;
 	}
 
 	int BufferManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {

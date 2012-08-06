@@ -24,18 +24,6 @@ namespace engine {
 		virtual void finalize(GraphicManager* graphicManager) = 0;
 	};
 
-	enum class FrequencyAccess : unsigned char {
-		Stream, Static, Dynamic
-	};
-
-	enum class NatureAccess : unsigned char {
-		Draw, Read, Copy
-	};
-
-	enum class BufferType : unsigned char {
-		VertexBuffer, IndexBuffer
-	};
-
 	enum class BlendEquation : unsigned char {
 		Add,              // Result = (Source Color * Source Blend) + (Destination Color * Destination Blend)
 		Subtract,         // Result = (Source Color * Source Blend) - (Destination Color * Destination Blend)

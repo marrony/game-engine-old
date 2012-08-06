@@ -9,6 +9,7 @@
 #define TEXTURE_H_
 
 #include "Resource.h"
+#include "DeviceObject.h"
 #include "GraphicManagerExtra.h"
 
 namespace engine {
@@ -28,12 +29,7 @@ namespace engine {
 		Texture2D, Texture3D, TextureCube
 	};
 
-	struct DeviceObject {
-		virtual int getHandle() const = 0;
-		virtual void setHandle(int handle) = 0;
-	};
-
-	class Texture : public Resource, public DeviceObject, public Initializable, public Finalizable {
+	class Texture : public Resource, public DeviceObject {
 		int width;
 		int height;
 		int depth;
@@ -72,9 +68,6 @@ namespace engine {
 
 		TextureType getTextureType() const { return TextureType::Texture2D; }
 		TextureFormat getFormat() const { return depth == 4 ? TextureFormat::Rgba8 : TextureFormat::Rgb8; }
-
-		virtual void initialize(GraphicManager* graphicManager);
-		virtual void finalize(GraphicManager* graphicManager);
 
 		friend class TextureUtils;
 	};

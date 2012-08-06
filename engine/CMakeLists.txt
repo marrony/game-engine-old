@@ -47,6 +47,7 @@ set(ENGINE_COMMON_SRC
 	src/main/ObjectList.cpp
 	src/main/QueryList.cpp
 	
+	src/main/Buffer.cpp
 	src/main/Stream.cpp
 	src/main/Resource.cpp
 	

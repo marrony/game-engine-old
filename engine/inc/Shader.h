@@ -50,7 +50,6 @@ namespace engine {
 		void setValue(const math::Vector2* value, int count);
 		void setValue(const math::Vector3* value, int count);
 		void setValue(const math::Vector4* value, int count);
-		void setValue(int mode, int offset, int stride, Buffer* value);
 		void setValue(int mode, int offset, int stride);
 
 		void enable();

@@ -74,20 +74,6 @@ namespace engine {
 		memcpy(this->data, data, size * sizeof(char));
 	}
 
-	void Texture::initialize(GraphicManager* graphicManager) {
-//		handle = graphicManager->textureManager.createTexture2D();
-//
-//		TextureFormat format = TextureFormat::Rgb8;
-//
-//		graphicManager->textureManager.setTextureData(handle, width, height, depth, format, data);
-//
-//		markUploaded();
-	}
-
-	void Texture::finalize(GraphicManager* graphicManager) {
-//		graphicManager->textureManager.destroyTexture(handle);
-	}
-
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
 		stream.pushGroup("texture");
 
