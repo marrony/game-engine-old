@@ -101,12 +101,12 @@ namespace engine {
 
 			Model* model = geometry->getModel();
 
-			for(size_t i = 0; i < model->getMeshCount(); i++) {
+			for(size_t i = 0; i < model->getBatchCount(); i++) {
 				RenderQueueEntry entry;
 
 				entry.geometry = geometry;
-				entry.material = model->getMesh(i)->material;
-				entry.mesh = model->getMesh(i);
+				entry.material = model->getBatch(i)->material;
+				entry.mesh = model->getBatch(i);
 
 				renderQueue.push_back(entry);
 			}

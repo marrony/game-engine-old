@@ -14,8 +14,6 @@
 
 #include "tinyxml.h"
 
-#include <fstream>
-
 #include "MemoryManager.h"
 
 using namespace engine;
@@ -69,11 +67,8 @@ public:
 		TiXmlElement* xmlVertexShader = rootEffect->FirstChildElement("vertexShader");
 		TiXmlElement* xmlFragmentShader = rootEffect->FirstChildElement("fragmentShader");
 
-		std::ifstream vs(xmlVertexShader->Attribute("src"));
-		std::ifstream fs(xmlFragmentShader->Attribute("src"));
-
-		Source* vertexShader = new Source(vs);
-		Source* fragmentShader = new Source(fs);
+		Source* vertexShader = Source::loadVertexShader(xmlVertexShader->Attribute("src"));
+		Source* fragmentShader = Source::loadFragmentShader(xmlFragmentShader->Attribute("src"));
 
 		effect->setShader(new Shader(vertexShader, fragmentShader, 0));
 

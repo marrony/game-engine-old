@@ -13,6 +13,7 @@
 
 #include <set>
 #include <map>
+#include <fstream>
 
 #include "System.h"
 
@@ -129,13 +130,8 @@ namespace engine {
 		program->enableAttribute(this);
 	}
 
-	Source::Source(std::istream& stream) :
-			shaderId(0), source(), compiled(false) {
-		source = engine::file::loadFromStream(stream);
-	}
-
-	Source::Source(const std::string& _source) :
-			shaderId(0), source(_source), compiled(false) {
+	Source::Source(ShaderType type, const std::string& source) :
+			type(type), shaderId(0), source(source), compiled(false) {
 	}
 
 	Source::~Source() {
@@ -147,27 +143,27 @@ namespace engine {
 		return shaderId;
 	}
 
-	void Source::compile(ShaderType shaderType) {
+	void Source::compile() {
 		if(!compiled) {
-			int type;
+			int glType;
 
-			switch(shaderType) {
-			case VertexShader:
-				type = GL_VERTEX_SHADER;
+			switch(type) {
+			case ShaderType::VertexShader:
+				glType = GL_VERTEX_SHADER;
 				break;
 
-			case FragmentShader:
-				type = GL_FRAGMENT_SHADER;
+			case ShaderType::FragmentShader:
+				glType = GL_FRAGMENT_SHADER;
 				break;
 
 #ifndef ANDROID
-			case GeometryShader:
-				type = GL_GEOMETRY_SHADER;
+			case ShaderType::GeometryShader:
+				glType = GL_GEOMETRY_SHADER;
 				break;
 #endif
 			}
 
-			shaderId = glCreateShader(type);
+			shaderId = glCreateShader(glType);
 
 			const GLchar* sourcePtr = source.data();
 
@@ -198,6 +194,30 @@ namespace engine {
 		return source;
 	}
 
+	Source* Source::loadVertexShader(const std::string& filename) {
+		std::ifstream stream(filename.c_str());
+
+		std::string source = file::loadFromStream(stream);
+
+		return new Source(ShaderType::VertexShader, source);
+	}
+
+	Source* Source::loadFragmentShader(const std::string& filename) {
+		std::ifstream stream(filename.c_str());
+
+		std::string source = file::loadFromStream(stream);
+
+		return new Source(ShaderType::FragmentShader, source);
+	}
+
+	Source* Source::loadGeometryShader(const std::string& filename) {
+		std::ifstream stream(filename.c_str());
+
+		std::string source = file::loadFromStream(stream);
+
+		return new Source(ShaderType::GeometryShader, source);
+	}
+
 	void Shader::disableAttribs() {
 		for(std::set<Attribute*>::iterator i = attribsEnabled.begin(); i != attribsEnabled.end(); i++) {
 			(*i)->disable();
@@ -216,18 +236,12 @@ namespace engine {
 		delete fragmentShader;
 		delete geometryShader;
 
-		std::map<std::string, Attribute*>::iterator attribute = attributes.begin();
-		while(attribute != attributes.end()) {
-			delete attribute->second;
-
-			attribute++;
+		for(auto attribute : attributes) {
+			delete attribute.second;
 		}
 
-		std::map<std::string, Constant*>::iterator constant = constants.begin();
-		while(constant != constants.end()) {
-			delete constant->second;
-
-			constant++;
+		for(auto constant : constants) {
+			delete constant.second;
 		}
 
 		if(programId)
@@ -250,17 +264,17 @@ namespace engine {
 		programId = glCreateProgram();
 
 		if(vertexShader != 0) {
-			vertexShader->compile(VertexShader);
+			vertexShader->compile();
 			glAttachShader(programId, vertexShader->getId());
 		}
 
 		if(fragmentShader != 0) {
-			fragmentShader->compile(FragmentShader);
+			fragmentShader->compile();
 			glAttachShader(programId, fragmentShader->getId());
 		}
 
 		if(geometryShader != 0) {
-			geometryShader->compile(GeometryShader);
+			geometryShader->compile();
 			glAttachShader(programId, geometryShader->getId());
 		}
 

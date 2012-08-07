@@ -27,26 +27,6 @@
 
 namespace engine {
 
-	class BufferManager {
-	public:
-		struct Buffer {
-			unsigned int bufferId;
-			int count;
-			int target;
-			int usage;
-			BufferType bufferType;
-			FrequencyAccess frequencyAccess;
-			NatureAccess natureAccess;
-		};
-
-		Resources<Buffer> buffers;
-
-		VIRTUAL int createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
-		VIRTUAL void destroyBuffer(int handle);
-		VIRTUAL void* mapBuffer(int handle, AccessType accessType);
-		VIRTUAL void unmapBuffer(int handle);
-	};
-
 	class GraphicManager : public ResourceListener {
 		enum PendingFlags {
 			VertexBufferAltered = 0x01,
@@ -64,8 +44,8 @@ namespace engine {
 		Framebuffer* lastFramebuffer;
 		Shader* shader;
 
-		unsigned int vertexBuffer;
-		unsigned int indexBuffer;
+		Buffer* vertexBuffer;
+		Buffer* indexBuffer;
 
 		struct Attribs {
 			int attrib;
@@ -148,8 +128,8 @@ namespace engine {
 
 		VIRTUAL void bindTexture(const std::string& name, class Texture* texture);
 
-		VIRTUAL void setVertexBuffer(unsigned int vertexBuffer);
-		VIRTUAL void setIndexBuffer(unsigned int indexBuffer);
+		VIRTUAL void setVertexBuffer(Buffer* vertexBuffer);
+		VIRTUAL void setIndexBuffer(Buffer* indexBuffer);
 
 		VIRTUAL void setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride);
 
@@ -162,9 +142,6 @@ namespace engine {
 
 		virtual void onResourceLoaded(const ResourceEvent& event);
 		virtual void onResourceUnloaded(const ResourceEvent& event);
-
-		BufferManager bufferManager;
-//		TextureManager textureManager;
 	};
 
 }

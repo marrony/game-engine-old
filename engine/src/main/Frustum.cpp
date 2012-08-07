@@ -44,6 +44,7 @@ namespace engine {
 
 	void Frustum::setDefaultPositionAndDirection() {
 		setDirection(math::Vector3(0, 0, -1));
+		setPosition(math::Vector3(0, 0, 0));
 	}
 
 	void Frustum::setDefaultZNearAndZFar() {

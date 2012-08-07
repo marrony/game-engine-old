@@ -10,20 +10,6 @@
 
 namespace engine {
 
-	class GraphicManager;
-
-	struct Initializable {
-		virtual ~Initializable() {}
-
-		virtual void initialize(GraphicManager* graphicManager) = 0;
-	};
-
-	struct Finalizable {
-		virtual ~Finalizable() {}
-
-		virtual void finalize(GraphicManager* graphicManager) = 0;
-	};
-
 	enum class BlendEquation : unsigned char {
 		Add,              // Result = (Source Color * Source Blend) + (Destination Color * Destination Blend)
 		Subtract,         // Result = (Source Color * Source Blend) - (Destination Color * Destination Blend)

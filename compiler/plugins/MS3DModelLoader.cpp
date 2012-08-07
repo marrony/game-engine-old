@@ -11,7 +11,7 @@
 #include "MS3DModel.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-#include "Model.h"
+#include "ModelBuilder.h"
 #include "FileUtil.h"
 #include "Stream.h"
 
@@ -54,7 +54,8 @@ public:
 
 		ms3d.Load(file);
 
-		Model* model = new Model(file::getFilename(fileName), manager);
+		ModelBuilder modelData(*manager);
+		modelData.setName(file::getFilename(fileName));
 
 		for(int i = 0; i < ms3d.GetNumMaterials(); i++) {
 			ms3d_material_t* material = ms3d.GetMaterial(i);
@@ -126,21 +127,18 @@ public:
 
 			//TODO carregar
 			Material* material = (Material*)manager->loadResource(MaterialKey(ms3dMaterial->name));
-			model->addVertexData(vertices, indices, material, flags);
+			modelData.addVertexData(vertices, indices, material, flags);
 		}
 
-		model->modelData->calculateTangent();
-		model->modelData->calculateBoundingBox();
-
-		model->getAnimation().setFrameProperties(ms3d.GetAnimationFps(), ms3d.GetTotalFrames());
+		modelData.getAnimation().setFrameProperties(ms3d.GetAnimationFps(), ms3d.GetTotalFrames());
 
 		if(ms3d.GetNumJoints() > 0) {
-			model->getAnimation().setBoneCount(ms3d.GetNumJoints());
+			modelData.getAnimation().setBoneCount(ms3d.GetNumJoints());
 
 			for(size_t i = 0; i < ms3d.GetNumJoints(); i++) {
 				ms3d_joint_t* joint = ms3d.GetJoint(i);
 
-				Bone* bone = model->getAnimation().getBone(i);
+				Bone* bone = modelData.getAnimation().getBone(i);
 
 				bone->parentIndex = ms3d.FindJointByName(joint->parentName);
 				bone->name = joint->name;
@@ -169,15 +167,14 @@ public:
 				}
 			}
 
-			model->getAnimation().updateBones();
+			modelData.getAnimation().updateBones();
 		}
 
 		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".model";
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
-		ModelUtils::write(resourceStream, *manager, model);
 
-		delete model;
+		modelData.writeToStream(resourceStream);
 	}
 };
 

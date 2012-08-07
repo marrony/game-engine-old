@@ -154,7 +154,7 @@ public:
 				std::swap(dados[i + 0], dados[i + 2]);
 		}
 
-		Texture* texture = new Texture(file::getFilename(fileName), manager, 0);
+		Texture* texture = new Texture(file::getFilename(fileName), manager);
 
 		switch(pixel_size) {
 		case 1:

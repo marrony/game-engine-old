@@ -13,11 +13,10 @@
 #include "ResourceManager.h"
 
 CreateGeometry::CreateGeometry(const std::string& name, ResourceManager* manager) :
-		manager(manager), model(0), name(name) {
+		manager(manager), modelBuilder(*manager), name(name) {
 }
 
 CreateGeometry::~CreateGeometry() {
-	delete model;
 }
 
 void CreateGeometry::visit(ColladaGeometry* geometry) {
@@ -30,27 +29,19 @@ void CreateGeometry::visit(ColladaGeometry* geometry) {
 	else
 		name0 = geometry->getId();
 
-	model = new Model(name0, manager);
+	modelBuilder.setName(name0);
 
 	ColladaMesh* mesh = geometry->getMesh();
 
 	mesh->accept(this);
-
-	model->modelData->calculateTangent();
-	model->modelData->calculateBoundingBox();
 }
 
 void CreateGeometry::visit(ColladaMesh* mesh) {
-	//editor = new ModelEditor(*model);
-
 	for(ColladaPolyList* polylist : mesh->getPolylists())
 		polylist->accept(this);
 
 	for(ColladaTriangles* triangle : mesh->getTriangles())
 		triangle->accept(this);
-
-	//delete editor;
-	//editor = 0;
 }
 
 struct VertexSoup {
@@ -183,7 +174,7 @@ void CreateGeometry::visit(ColladaPolyList* polylist) {
 		}
 
 		Material* material = (Material*)manager->loadResource(MaterialKey(polylist->getMaterial()));
-		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
+		modelBuilder.addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }
 
@@ -197,6 +188,6 @@ void CreateGeometry::visit(ColladaTriangles* triangles) {
 		}
 
 		Material* material = (Material*)manager->loadResource(MaterialKey(triangles->getMaterial()));
-		model->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
+		modelBuilder.addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }

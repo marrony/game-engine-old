@@ -12,6 +12,7 @@
 
 #include "math/Vector.h"
 #include "Model.h"
+#include "ModelBuilder.h"
 
 namespace engine {
 

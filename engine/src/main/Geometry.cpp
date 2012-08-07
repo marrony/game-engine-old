@@ -86,7 +86,7 @@ namespace engine {
 		if(!model) return;
 
 		aabbox.reset();
-
+#if 0
 		for(size_t i = 0; i < model->modelData->position.size(); i++) {
 			math::Vector3 myVertex = model->modelData->position[i];
 
@@ -113,6 +113,7 @@ namespace engine {
 
 			aabbox.merge(position);
 		}
+#endif
 	}
 
 	void Geometry::notifyVisibility(ResourceManager& manager) {

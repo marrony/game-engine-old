@@ -33,11 +33,12 @@ namespace engine {
 
 	class Buffer : public DeviceObject {
 		int handle;
-		void* data;
+		char* data;
 		int size;
 		BufferType bufferType;
 		FrequencyAccess frequencyAccess;
 		NatureAccess natureAccess;
+		bool dirty;
 	public:
 		Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
 		virtual ~Buffer();
@@ -45,10 +46,14 @@ namespace engine {
 		virtual int getHandle() const;
 		virtual void setHandle(int handle);
 
-		int getSize() const { return size; }
-		BufferType getBufferType() const { return bufferType; }
-		FrequencyAccess getFrequencyAccess() const { return frequencyAccess; }
-		NatureAccess getNatureAccess() const { return natureAccess; }
+		int getSize() const;
+		BufferType getBufferType() const;
+		FrequencyAccess getFrequencyAccess() const;
+		NatureAccess getNatureAccess() const;
+		const void* getData() const;
+
+		bool needUpdate() const;
+		void setUpdated();
 
 		void* map(AccessType accessType);
 		void unmap();

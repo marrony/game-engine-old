@@ -153,14 +153,12 @@ namespace engine {
 	}
 
 	void Effect::setupAttributes(Model* model, Shader* shader, GraphicManager* graphicManager) {
-		ModelData* modelData = model->modelData;
-
 		for(int offset = 0; offset < AttributeOffset::MaxAttributeOffset; ++offset) {
 			AttributeEnabled& att = attributesEnabled[offset];
 
 			if(!att.enabled) continue;
 
-			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, modelData->attributeOffsets[offset], sizeof(float) * modelData->elementsPerVertex);
+			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, model->attributeOffsets[offset], sizeof(float) * model->elementsPerVertex);
 		}
 	}
 
@@ -177,8 +175,8 @@ namespace engine {
 		std::string vs = stream.readString("vertexShader");
 		std::string fs = stream.readString("fragmentShader");
 
-		Source* vss = new Source(vs);
-		Source* fss = new Source(fs);
+		Source* vss = new Source(ShaderType::VertexShader, vs);
+		Source* fss = new Source(ShaderType::FragmentShader, fs);
 
 		Effect* effect = new Effect(name, &manager);
 

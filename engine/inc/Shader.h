@@ -10,14 +10,13 @@
 
 #include "math/Vector.h"
 #include "math/Matrix.h"
+#include "DeviceObject.h"
 
 #include <string>
 #include <set>
 #include <map>
 
 namespace engine {
-
-	class Buffer;
 
 	class Shader;
 
@@ -60,24 +59,26 @@ namespace engine {
 		}
 	};
 
-	enum ShaderType {
-		VertexShader,
-		FragmentShader,
-		GeometryShader
+	enum class ShaderType {
+		VertexShader, FragmentShader, GeometryShader
 	};
 
 	class Source {
+		ShaderType type;
 		int shaderId;
 		std::string source;
 		bool compiled;
 	public:
-		Source(std::istream& stream);
-		Source(const std::string& _source);
+		Source(ShaderType type, const std::string& source);
 		~Source();
 
 		int getId();
-		void compile(ShaderType type);
+		void compile();
 		std::string getSource() const;
+
+		static Source* loadVertexShader(const std::string& filename);
+		static Source* loadFragmentShader(const std::string& filename);
+		static Source* loadGeometryShader(const std::string& filename);
 	};
 
 	/**

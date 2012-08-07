@@ -47,11 +47,19 @@ namespace engine {
 		if(flags & ShaderAltered)
 			shader->bind();
 
-		if(flags & VertexBufferAltered)
-			glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+		if(flags & VertexBufferAltered) {
+			if(vertexBuffer && vertexBuffer->needUpdate())
+				updateBuffer(vertexBuffer);
+			else
+				glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->getHandle());
+		}
 
-		if(flags & IndexBufferAltered)
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+		if(flags & IndexBufferAltered) {
+			if(indexBuffer && indexBuffer->needUpdate())
+				updateBuffer(indexBuffer);
+			else
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->getHandle());
+		}
 
 		if(flags & TextureAltered) {
 			for(int unit = 0; unit < 16; ++unit) {
@@ -164,7 +172,7 @@ namespace engine {
 				case Constants::BonePallete:
 					size_t bonesCount = context.model->getAnimation().getBonesCount();
 
-					if(!context.model->modelData->boneIds.empty() && !context.model->modelData->weights.empty() && bonesCount > 0) {
+					if(context.model->hasAnimation) {
 						cc->setValue(context.geometry->getBoneMatrix(), bonesCount);
 					} else {
 						cc->setValue(&math::Matrix4::IDENTITY, 1);
@@ -179,15 +187,11 @@ namespace engine {
 	}
 
 	void GraphicManager::updateTexture(Texture* texture) {
-		int handle = texture->getHandle();
-
-		if(!handle) {
+		if(!texture->getHandle()) {
 			GLuint texId;
 			glGenTextures(1, &texId);
 
 			texture->setHandle(texId);
-
-			handle = texId;
 		}
 
 		int textureUnit = 15;
@@ -210,7 +214,7 @@ namespace engine {
 		}
 
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
-		glBindTexture(type, handle);
+		glBindTexture(type, texture->getHandle());
 
 		const void* data = texture->getData();
 
@@ -338,12 +342,15 @@ namespace engine {
 			buffer->setHandle(handle);
 		}
 
-		GLuint count = buffer->getSize();
-		GLint target = getTarget(buffer->getBufferType());
-		GLint usage = getUsage(buffer->getFrequencyAccess(), buffer->getNatureAccess());
+		GLsizeiptr count = buffer->getSize();
+		GLenum target = getTarget(buffer->getBufferType());
+		GLenum usage = getUsage(buffer->getFrequencyAccess(), buffer->getNatureAccess());
+		const GLvoid* data = buffer->getData();
 
 		glBindBuffer(target, handle);
-		glBufferData(target, count, 0, usage);
+		glBufferData(target, count, data, usage);
+
+		buffer->setUpdated();
 	}
 
 	void GraphicManager::resize(int newWidth, int newHeight) {
@@ -533,14 +540,14 @@ namespace engine {
 		flags |= TextureAltered;
 	}
 
-	void GraphicManager::setVertexBuffer(unsigned int vertexBuffer) {
+	void GraphicManager::setVertexBuffer(Buffer* vertexBuffer) {
 		if(this->vertexBuffer == vertexBuffer) return;
 
 		this->vertexBuffer = vertexBuffer;
 		flags |= VertexBufferAltered;
 	}
 
-	void GraphicManager::setIndexBuffer(unsigned int indexBuffer) {
+	void GraphicManager::setIndexBuffer(Buffer* indexBuffer) {
 		if(this->indexBuffer == indexBuffer) return;
 
 		this->indexBuffer = indexBuffer;
@@ -561,74 +568,14 @@ namespace engine {
 	}
 
 	void GraphicManager::onResourceLoaded(const ResourceEvent& event) {
-		if(event.type == "texture") {
-			Texture* texture = (Texture*)event.resource;
-
-			updateTexture(texture);
-		} else if(event.type == "effect") {
+		if(event.type == "effect") {
 			Effect* effect = (Effect*)event.resource;
 
 			effect->finalizeInitialization();
-		} else if(event.type == "model") {
-			Model* model = (Model*)event.resource;
-
-			model->uploadData(this);
 		}
 	}
 
 	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
-		if(event.type == "texture") {
-			Texture* texture = (Texture*)event.resource;
-
-			//texture->finalize(this);
-		} else if(event.type == "model") {
-			Model* model = (Model*)event.resource;
-
-			model->unloadData(this);
-		}
-	}
-
-	int BufferManager::createBuffer(int count, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) {
-		Buffer buffer;
-
-		buffer.count = count;
-		buffer.bufferType = bufferType;
-		buffer.frequencyAccess = frequencyAccess;
-		buffer.natureAccess = natureAccess;
-		buffer.target = getTarget(bufferType);
-		buffer.usage = getUsage(frequencyAccess, natureAccess);
-
-		glGenBuffers(1, &buffer.bufferId);
-		glBindBuffer(buffer.target, buffer.bufferId);
-		glBufferData(buffer.target, buffer.count, 0, buffer.usage);
-
-		return buffers.add(buffer);
-	}
-
-	void BufferManager::destroyBuffer(int handle) {
-		if(!handle) return;
-
-		Buffer& buffer = buffers.get(handle);
-
-		glDeleteBuffers(1, &buffer.bufferId);
-
-		buffers.remove(handle);
-	}
-
-	void* BufferManager::mapBuffer(int handle, AccessType accessType) {
-		if(!handle) return 0;
-
-		Buffer& buffer = buffers.get(handle);
-
-		return glMapBuffer(buffer.target, getAccess(accessType));
-	}
-
-	void BufferManager::unmapBuffer(int handle) {
-		if(!handle) return;
-
-		Buffer& buffer = buffers.get(handle);
-
-		glUnmapBuffer(buffer.target);
 	}
 
 }  // namespace engine

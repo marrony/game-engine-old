@@ -16,14 +16,12 @@
 namespace engine {
 
 	void Texture::cleanData() {
-		if(data) {
-			delete[] data;
-			data = 0;
-		}
+		if(data) delete[] data;
+		data = nullptr;
 	}
 
 	Texture::Texture(const std::string& name, ResourceManager* manager) :
-			Resource(name, manager), handle(0), dirty(true) {
+			Resource(name, manager), handle(0), dirty(true), data(nullptr) {
 	}
 
 	Texture::~Texture() {
@@ -32,11 +30,6 @@ namespace engine {
 
 	Type Texture::getType() const {
 		return Type("texture");
-	}
-
-	void Texture::markUploaded() {
-		uploaded = true;
-		cleanData();
 	}
 
 	void Texture::setHandle(int handle) {
@@ -64,6 +57,7 @@ namespace engine {
 	}
 
 	void Texture::setData(int width, int height, int depth, const void* data) {
+		this->dirty = true;
 		this->width = width;
 		this->height = height;
 		this->depth = depth;
@@ -72,6 +66,24 @@ namespace engine {
 
 		this->data = new char[size];
 		memcpy(this->data, data, size * sizeof(char));
+	}
+
+	bool Texture::needUpdate() const {
+		return dirty;
+	}
+
+	void Texture::setUpdated() {
+		dirty = false;
+
+		cleanData();
+	}
+
+	TextureType Texture::getTextureType() const {
+		return TextureType::Texture2D;
+	}
+
+	TextureFormat Texture::getFormat() const {
+		return depth == 4 ? TextureFormat::Rgba8 : TextureFormat::Rgb8;
 	}
 
 	void* TextureUtils::read(ResourceStream& stream, ResourceManager& manager, void* instance) {
@@ -95,7 +107,7 @@ namespace engine {
 		texture->height = height;
 		texture->depth = depth;
 		texture->data = data;
-		texture->uploaded = false;
+		texture->dirty = true;
 
 		return texture;
 	}

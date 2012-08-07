@@ -33,7 +33,6 @@ namespace engine {
 		int width;
 		int height;
 		int depth;
-		bool uploaded;
 		char* data;
 		int handle;
 		bool dirty;
@@ -48,8 +47,6 @@ namespace engine {
 
 		virtual Type getType() const;
 
-		void markUploaded();
-
 		virtual int getHandle() const;
 		virtual void setHandle(int handle);
 
@@ -63,11 +60,11 @@ namespace engine {
 
 		void setData(int width, int height, int depth, const void* data);
 
-		bool needUpdate() { return dirty; }
-		void setUpdated() { dirty = false; }
+		bool needUpdate() const;
+		void setUpdated();
 
-		TextureType getTextureType() const { return TextureType::Texture2D; }
-		TextureFormat getFormat() const { return depth == 4 ? TextureFormat::Rgba8 : TextureFormat::Rgb8; }
+		TextureType getTextureType() const;
+		TextureFormat getFormat() const;
 
 		friend class TextureUtils;
 	};
