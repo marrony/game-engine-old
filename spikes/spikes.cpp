@@ -928,7 +928,7 @@ float cosX3() {
 	return newtonRaphson(f);
 }
 
-int main(int argc, char* argv[]) {
+void testeRaizes() {
 	std::cout << sqRoot(2) << std::endl;
 
 	auto f = [](float x) {
@@ -941,8 +941,9 @@ int main(int argc, char* argv[]) {
 	std::cout << sqRoot(612) << std::endl;
 	std::cout << cuRoot(1000) << std::endl;
 	std::cout << cosX3() << std::endl;
+}
 
-
+void testeSharedPtr() {
 	MyTest* tp = make<MyTest>(10, "teste");
 
 	std::weak_ptr<MyTest> w;
@@ -958,15 +959,9 @@ int main(int argc, char* argv[]) {
 
 		std::shared_ptr<MyTest> ptr0 = std::shared_ptr<MyTest>(new MyTest(10, "teste"));
 	}
+}
 
-	std::function<void()> f0 = teste(10);
-	std::function<void()> f1 = teste(11, 12, 13);
-
-	f0();
-	f1();
-
-	return 0;
-
+void testeGate() {
 	NewEffect effect;
 
 	ConstantGate* s = new ConstantGate(0);
@@ -988,7 +983,146 @@ int main(int argc, char* argv[]) {
 
 	for(auto s : material.getSamplers())
 		std::cout << s.first << " " << s.second << std::endl;
+}
 
+class Bot {
+	math::Vector3 position;
+	float mod;
+	float aimDirection;
+public:
+	Bot() :
+			position(0, 0, 0), mod(10), aimDirection(0) {
+	}
+
+	void updateAim(math::Vector3 target) {
+		aimDirection = math::dot(position, target) * mod;
+	}
+};
+
+struct AimingData {
+	math::Vector3* positions;
+	float* mod;
+
+	AimingData(int count) {
+		positions = new math::Vector3[count];
+		mod = new float[count];
+
+		for(int i = 0; i < count; ++i) {
+			positions[i] = math::Vector3(0, 0, 0);
+			mod[i] = 10;
+		}
+	}
+
+	~AimingData() {
+		delete[] positions;
+		delete[] mod;
+	}
+
+	static void updateAims(float* aimDir, const AimingData* aim, math::Vector3 target, int count) {
+		for(int i = 0; i < count; ++i)
+			aimDir[i] = math::dot(aim->positions[i], target) * aim->mod[i];
+	}
+};
+
+#include "Timer.h"
+
+void testeDod() {
+	const int DATA_SIZE = 1024*1024;
+	const int VEZES = 1000;
+	const math::Vector3 target(10, 3, 5);
+	Timer timer;
+
+	Bot* bots = new Bot[DATA_SIZE];
+	AimingData aiminData(DATA_SIZE);
+	float* aimDir = new float[DATA_SIZE];
+
+	double t0 = 0;
+	double t1 = 0;
+
+	for(int i = 0; i < VEZES; ++i) {
+		timer.start();
+		for(int i = 0; i < DATA_SIZE; ++i)
+			bots[i].updateAim(target);
+
+		t0 += timer.getElapsedTimeInMicroSec();
+
+		timer.start();
+		AimingData::updateAims(aimDir, &aiminData, target, DATA_SIZE);
+
+		t1 += timer.getElapsedTimeInMicroSec();
+
+	}
+
+	t0 /= VEZES;
+	t1 /= VEZES;
+
+	std::cout << t0 << " " << t1 << std::endl;
+
+	delete[] bots;
+	delete[] aimDir;
+}
+
+int branch(int x) {
+	int x1 = -2;
+	int x2 = -1;
+	int x3 = +1;
+	int x4 = +2;
+	
+	int a0 = 0;
+	int a1 = 1;
+	int a2 = 2;
+	int a3 = 3;
+	int a4 = 4;
+	
+	int result;
+	
+	if (x < x1)
+		result = a0;
+	else if (x < x2)
+		result = a1;
+	else if (x < x3)
+		result = a2;
+	else if (x < x4)
+		result = a3;
+	else
+		result = a4;
+	
+	return result;
+}
+
+int branchless(int x) {
+	int x1 = -2;
+	int x2 = -1;
+	int x3 = +1;
+	int x4 = +2;
+	
+	int a0 = 0;
+	int a1 = 1;
+	int a2 = 2;
+	int a3 = 3;
+	int a4 = 4;		
+	
+	int x_lt_x1  = ((x - x1) >> 31);
+	int x_lt_x2  = ((x - x2) >> 31);
+	int x_lt_x3  = ((x - x3) >> 31);
+	int x_lt_x4  = ((x - x4) >> 31);
+	int result_0 = (x_lt_x4 & a3) | (~x_lt_x4 & a4);
+	int result_1 = (x_lt_x3 & a2) | (~x_lt_x3 & result_0);
+	int result_2 = (x_lt_x2 & a1) | (~x_lt_x2 & result_1);
+	int result = (x_lt_x1 & a0) | (~x_lt_x1 & result_2);
+	
+	return result;
+}
+	
+void testeBranch() {
+	int x = -2;
+	
+	int b0 = branch(x);
+	int b1 = branchless(x);
+}
+
+int main(int argc, char* argv[]) {
+	testeDod();
 	return 0;
 }
 
