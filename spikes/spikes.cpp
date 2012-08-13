@@ -1121,7 +1121,32 @@ void testeBranch() {
 	int b1 = branchless(x);
 }
 
+void foo0(float v[], float* c, int n) {
+	for(int i = 0; i < n; ++i)
+		v[i] = *c + 1.0f;
+}
+
+void foo1(float v[], float* c, int n) {
+	float temp = *c + 1.0f;
+	for(int i = 0; i < n; ++i)
+		v[i] = temp;
+}
+
+void testeAlias() {
+	float a[10];
+	a[4] = 0.0f;
+
+	foo0(a, &a[4], 10);
+
+	float b[10];
+	b[4] = 0.0f;
+	foo1(b, &b[4], 10);
+
+	std::cout << std::endl;
+}
+
 int main(int argc, char* argv[]) {
+	testeAlias();
 	testeDod();
 	return 0;
 }
