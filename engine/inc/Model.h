@@ -88,10 +88,6 @@ namespace engine {
 		unsigned short count;  //number os elements to draw
 		unsigned short start;  //minimum index in range [offset, offset+count]
 		unsigned short end;    //maximum index in range [offset, offset+count]
-		Material* material;
-		AABoundingBox aabbox;
-
-		Model* model;
 	};
 
 	class Model : public Resource {
@@ -102,6 +98,10 @@ namespace engine {
 
 		Batch* getBatch(size_t index) {
 			return &batches[index];
+		}
+
+		Material* getMaterial(size_t index) {
+			return materials[index];
 		}
 
 		size_t getBatchCount() const {
@@ -120,9 +120,13 @@ namespace engine {
 			return TYPE;
 		}
 
+		void load(const std::string& filename);
+
 		static const Type TYPE;
 
 		std::vector<Batch> batches;
+		std::vector<Material*> materials;
+		std::vector<AABoundingBox> aabboxes;
 		AABoundingBox aabbox;
 		int elementsPerVertex;
 		bool hasAnimation;

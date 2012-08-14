@@ -22,12 +22,22 @@ namespace engine {
 	}
 
 	Model::~Model() {
-		for(Batch& mesh : batches) {
-			manager->unloadResource(mesh.material);
+		for(size_t i = 0; i < batches.size(); ++i) {
+			Material* material = materials[i];
+			manager->unloadResource(material);
 		}
 
 		delete vertexBuffer;
 		delete indexBuffer;
+	}
+
+	void Model::load(const std::string& filename) {
+		FileStream fileStream("resources/scene/" + filename + ".model");
+		ResourceBinStream resourceStream(fileStream);
+
+		ModelBuilder builder(*manager);
+		builder.readFromStream(resourceStream);
+		builder.createModel(this);
 	}
 
 	Resource* ModelKey::loadResource(class ResourceManager& manager) const {
@@ -37,7 +47,8 @@ namespace engine {
 		ResourceBinStream resourceStream(fileStream);
 
 		ModelBuilder builder(manager);
-		return builder.readFromStream(resourceStream);
+		builder.readFromStream(resourceStream);
+		return builder.createModel();
 	}
 
 } /* namespace engine */

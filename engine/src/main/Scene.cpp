@@ -105,7 +105,7 @@ namespace engine {
 				RenderQueueEntry entry;
 
 				entry.geometry = geometry;
-				entry.material = model->getBatch(i)->material;
+				entry.material = model->getMaterial(i);
 				entry.mesh = model->getBatch(i);
 
 				renderQueue.push_back(entry);

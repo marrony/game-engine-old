@@ -29,8 +29,8 @@ namespace engine {
 		indexMesh.count = newIndices.size();
 		indexMesh.start = lastVertexCount + *std::min_element(newIndices.begin(), newIndices.end());
 		indexMesh.end = lastVertexCount + *std::max_element(newIndices.begin(), newIndices.end());
-		indexMesh.material = material;
-		indicesMesh.push_back(indexMesh);
+		batches.push_back(indexMesh);
+		materials.push_back(material);
 
 		for(size_t i = 0; i < newIndices.size(); i++) {
 			indices.push_back(lastVertexCount + newIndices[i]);
@@ -310,9 +310,12 @@ namespace engine {
 		}
 	}
 
-	Model* ModelBuilder::createModel() {
-		Model* model = new Model(name, &manager);
-		model->batches = indicesMesh;
+	Model* ModelBuilder::createModel(Model* model) {
+		if(!model)
+			model = new Model(name, &manager);
+
+		model->batches = batches;
+		model->materials = materials;
 		model->hasAnimation = !boneIds.empty() && !weights.empty() && animation.bones.size() > 0;
 		model->animation.bones = animation.bones;
 		model->animation.animationFps = animation.animationFps;
@@ -320,14 +323,12 @@ namespace engine {
 		model->animation.totalFrames = animation.totalFrames;
 		model->animation.updateBones();
 
-		calculateTangent();
-		calculateBoundingBox();
 		createBuffers(model);
 
 		return model;
 	}
 
-	Model* ModelBuilder::readFromStream(ResourceStream& stream) {
+	void ModelBuilder::readFromStream(ResourceStream& stream) {
 		stream.pushGroup("model");
 
 		std::string type = stream.readString("type");
@@ -360,15 +361,16 @@ namespace engine {
 		indices.resize(stream.readInt("indexCount"));
 		stream.readArray("indexData", (short*) indices.data(), indices.size());
 
-		indicesMesh.resize(stream.readInt("indexMeshCount"));
-		for(size_t i = 0; i < indicesMesh.size(); i++) {
+		batches.resize(stream.readInt("indexMeshCount"));
+		materials.resize(batches.size());
+		for(size_t i = 0; i < batches.size(); i++) {
 			stream.pushGroup("indexMesh");
 
-			indicesMesh[i].offset = stream.readShort("offset");
-			indicesMesh[i].count = stream.readShort("count");
-			indicesMesh[i].start = stream.readShort("start");
-			indicesMesh[i].end = stream.readShort("end");
-			indicesMesh[i].material = (Material*) manager.loadResource(MaterialKey(stream.readString("material")));
+			batches[i].offset = stream.readShort("offset");
+			batches[i].count = stream.readShort("count");
+			batches[i].start = stream.readShort("start");
+			batches[i].end = stream.readShort("end");
+			materials[i] = (Material*) manager.loadResource(MaterialKey(stream.readString("material")));
 
 			stream.popGroup();
 		}
@@ -424,7 +426,8 @@ namespace engine {
 			bindPose[i] = math::Matrix4::IDENTITY;
 		}
 
-		return createModel();
+		calculateTangent();
+		calculateBoundingBox();
 	}
 
 	void ModelBuilder::writeToStream(ResourceStream& stream) {
@@ -460,15 +463,15 @@ namespace engine {
 		stream.writeInt("indexCount", indices.size());
 		stream.writeArray("indexData", (short*)indices.data(), indices.size());
 
-		stream.writeInt("indexMeshCount", indicesMesh.size());
-		for(size_t i = 0; i < indicesMesh.size(); i++) {
+		stream.writeInt("indexMeshCount", batches.size());
+		for(size_t i = 0; i < batches.size(); i++) {
 			stream.pushGroup("indexMesh");
 
-			stream.writeShort("offset", indicesMesh[i].offset);
-			stream.writeShort("count", indicesMesh[i].count);
-			stream.writeShort("start", indicesMesh[i].start);
-			stream.writeShort("end", indicesMesh[i].end);
-			stream.writeString("material", indicesMesh[i].material->getName());
+			stream.writeShort("offset", batches[i].offset);
+			stream.writeShort("count", batches[i].count);
+			stream.writeShort("start", batches[i].start);
+			stream.writeShort("end", batches[i].end);
+			stream.writeString("material", materials[i]->getName());
 
 			stream.popGroup();
 		}

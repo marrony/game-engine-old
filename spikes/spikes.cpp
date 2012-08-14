@@ -1145,7 +1145,91 @@ void testeAlias() {
 	std::cout << std::endl;
 }
 
+#include <sys/stat.h>
+
+class NewTexture {
+public:
+	const char* data;
+
+	void load(const std::string& filename) {
+		struct _stat st;
+		_stat(filename.c_str(), &st);
+
+		data = new char[st.st_size];
+		FILE* f = fopen(filename.c_str(), "rb");
+		fread((void*)data, 1, st.st_size, f);
+		fclose(f);
+	}
+};
+
+class FileManager {
+	struct File {
+		std::function<void(const std::string&)> callback;
+		time_t time;
+	};
+	std::map<std::string, File> files;
+public:
+	void registerForNotifications(const std::string& filename, const std::function<void(const std::string&)>& callback) {
+		struct stat st;
+		stat(filename.c_str(), &st);
+
+		files.insert({filename, {callback, st.st_mtime}});
+	}
+
+	void update() {
+		for(auto file : files) {
+			struct stat st;
+
+			stat(file.first.c_str(), &st);
+
+			if(st.st_mtime > file.second.time) {
+				file.second.callback(file.first);
+				file.second.time = st.st_mtime;
+			}
+		}
+	}
+};
+
+class NewResourceManager {
+	std::map<std::string, NewTexture*> files;
+	FileManager fileManager;
+
+	void callback(const std::string& filename) {
+		files[filename]->load(filename);
+	}
+public:
+	NewTexture* loadTexture(const std::string& filename) {
+		NewTexture* texture = new NewTexture;
+
+		texture->load(filename);
+
+		files.insert({filename, texture});
+		fileManager.registerForNotifications(filename, std::bind(&NewResourceManager::callback, this, std::placeholders::_1));
+
+		return texture;
+	}
+
+	void update() {
+		fileManager.update();
+	}
+};
+
+void testeResouceManager() {
+	NewResourceManager resourceManager;
+
+	NewTexture* texture = resourceManager.loadTexture("resources/image.txt");
+
+	std::cout << texture->data << std::endl;
+
+	_chmod("resources/image.txt", 0777);
+
+	resourceManager.update();
+
+	std::cout << texture->data << std::endl;
+}
+
 int main(int argc, char* argv[]) {
+	testeResouceManager();
 	testeAlias();
 	testeDod();
 	return 0;

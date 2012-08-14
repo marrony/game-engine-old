@@ -63,7 +63,8 @@ namespace engine {
 		int attributeOffsets[MaxAttributeOffset];
 
 		AABoundingBox aabbox;
-		std::vector<Batch> indicesMesh;
+		std::vector<Batch> batches;
+		std::vector<Material*> materials;
 		std::string name;
 
 		math::Vector3 aabboxMin, aabboxMax;
@@ -88,8 +89,8 @@ namespace engine {
 
 		Animation& getAnimation() { return animation; }
 
-		Model* createModel();
-		Model* readFromStream(ResourceStream& stream);
+		Model* createModel(Model* model = 0);
+		void readFromStream(ResourceStream& stream);
 		void writeToStream(ResourceStream& stream);
 	};
 
