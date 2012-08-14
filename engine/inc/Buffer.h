@@ -11,8 +11,6 @@
 #include <vector>
 #include <stddef.h>
 
-#include "DeviceObject.h"
-
 namespace engine {
 
 	enum class AccessType : unsigned char {
@@ -31,7 +29,7 @@ namespace engine {
 		VertexBuffer, IndexBuffer
 	};
 
-	class Buffer : public DeviceObject {
+	class Buffer {
 		int handle;
 		char* data;
 		int size;
@@ -41,10 +39,10 @@ namespace engine {
 		bool dirty;
 	public:
 		Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
-		virtual ~Buffer();
+		~Buffer();
 
-		virtual int getHandle() const;
-		virtual void setHandle(int handle);
+		int getHandle() const;
+		void setHandle(int handle);
 
 		int getSize() const;
 		BufferType getBufferType() const;

@@ -29,7 +29,7 @@ namespace engine {
 		Texture2D, Texture3D, TextureCube
 	};
 
-	class Texture : public Resource, public DeviceObject {
+	class Texture : public Resource {
 		int width;
 		int height;
 		int depth;
@@ -47,8 +47,8 @@ namespace engine {
 
 		virtual Type getType() const;
 
-		virtual int getHandle() const;
-		virtual void setHandle(int handle);
+		int getHandle() const;
+		void setHandle(int handle);
 
 		const void* getData() const;
 

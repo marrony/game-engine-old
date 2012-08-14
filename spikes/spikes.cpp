@@ -1147,9 +1147,15 @@ void testeAlias() {
 
 #include <sys/stat.h>
 
+template<typename Resource>
+class NewResourceManager;
+
 class NewTexture {
+	NewResourceManager<NewTexture>* manager;
 public:
 	const char* data;
+
+	NewTexture(NewResourceManager<NewTexture>* manager) : manager(manager) {}
 
 	void load(const std::string& filename) {
 		struct _stat st;
@@ -1190,23 +1196,54 @@ public:
 	}
 };
 
+template<typename Resource>
 class NewResourceManager {
-	std::map<std::string, NewTexture*> files;
-	FileManager fileManager;
+	struct ResourceEntry {
+		std::string filename;
+		Resource* resource;
+		int count;
+	};
+
+	std::vector<ResourceEntry> files;
+	FileManager& fileManager;
 
 	void callback(const std::string& filename) {
-		files[filename]->load(filename);
+		for(ResourceEntry& entry : files) {
+			if(entry.filename == filename) {
+				entry.resource->load(filename);
+				break;
+			}
+		}
 	}
 public:
-	NewTexture* loadTexture(const std::string& filename) {
-		NewTexture* texture = new NewTexture;
+	NewResourceManager(FileManager& fileManager) : fileManager(fileManager) {}
 
-		texture->load(filename);
+	Resource* loadResource(const std::string& filename) {
+		Resource* resource = new Resource(this);
 
-		files.insert({filename, texture});
+		resource->load(filename);
+
+		files.push_back({filename, resource, 1});
 		fileManager.registerForNotifications(filename, std::bind(&NewResourceManager::callback, this, std::placeholders::_1));
 
-		return texture;
+		return resource;
+	}
+
+	void unloadResource(Resource* resource) {
+		auto entry = files.begin();
+		auto end = files.end();
+
+		for(; entry != end; ++entry) {
+			if(entry->resource == resource)
+				break;
+		}
+
+		if(entry != end) {
+			entry->count--;
+
+			if(entry->count == 0)
+				files.erase(entry);
+		}
 	}
 
 	void update() {
@@ -1215,9 +1252,10 @@ public:
 };
 
 void testeResouceManager() {
-	NewResourceManager resourceManager;
+	FileManager fileManager;
+	NewResourceManager<NewTexture> resourceManager(fileManager);
 
-	NewTexture* texture = resourceManager.loadTexture("resources/image.txt");
+	NewTexture* texture = resourceManager.loadResource("resources/image.txt");
 
 	std::cout << texture->data << std::endl;
 
