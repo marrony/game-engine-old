@@ -1102,10 +1102,10 @@ int branchless(int x) {
 	int a3 = 3;
 	int a4 = 4;		
 	
-	int x_lt_x1  = ((x - x1) >> 31);
-	int x_lt_x2  = ((x - x2) >> 31);
-	int x_lt_x3  = ((x - x3) >> 31);
-	int x_lt_x4  = ((x - x4) >> 31);
+	unsigned int x_lt_x1  = (unsigned int)((int)(x - x1) >> 31);
+	unsigned int x_lt_x2  = (unsigned int)((int)(x - x2) >> 31);
+	unsigned int x_lt_x3  = (unsigned int)((int)(x - x3) >> 31);
+	unsigned int x_lt_x4  = (unsigned int)((int)(x - x4) >> 31);
 	int result_0 = (x_lt_x4 & a3) | (~x_lt_x4 & a4);
 	int result_1 = (x_lt_x3 & a2) | (~x_lt_x3 & result_0);
 	int result_2 = (x_lt_x2 & a1) | (~x_lt_x2 & result_1);
@@ -1267,6 +1267,7 @@ void testeResouceManager() {
 }
 
 int main(int argc, char* argv[]) {
+	testeBranch();
 	testeResouceManager();
 	testeAlias();
 	testeDod();
