@@ -29,6 +29,8 @@ namespace engine {
 		VertexBuffer, IndexBuffer
 	};
 
+	class GraphicManager;
+
 	class Buffer {
 		int handle;
 		char* data;
@@ -37,6 +39,7 @@ namespace engine {
 		FrequencyAccess frequencyAccess;
 		NatureAccess natureAccess;
 		bool dirty;
+		GraphicManager* manager;
 	public:
 		Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess);
 		~Buffer();
@@ -55,6 +58,8 @@ namespace engine {
 
 		void* map(AccessType accessType);
 		void unmap();
+
+		void setManager(GraphicManager* manager) { this->manager = manager; }
 	};
 
 }  // namespace engine

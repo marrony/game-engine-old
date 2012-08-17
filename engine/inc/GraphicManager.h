@@ -131,6 +131,9 @@ namespace engine {
 		VIRTUAL void setVertexBuffer(Buffer* vertexBuffer);
 		VIRTUAL void setIndexBuffer(Buffer* indexBuffer);
 
+		VIRTUAL void* mapBuffer(Buffer* buffer, AccessType accessType);
+		VIRTUAL void unmapBuffer(Buffer* buffer);
+
 		VIRTUAL void setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride);
 
 		VIRTUAL void setConstant(ConstantContext& context, std::vector<ConstantsEnabled>& constants) {

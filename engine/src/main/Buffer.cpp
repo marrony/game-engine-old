@@ -6,12 +6,14 @@
  */
 
 #include "Buffer.h"
+#include "GraphicManager.h"
 
 namespace engine {
 
 	Buffer::Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) :
 			data(0), handle(0), size(size), bufferType(bufferType),
-			frequencyAccess(frequencyAccess), natureAccess(natureAccess) {
+			frequencyAccess(frequencyAccess), natureAccess(natureAccess),
+			manager(0) {
 	}
 
 	Buffer::~Buffer() {
@@ -57,7 +59,11 @@ namespace engine {
 	}
 
 	void* Buffer::map(AccessType accessType) {
-		if(!data) data = new char[size];
+		if(manager) {
+			data = manager->mapBuffer(this, accessType);
+		} else {
+			if(!data) data = new char[size];
+		}
 
 		dirty = true;
 
@@ -65,6 +71,9 @@ namespace engine {
 	}
 
 	void Buffer::unmap() {
+		if(manager) {
+			data = manager->unmapBuffer(this);
+		}
 	}
 
 }  // namespace engine

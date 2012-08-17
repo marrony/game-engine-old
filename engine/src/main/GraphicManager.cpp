@@ -332,6 +332,8 @@ namespace engine {
 	}
 
 	void GraphicManager::updateBuffer(Buffer* buffer) {
+		buffer->setManager(this);
+
 		int handle = buffer->getHandle();
 
 		if(!handle) {
@@ -552,6 +554,20 @@ namespace engine {
 
 		this->indexBuffer = indexBuffer;
 		flags |= IndexBufferAltered;
+	}
+
+	void* GraphicManager::mapBuffer(Buffer* buffer, AccessType accessType) {
+		updateBuffer(buffer);
+
+		GLenum target = getTarget(buffer->getBufferType());
+		GLenum access = getAccess(accessType);
+
+		return glMapBuffer(target, access);
+	}
+
+	void GraphicManager::unmapBuffer(Buffer* buffer) {
+		GLenum target = getTarget(buffer->getBufferType());
+		glUnmapBuffer(target);
 	}
 
 	void GraphicManager::setAttribute(AttributeOffset attributeOffset, int index, int mode, int offset, int stride) {
