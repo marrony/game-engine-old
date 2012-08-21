@@ -18,7 +18,7 @@ namespace engine {
 
 	struct RenderQueueEntry {
 		class Geometry* geometry;
-		class Batch* mesh;
+		class Batch* batch;
 		class Material* material;
 	};
 

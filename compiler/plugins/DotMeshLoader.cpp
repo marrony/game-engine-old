@@ -9,7 +9,7 @@
 #include "ResourceCompiler.h"
 
 #include "Resource.h"
-#include "ModelBuilder.h"
+#include "GeometryData.h"
 
 #include "SceneManager.h"
 #include "Model.h"
@@ -57,7 +57,7 @@ public:
 			throw Exception("Tag mesh not found");
 		}
 
-		ModelBuilder modelData(*manager);
+		GeometryData* modelData = new GeometryData;
 
 		TiXmlElement* xmlSubmeshes = xmlMesh->FirstChildElement("submeshes");
 		if(xmlSubmeshes != 0) {
@@ -68,7 +68,7 @@ public:
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
 
-		modelData.writeToStream(resourceStream);
+		modelData->writeToStream(resourceStream);
 	}
 
 	bool getAttribute(TiXmlElement* xmlElement, const char* attribute, bool valueDefault) {
@@ -105,7 +105,7 @@ public:
 		return value;
 	}
 
-	void processSubmeshes(ModelBuilder& modelData, TiXmlElement* xmlSubmeshes) {
+	void processSubmeshes(GeometryData* modelData, TiXmlElement* xmlSubmeshes) {
 		TiXmlElement* xmlSubmesh = xmlSubmeshes->FirstChildElement("submesh");
 
 		while(xmlSubmesh != 0) {
@@ -114,7 +114,7 @@ public:
 		}
 	}
 
-	void processSubmesh(ModelBuilder& modelData, TiXmlElement* xmlSubmesh) {
+	void processSubmesh(GeometryData* modelData, TiXmlElement* xmlSubmesh) {
 		std::vector<unsigned short> indices;
 		std::vector<MeshVertex> vertices;
 		int flags = 0;
@@ -132,10 +132,10 @@ public:
 		std::string material = xmlSubmesh->Attribute("material");
 
 		//TODO carregar
-		modelData.addVertexData(vertices, indices, 0 /*material*/, flags);
+		modelData->addVertexData(vertices, indices, 0 /*material*/, flags);
 	}
 
-	std::vector<unsigned short> processFaces(ModelBuilder& modelData, TiXmlElement* xmlFaces) {
+	std::vector<unsigned short> processFaces(GeometryData* modelData, TiXmlElement* xmlFaces) {
 		std::vector<unsigned short> indices;
 
 		TiXmlElement* xmlFace = xmlFaces->FirstChildElement("face");
@@ -156,7 +156,7 @@ public:
 		return indices;
 	}
 
-	std::vector<MeshVertex> processGeometry(ModelBuilder& modelData, TiXmlElement* xmlGeometry, int& flags) {
+	std::vector<MeshVertex> processGeometry(GeometryData* modelData, TiXmlElement* xmlGeometry, int& flags) {
 		std::vector<MeshVertex> vertices;
 
 		TiXmlElement* xmlVertexBuffer = xmlGeometry->FirstChildElement("vertexbuffer");

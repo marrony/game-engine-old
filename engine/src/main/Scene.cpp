@@ -13,6 +13,7 @@
 #include "SpatialLocation.h"
 #include "GameEntity.h"
 #include "Model.h"
+#include "GeometryData.h"
 #include "EventManager.h"
 #include "Light.h"
 #include "Node.h"
@@ -101,12 +102,12 @@ namespace engine {
 
 			Model* model = geometry->getModel();
 
-			for(size_t i = 0; i < model->getBatchCount(); i++) {
+			for(size_t i = 0; i < model->geometryData->batches.size(); ++i) {
 				RenderQueueEntry entry;
 
 				entry.geometry = geometry;
-				entry.material = model->getMaterial(i);
-				entry.mesh = model->getBatch(i);
+				entry.material = model->geometryData->materials[i];
+				entry.batch = &model->geometryData->batches[i];
 
 				renderQueue.push_back(entry);
 			}

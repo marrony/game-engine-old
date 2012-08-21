@@ -113,7 +113,8 @@ void CreateScene::visit(ColladaInstanceGeometry* instanceGeometry) {
 	CreateGeometry createGeometry("", manager);
 	geometry->accept(&createGeometry);
 
-	Model* model = createGeometry.getModelData().createModel();
+	GeometryData* geometryData = createGeometry.getModelData();
+	Model* model = new Model(geometryData->getName(), manager);
 	product->createGeometry(model, model->getBoundingBox(), nodes.top());
 }
 

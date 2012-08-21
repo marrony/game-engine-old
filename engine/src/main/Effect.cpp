@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "GraphicManager.h"
 #include "Model.h"
+#include "GeometryData.h"
 #include "Stream.h"
 
 namespace engine {
@@ -158,7 +159,9 @@ namespace engine {
 
 			if(!att.enabled) continue;
 
-			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, model->attributeOffsets[offset], sizeof(float) * model->elementsPerVertex);
+			GeometryData* geometryData = model->geometryData;
+
+			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, geometryData->attributeOffsets[offset], sizeof(float) * geometryData->elementsPerVertex);
 		}
 	}
 

@@ -47,7 +47,8 @@ namespace engine {
 		};
 	};
 
-	class ModelBuilder {
+	class GeometryData {
+	public:
 		std::vector<math::Vector3> position;
 		std::vector<math::Vector3> normal;
 		std::vector<math::Vector3> sTangent;
@@ -62,25 +63,22 @@ namespace engine {
 		int elementsPerVertex;
 		int attributeOffsets[MaxAttributeOffset];
 
-		AABoundingBox aabbox;
+		AABoundingBox boundingBox;
 		std::vector<Batch> batches;
 		std::vector<Material*> materials;
 		std::string name;
 
-		math::Vector3 aabboxMin, aabboxMax;
 		Animation animation;
-
-		ResourceManager& manager;
 
 		void calculateAttributeOffsetsAndElementsPerVertex();
 		void calculateTangent();
 		void calculateNormal();
 		void preCalculateTangent();
 		void calculateBoundingBox();
-		void createBuffers(Model* model);
+		//void createBuffers(Model* model);
 	public:
-		ModelBuilder(ResourceManager& manager);
-		~ModelBuilder();
+		GeometryData();
+		~GeometryData();
 
 		std::string getName() const { return name; }
 		void setName(const std::string& name) { this->name = name; }
@@ -89,8 +87,8 @@ namespace engine {
 
 		Animation& getAnimation() { return animation; }
 
-		Model* createModel(Model* model = 0);
-		void readFromStream(ResourceStream& stream);
+		//Model* createModel(Model* model = 0);
+		void readFromStream(ResourceManager& manager, ResourceStream& stream);
 		void writeToStream(ResourceStream& stream);
 	};
 

@@ -10,7 +10,7 @@
 #include "ResourceManager.h"
 #include "GraphicManager.h"
 #include "Stream.h"
-#include "ModelBuilder.h"
+#include "GeometryData.h"
 
 #include "MemoryManager.h"
 
@@ -18,26 +18,25 @@ namespace engine {
 	const Type Model::TYPE("model");
 
 	Model::Model(const std::string& name, ResourceManager* manager) :
-			Resource(name, manager), vertexBuffer(0), indexBuffer(0) {
+			Resource(name, manager)/*, vertexBuffer(0), indexBuffer(0)*/ {
 	}
 
 	Model::~Model() {
-		for(size_t i = 0; i < batches.size(); ++i) {
-			Material* material = materials[i];
-			manager->unloadResource(material);
-		}
-
-		delete vertexBuffer;
-		delete indexBuffer;
+//		for(size_t i = 0; i < batches.size(); ++i) {
+//			Material* material = materials[i];
+//			manager->unloadResource(material);
+//		}
+//
+//		delete vertexBuffer;
+//		delete indexBuffer;
 	}
 
-	void Model::load(const std::string& filename) {
-		FileStream fileStream("resources/scene/" + filename + ".model");
-		ResourceBinStream resourceStream(fileStream);
+	AABoundingBox Model::getBoundingBox() {
+		return geometryData->boundingBox;
+	}
 
-		ModelBuilder builder(*manager);
-		builder.readFromStream(resourceStream);
-		builder.createModel(this);
+	Animation& Model::getAnimation() {
+		return geometryData->animation;
 	}
 
 	Resource* ModelKey::loadResource(class ResourceManager& manager) const {
@@ -46,9 +45,11 @@ namespace engine {
 		FileStream fileStream("resources/scene/" + modelName + ".model");
 		ResourceBinStream resourceStream(fileStream);
 
-		ModelBuilder builder(manager);
-		builder.readFromStream(resourceStream);
-		return builder.createModel();
+		Model* model = new Model(modelName, &manager);
+		model->geometryData = new GeometryData;
+		model->geometryData->readFromStream(manager, resourceStream);
+
+		return model;
 	}
 
 } /* namespace engine */

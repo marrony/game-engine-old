@@ -28,8 +28,10 @@ class SimpleRenderer : public Renderer {
 		for(RenderQueueEntry entry : scene->getRenderQueue()) {
 			Model* model = entry.geometry->getModel();
 
-			Buffer* indexBuffer = model->indexBuffer;
-			Buffer* vertexBuffer = model->vertexBuffer;
+			Buffer* indexBuffer = 0;
+			Buffer* vertexBuffer = 0;
+
+			graphicManager->getBuffers(model->geometryData, &indexBuffer, &vertexBuffer);
 
 			if(!indexBuffer || !vertexBuffer)
 				continue;
@@ -49,7 +51,7 @@ class SimpleRenderer : public Renderer {
 
 			entry.material->begin(aspect, context);
 
-			graphicManager->drawIndex(entry.mesh->start, entry.mesh->end, entry.mesh->count, entry.mesh->offset);
+			graphicManager->drawIndex(entry.batch->start, entry.batch->end, entry.batch->count, entry.batch->offset);
 		}
 	}
 

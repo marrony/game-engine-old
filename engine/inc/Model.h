@@ -24,9 +24,10 @@ namespace engine {
 	class Material;
 	class Model;
 	class ResourceManager;
+	class GeometryData;
 
 	class Animation {
-		friend class ModelBuilder;
+		friend class GeometryData;
 
 		std::vector<Bone> bones;
 		float animationFps;
@@ -91,52 +92,25 @@ namespace engine {
 	};
 
 	class Model : public Resource {
-		friend class ModelBuilder;
 	public:
 		Model(const std::string& name, ResourceManager* manager);
 		~Model();
 
-		Batch* getBatch(size_t index) {
-			return &batches[index];
-		}
+		AABoundingBox getBoundingBox();
 
-		Material* getMaterial(size_t index) {
-			return materials[index];
-		}
-
-		size_t getBatchCount() const {
-			return batches.size();
-		}
-
-		AABoundingBox getBoundingBox() {
-			return aabbox;
-		}
-
-		Animation& getAnimation() {
-			return animation;
-		}
+		Animation& getAnimation();
 
 		virtual Type getType() const {
 			return TYPE;
 		}
 
-		void load(const std::string& filename);
-
 		static const Type TYPE;
 
-		std::vector<Batch> batches;
-		std::vector<Material*> materials;
-		std::vector<AABoundingBox> aabboxes;
-		AABoundingBox aabbox;
-		int elementsPerVertex;
+		GeometryData* geometryData;
 		bool hasAnimation;
-		int attributeOffsets[MaxAttributeOffset];
-		Buffer* vertexBuffer;
-		Buffer* indexBuffer;
 	protected:
 
 	private:
-		Animation animation; //TODO separar do model e criar um resource
 	};
 
 	class ModelKey : public ResourceKey {

@@ -13,7 +13,7 @@
 #include "ResourceManager.h"
 
 CreateGeometry::CreateGeometry(const std::string& name, ResourceManager* manager) :
-		manager(manager), modelBuilder(*manager), name(name) {
+		manager(manager), geometryData(0), name(name) {
 }
 
 CreateGeometry::~CreateGeometry() {
@@ -29,7 +29,9 @@ void CreateGeometry::visit(ColladaGeometry* geometry) {
 	else
 		name0 = geometry->getId();
 
-	modelBuilder.setName(name0);
+	geometryData = new GeometryData;
+
+	geometryData->setName(name0);
 
 	ColladaMesh* mesh = geometry->getMesh();
 
@@ -174,7 +176,7 @@ void CreateGeometry::visit(ColladaPolyList* polylist) {
 		}
 
 		Material* material = (Material*)manager->loadResource(MaterialKey(polylist->getMaterial()));
-		modelBuilder.addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
+		geometryData->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }
 
@@ -188,6 +190,6 @@ void CreateGeometry::visit(ColladaTriangles* triangles) {
 		}
 
 		Material* material = (Material*)manager->loadResource(MaterialKey(triangles->getMaterial()));
-		modelBuilder.addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
+		geometryData->addVertexData(vertexSoup.vertices, vertexSoup.indices, material, vertexSoup.flags);
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "math/Vector.h"
 #include "Model.h"
-#include "ModelBuilder.h"
+#include "GeometryData.h"
 
 namespace engine {
 

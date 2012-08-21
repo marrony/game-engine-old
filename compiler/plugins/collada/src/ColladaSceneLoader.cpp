@@ -91,11 +91,11 @@ class ColladaLoader : public ResourceLoader {
 		colladaDocument.loadFromXml(root);
 	}
 
-	void saveModel(const std::string& path, ModelBuilder& modelData) {
-		std::string outputName = path + "/" + modelData.getName() + ".model";
+	void saveModel(const std::string& path, GeometryData* geometryData) {
+		std::string outputName = path + "/" + geometryData->getName() + ".model";
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
-		modelData.writeToStream(resourceStream);
+		geometryData->writeToStream(resourceStream);
 	}
 
 	void saveScene(const std::string& path, Scene* scene) {

@@ -12,8 +12,7 @@ namespace engine {
 
 	Buffer::Buffer(int size, BufferType bufferType, FrequencyAccess frequencyAccess, NatureAccess natureAccess) :
 			data(0), handle(0), size(size), bufferType(bufferType),
-			frequencyAccess(frequencyAccess), natureAccess(natureAccess),
-			manager(0) {
+			frequencyAccess(frequencyAccess), natureAccess(natureAccess) {
 	}
 
 	Buffer::~Buffer() {
@@ -56,24 +55,6 @@ namespace engine {
 
 		if(data) delete[] data;
 		data = nullptr;
-	}
-
-	void* Buffer::map(AccessType accessType) {
-		if(manager) {
-			data = manager->mapBuffer(this, accessType);
-		} else {
-			if(!data) data = new char[size];
-		}
-
-		dirty = true;
-
-		return data;
-	}
-
-	void Buffer::unmap() {
-		if(manager) {
-			data = manager->unmapBuffer(this);
-		}
 	}
 
 }  // namespace engine

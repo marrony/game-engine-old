@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Image.h"
 #include "Model.h"
+#include "GeometryData.h"
 #include "Geometry.h"
 #include "Frustum.h"
 #include "Light.h"
@@ -332,8 +333,6 @@ namespace engine {
 	}
 
 	void GraphicManager::updateBuffer(Buffer* buffer) {
-		buffer->setManager(this);
-
 		int handle = buffer->getHandle();
 
 		if(!handle) {
@@ -592,6 +591,101 @@ namespace engine {
 	}
 
 	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
+	}
+
+	void GraphicManager::getBuffers(GeometryData* geometry, Buffer** indexBuffer, Buffer** vertexBuffer) {
+		auto entry = buffers.find(geometry);
+
+		if(entry != buffers.end()) {
+			*indexBuffer = entry->second.indexBuffer;
+			*vertexBuffer = entry->second.vertexBuffer;
+		} else {
+			Buffer* vBuffer = new Buffer(geometry->elementsPerVertex * geometry->position.size() * sizeof(float), BufferType::VertexBuffer,
+					FrequencyAccess::Static, NatureAccess::Draw);
+
+			Buffer* iBuffer = new Buffer(geometry->indices.size() * sizeof(unsigned short), BufferType::IndexBuffer,
+					FrequencyAccess::Static, NatureAccess::Draw);
+
+			void* indexPtr = mapBuffer(iBuffer, AccessType::WriteOnly);
+			memcpy(indexPtr, geometry->indices.data(), geometry->indices.size() * sizeof(unsigned short));
+			unmapBuffer(iBuffer);
+
+			float* vertexPtr = (float*) mapBuffer(vBuffer, AccessType::WriteOnly);
+
+			for(size_t i = 0; i < geometry->position.size(); i++) {
+				if(!geometry->boneIds.empty() && !geometry->weights.empty()) {
+					math::Vector3 pos(0, 0, 0);
+
+					if(geometry->boneIds[i].x > 0)
+						pos += geometry->bindPose[(int) geometry->boneIds[i].x] * geometry->position[i] * geometry->weights[i].x;
+
+					if(geometry->boneIds[i].y > 0)
+						pos += geometry->bindPose[(int) geometry->boneIds[i].y] * geometry->position[i] * geometry->weights[i].y;
+
+					*vertexPtr++ = pos.x;
+					*vertexPtr++ = pos.y;
+					*vertexPtr++ = pos.z;
+
+					*vertexPtr++ = geometry->boneIds[i].x;
+					*vertexPtr++ = geometry->boneIds[i].y;
+					*vertexPtr++ = geometry->boneIds[i].z;
+					*vertexPtr++ = geometry->boneIds[i].w;
+
+					*vertexPtr++ = geometry->weights[i].x;
+					*vertexPtr++ = geometry->weights[i].y;
+					*vertexPtr++ = geometry->weights[i].z;
+					*vertexPtr++ = geometry->weights[i].w;
+				} else {
+					*vertexPtr++ = geometry->position[i].x;
+					*vertexPtr++ = geometry->position[i].y;
+					*vertexPtr++ = geometry->position[i].z;
+
+					*vertexPtr++ = 0;
+					*vertexPtr++ = -1;
+					*vertexPtr++ = -1;
+					*vertexPtr++ = -1;
+
+					*vertexPtr++ = 1;
+					*vertexPtr++ = 0;
+					*vertexPtr++ = 0;
+					*vertexPtr++ = 0;
+				}
+
+				if(!geometry->normal.empty()) {
+					*vertexPtr++ = geometry->normal[i].x;
+					*vertexPtr++ = geometry->normal[i].y;
+					*vertexPtr++ = geometry->normal[i].z;
+				}
+
+				if(!geometry->sTangent.empty() && !geometry->tTangent.empty()) {
+					*vertexPtr++ = geometry->sTangent[i].x;
+					*vertexPtr++ = geometry->sTangent[i].y;
+					*vertexPtr++ = geometry->sTangent[i].z;
+
+					*vertexPtr++ = geometry->tTangent[i].x;
+					*vertexPtr++ = geometry->tTangent[i].y;
+					*vertexPtr++ = geometry->tTangent[i].z;
+				}
+
+				if(!geometry->color.empty()) {
+					*vertexPtr++ = geometry->color[i].x;
+					*vertexPtr++ = geometry->color[i].y;
+					*vertexPtr++ = geometry->color[i].z;
+				}
+
+				if(!geometry->texCoord.empty()) {
+					*vertexPtr++ = geometry->texCoord[i].x;
+					*vertexPtr++ = geometry->texCoord[i].y;
+				}
+			}
+
+			unmapBuffer(vBuffer);
+
+			buffers.insert({geometry, {iBuffer, vBuffer}});
+
+			*indexBuffer = iBuffer;
+			*vertexBuffer = vBuffer;
+		}
 	}
 
 }  // namespace engine

@@ -37,7 +37,7 @@ set(ENGINE_COMMON_SRC
 	
 	src/main/Effect.cpp
 	src/main/Model.cpp
-	src/main/ModelBuilder.cpp
+	src/main/GeometryData.cpp
 	src/main/Geometry.cpp
 	src/main/SpatialLocation.cpp
 	

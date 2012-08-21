@@ -27,6 +27,8 @@
 
 namespace engine {
 
+	class GeometryData;
+
 	class GraphicManager : public ResourceListener {
 		enum PendingFlags {
 			VertexBufferAltered = 0x01,
@@ -145,6 +147,15 @@ namespace engine {
 
 		virtual void onResourceLoaded(const ResourceEvent& event);
 		virtual void onResourceUnloaded(const ResourceEvent& event);
+
+		struct BufferEntry {
+			Buffer* indexBuffer;
+			Buffer* vertexBuffer;
+		};
+
+		std::map<GeometryData*, BufferEntry> buffers;
+
+		void getBuffers(GeometryData* geometry, Buffer** indexBuffer, Buffer** vertexBuffer);
 	};
 
 }
