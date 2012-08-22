@@ -48,6 +48,9 @@ namespace engine {
 		Model* model = new Model(modelName, &manager);
 		model->geometryData = new GeometryData;
 		model->geometryData->readFromStream(manager, resourceStream);
+		model->hasAnimation = !model->geometryData->boneIds.empty() &&
+				!model->geometryData->weights.empty() &&
+				!model->geometryData->bindPose.empty();
 
 		return model;
 	}
