@@ -8,17 +8,39 @@
 #ifndef IMAGE_H_
 #define IMAGE_H_
 
+#include "Resource.h"
+
+#include <vector>
+#include <string>
+
 namespace engine {
 
-	class Image {
+	class ResourceManager;
+
+	enum class ImageFormat : unsigned char {
+		None,
+		Rgb8,
+		Rgba8,
+		Rgba16Float,
+		Rgba32Float,
+		Depth
+	};
+
+	class Image : public Resource {
 	public:
-		Image(int width, int height, int depth, const void* data);
+		Image(const std::string& name, ResourceManager* manager);
 
-		~Image();
+		virtual ~Image();
 
-		const void* getData() const {
+		virtual Type getType() const {
+			return Type("image");
+		}
+
+		const std::vector<char>& getData() const {
 			return data;
 		}
+
+		void setData(int width, int heigth, ImageFormat format, const char* data);
 
 		int getWidth() const {
 			return width;
@@ -28,15 +50,33 @@ namespace engine {
 			return height;
 		}
 
-		int getDepth() const {
-			return depth;
+		ImageFormat getFormat() const {
+			return format;
 		}
 
 	private:
-		char* data;
+		friend class ImageUtils;
+
+		std::vector<char> data;
+		ImageFormat format;
 		int width;
 		int height;
-		int depth;
+	};
+
+	struct ImageUtils {
+		static Image* read(ResourceStream&, class ResourceManager&);
+		static void write(ResourceStream&, class ResourceManager&, Image*);
+	};
+
+	class ImageKey : public ResourceKey {
+	public:
+		ImageKey(const std::string& name) : ResourceKey(name) {}
+
+		virtual std::string getKeyName() const {
+			return "texture/" + getName();
+		}
+
+		virtual Resource* loadResource(class ResourceManager& manager) const;
 	};
 
 }  // namespace engine

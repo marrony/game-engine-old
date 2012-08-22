@@ -112,7 +112,7 @@ public:
 
 		unsigned char pixel_size = header.pixel_depth / 8;
 		unsigned int nbytes = header.width * header.height * pixel_size;
-		unsigned char* dados = new unsigned char[nbytes];
+		char* dados = new char[nbytes];
 		if(dados == 0) {
 			return;
 		}
@@ -120,7 +120,7 @@ public:
 		if(header.image_type == 10) {
 			unsigned int bytesToProcess = nbytes;
 
-			unsigned char* dst = dados;
+			char* dst = dados;
 
 			while(bytesToProcess > 0) {
 				int byteRead = stream.get();
@@ -130,9 +130,9 @@ public:
 				bytesToProcess -= bytesToRead * pixel_size;
 
 				if(byteRead & 0x80) {
-					unsigned char pixels[8];
+					char pixels[8];
 
-					stream.read((char*)pixels, sizeof(unsigned char) * pixel_size);
+					stream.read(pixels, sizeof(char) * pixel_size);
 
 					do {
 						memcpy(dst, pixels, pixel_size);
@@ -141,12 +141,12 @@ public:
 
 				} else {
 					bytesToRead *= pixel_size;
-					stream.read((char*)dst, sizeof(unsigned char) * bytesToRead);
+					stream.read(dst, sizeof(unsigned char) * bytesToRead);
 					dst += bytesToRead;
 				}
 			}
 		} else {
-			stream.read((char*)dados, sizeof(unsigned char)* nbytes);
+			stream.read(dados, sizeof(unsigned char)* nbytes);
 		}
 
 		if(pixel_size >= 3) {
@@ -154,18 +154,18 @@ public:
 				std::swap(dados[i + 0], dados[i + 2]);
 		}
 
-		Texture* texture = new Texture(file::getFilename(fileName), manager);
+		Image* image = new Image(file::getFilename(fileName), manager);
 
 		switch(pixel_size) {
 		case 1:
 			break;
 
 		case 3:
-			texture->setData(header.width, header.height, 3, dados);
+			image->setData(header.width, header.height, ImageFormat::Rgb8, dados);
 			break;
 
 		case 4:
-			texture->setData(header.width, header.height, 4, dados);
+			image->setData(header.width, header.height, ImageFormat::Rgba8, dados);
 			break;
 
 		default:
@@ -177,9 +177,9 @@ public:
 		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".texture";
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);
-		TextureUtils::write(resourceStream, *manager, texture);
+		ImageUtils::write(resourceStream, *manager, image);
 
-		delete texture;
+		delete image;
 	}
 };
 

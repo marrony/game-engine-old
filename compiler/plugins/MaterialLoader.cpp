@@ -10,7 +10,7 @@
 #include "Exception.h"
 #include "Material.h"
 #include "Effect.h"
-#include "Texture.h"
+#include "Image.h"
 #include "FileUtil.h"
 #include "tinyxml.h"
 #include "Stream.h"
@@ -75,8 +75,8 @@ public:
 
 			compiler->compile(textureSrc, options);
 
-			Texture* texture = (Texture*)manager->loadResource(TextureKey(textureName));
-			material->addSampler(samplerName, texture);
+			Image* image = (Image*)manager->loadResource(ImageKey(textureName));
+			material->addSampler(samplerName, image);
 
 			xmlSampler = xmlSampler->NextSiblingElement("sampler");
 		}

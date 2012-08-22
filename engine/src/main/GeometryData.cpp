@@ -102,97 +102,6 @@ namespace engine {
 		}
 	}
 
-//	void ModelBuilder::createBuffers(Model* model) {
-//		calculateAttributeOffsetsAndElementsPerVertex();
-//
-//		model->vertexBuffer = new Buffer(elementsPerVertex * position.size() * sizeof(float), BufferType::VertexBuffer,
-//				FrequencyAccess::Static, NatureAccess::Draw);
-//
-//		model->indexBuffer = new Buffer(indices.size() * sizeof(unsigned short), BufferType::IndexBuffer,
-//				FrequencyAccess::Static, NatureAccess::Draw);
-//
-//		void* indexPtr = model->indexBuffer->map(AccessType::WriteOnly);
-//		memcpy(indexPtr, indices.data(), indices.size() * sizeof(unsigned short));
-//		model->indexBuffer->unmap();
-//
-//		float* vertexPtr = (float*) model->vertexBuffer->map(AccessType::WriteOnly);
-//		float* begin = vertexPtr;
-//
-//		for(size_t i = 0; i < position.size(); i++) {
-//			if(!boneIds.empty() && !weights.empty()) {
-//				math::Vector3 pos(0, 0, 0);
-//
-//				if(boneIds[i].x > 0)
-//					pos += bindPose[(int) boneIds[i].x] * position[i] * weights[i].x;
-//
-//				if(boneIds[i].y > 0)
-//					pos += bindPose[(int) boneIds[i].y] * position[i] * weights[i].y;
-//
-//				*vertexPtr++ = pos.x;
-//				*vertexPtr++ = pos.y;
-//				*vertexPtr++ = pos.z;
-//
-//				*vertexPtr++ = boneIds[i].x;
-//				*vertexPtr++ = boneIds[i].y;
-//				*vertexPtr++ = boneIds[i].z;
-//				*vertexPtr++ = boneIds[i].w;
-//
-//				*vertexPtr++ = weights[i].x;
-//				*vertexPtr++ = weights[i].y;
-//				*vertexPtr++ = weights[i].z;
-//				*vertexPtr++ = weights[i].w;
-//			} else {
-//				*vertexPtr++ = position[i].x;
-//				*vertexPtr++ = position[i].y;
-//				*vertexPtr++ = position[i].z;
-//
-//				*vertexPtr++ = 0;
-//				*vertexPtr++ = -1;
-//				*vertexPtr++ = -1;
-//				*vertexPtr++ = -1;
-//
-//				*vertexPtr++ = 1;
-//				*vertexPtr++ = 0;
-//				*vertexPtr++ = 0;
-//				*vertexPtr++ = 0;
-//			}
-//
-//			if(!normal.empty()) {
-//				*vertexPtr++ = normal[i].x;
-//				*vertexPtr++ = normal[i].y;
-//				*vertexPtr++ = normal[i].z;
-//			}
-//
-//			if(!sTangent.empty() && !tTangent.empty()) {
-//				*vertexPtr++ = sTangent[i].x;
-//				*vertexPtr++ = sTangent[i].y;
-//				*vertexPtr++ = sTangent[i].z;
-//
-//				*vertexPtr++ = tTangent[i].x;
-//				*vertexPtr++ = tTangent[i].y;
-//				*vertexPtr++ = tTangent[i].z;
-//			}
-//
-//			if(!color.empty()) {
-//				*vertexPtr++ = color[i].x;
-//				*vertexPtr++ = color[i].y;
-//				*vertexPtr++ = color[i].z;
-//			}
-//
-//			if(!texCoord.empty()) {
-//				*vertexPtr++ = texCoord[i].x;
-//				*vertexPtr++ = texCoord[i].y;
-//			}
-//		}
-//
-//		model->vertexBuffer->unmap();
-//
-//		model->elementsPerVertex = elementsPerVertex;
-//		memcpy(model->attributeOffsets, attributeOffsets, sizeof(attributeOffsets));
-//
-//		model->aabbox = aabbox;
-//	}
-
 	void GeometryData::calculateAttributeOffsetsAndElementsPerVertex() {
 		elementsPerVertex = 3;
 
@@ -308,24 +217,6 @@ namespace engine {
 			return;
 		}
 	}
-
-//	Model* ModelBuilder::createModel(Model* model) {
-//		if(!model)
-//			model = new Model(name, &manager);
-//
-//		model->batches = batches;
-//		model->materials = materials;
-//		model->hasAnimation = !boneIds.empty() && !weights.empty() && animation.bones.size() > 0;
-//		model->animation.bones = animation.bones;
-//		model->animation.animationFps = animation.animationFps;
-//		model->animation.currentTime = animation.currentTime;
-//		model->animation.totalFrames = animation.totalFrames;
-//		model->animation.updateBones();
-//
-//		createBuffers(model);
-//
-//		return model;
-//	}
 
 	void GeometryData::readFromStream(ResourceManager& manager, ResourceStream& stream) {
 		stream.pushGroup("model");

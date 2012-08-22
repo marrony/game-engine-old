@@ -217,63 +217,67 @@ namespace engine {
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(type, texture->getHandle());
 
-		const void* data = texture->getData();
+		Image* image = texture->getImage();
 
-		int pixelType = data == 0 ? GL_FLOAT : GL_UNSIGNED_BYTE;
+		const std::vector<char>& data = image->getData();
+
+		int pixelType = GL_UNSIGNED_BYTE;
 
 		int pixelFormat;
 		int internalFormat;
 
-		switch(texture->getDepth()) {
-			case 3:
+		switch(image->getFormat()) {
+			case ImageFormat::Rgb8:
 				pixelFormat = GL_RGB;
-				break;
-
-			case 4:
-				pixelFormat = GL_RGBA;
-				break;
-
-			default:
-				throw Exception("Unknow depth");
-		}
-
-		switch(texture->getFormat()) {
-			case TextureFormat::Rgb8:
 				internalFormat = GL_RGB;
 				break;
 
-			case TextureFormat::Rgba8:
+			case ImageFormat::Rgba8:
+				pixelFormat = GL_RGBA;
 				internalFormat = GL_RGBA;
 				break;
 
 #ifndef ANDROID
-			case TextureFormat::Rgba16Float:
+			case ImageFormat::Rgba16Float:
 				pixelType = GL_FLOAT;
+				pixelFormat = GL_RGBA;
 				internalFormat = GL_RGBA16F;
 				break;
 
-			case TextureFormat::Rgba32Float:
+			case ImageFormat::Rgba32Float:
 				pixelType = GL_FLOAT;
+				pixelFormat = GL_RGBA;
 				internalFormat = GL_RGBA32F;
 				break;
 #endif
 
-			case TextureFormat::Depth:
-				break;
-
 			default:
-				throw Exception("Unknow format");
+				throw Exception("Unknow depth");
 		}
 
 		glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameterf(type, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameterf(type, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexImage2D(type, 0, internalFormat, texture->getWidth(), texture->getHeight(), 0, pixelFormat, pixelType, data);
+		glTexImage2D(type, 0, internalFormat, image->getWidth(), image->getHeight(), 0, pixelFormat, pixelType, data.data());
 
 		glBindTexture(type, 0);
 
 		texture->setUpdated();
+	}
+
+	Texture* GraphicManager::getTexture(Image* image) {
+		auto texture = images.find(image);
+
+		if(texture != images.end())
+			return texture->second;
+
+		Texture* tex = new Texture;
+		tex->setImage(image);
+		updateTexture(tex);
+		images[image] = tex;
+
+		return tex;
 	}
 
 	int getTarget(BufferType type) {
@@ -526,13 +530,13 @@ namespace engine {
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, index);
 	}
 
-	void GraphicManager::bindTexture(const std::string& name, Texture* texture) {
+	void GraphicManager::bindTexture(const std::string& name, Image* image) {
 		for(int i = 0; i < 16; i++) {
 			int mask = (1 << i);
 
 			if(!(usedTexturesSlots & mask)) {
 				usedTexturesSlots |= mask;
-				texturesUsed[i] = texture;
+				texturesUsed[i] = getTexture(image);
 				textureName[i] = name;
 				break;
 			}

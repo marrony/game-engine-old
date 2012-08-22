@@ -12,6 +12,7 @@
 #include "System.h"
 
 namespace engine {
+#if 0
 
 	int TextureManager::createTexture2D() {
 		TextureManager::Tex tex;
@@ -19,7 +20,7 @@ namespace engine {
 		tex.type = TextureType::Texture2D;
 		tex.height = 0;
 		tex.width = 0;
-		tex.format = TextureFormat::None;
+		tex.format = ImageFormat::None;
 
 		glGenTextures(1, &tex.texId);
 
@@ -35,7 +36,7 @@ namespace engine {
 		textures.remove(handle);
 	}
 
-	void TextureManager::setTextureData(int handle, int width, int height, int depth, TextureFormat format, const void* data) {
+	void TextureManager::setTextureData(int handle, int width, int height, int depth, ImageFormat format, const void* data) {
 		if(handle == 0) return;
 
 		TextureManager::Tex& tex = textures.get(handle);
@@ -86,27 +87,27 @@ namespace engine {
 		}
 
 		switch(format) {
-			case TextureFormat::Rgb8:
+			case ImageFormat::Rgb8:
 				internalFormat = GL_RGB;
 				break;
 
-			case TextureFormat::Rgba8:
+			case ImageFormat::Rgba8:
 				internalFormat = GL_RGBA;
 				break;
 
 #ifndef ANDROID
-			case TextureFormat::Rgba16Float:
+			case ImageFormat::Rgba16Float:
 				pixelType = GL_FLOAT;
 				internalFormat = GL_RGBA16F;
 				break;
 
-			case TextureFormat::Rgba32Float:
+			case ImageFormat::Rgba32Float:
 				pixelType = GL_FLOAT;
 				internalFormat = GL_RGBA32F;
 				break;
 #endif
 
-			case TextureFormat::Depth:
+			case ImageFormat::Depth:
 				break;
 
 			default:
@@ -121,5 +122,6 @@ namespace engine {
 
 		glBindTexture(type, 0);
 	}
+#endif
 
 } /* namespace engine */

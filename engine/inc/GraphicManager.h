@@ -71,7 +71,10 @@ namespace engine {
 
 		void commitModifications();
 		void updateTexture(Texture* texture);
+		Texture* getTexture(Image* image);
 		void updateBuffer(Buffer* buffer);
+
+		std::map<Image*, Texture*> images;
 	public:
 		GraphicManager();
 		VIRTUAL ~GraphicManager();
@@ -128,7 +131,7 @@ namespace engine {
 
 		VIRTUAL void drawIndex(const unsigned short* index, unsigned int count);
 
-		VIRTUAL void bindTexture(const std::string& name, class Texture* texture);
+		VIRTUAL void bindTexture(const std::string& name, class Image* texture);
 
 		VIRTUAL void setVertexBuffer(Buffer* vertexBuffer);
 		VIRTUAL void setIndexBuffer(Buffer* indexBuffer);

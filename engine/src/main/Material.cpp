@@ -6,7 +6,7 @@
  */
 
 #include "Material.h"
-#include "Texture.h"
+#include "Image.h"
 #include "GraphicManager.h"
 #include "ResourceManager.h"
 #include "Effect.h"
@@ -30,11 +30,11 @@ namespace engine {
 			manager->unloadResource(sampler.second);
 	}
 
-	void Material::addSampler(const std::string& samplerName, Texture* sampler) {
+	void Material::addSampler(const std::string& samplerName, Image* sampler) {
 		samplers[samplerName] = sampler;
 	}
 
-	Texture* Material::getSampler(const std::string& samplerName) {
+	Image* Material::getSampler(const std::string& samplerName) {
 		return samplers[samplerName];
 	}
 
@@ -77,8 +77,8 @@ namespace engine {
 
 			stream.popGroup();
 
-			Texture* texture = (Texture*)manager.loadResource(TextureKey(resourceName));
-			material->samplers.insert(std::make_pair(textureName, texture));
+			Image* image = (Image*)manager.loadResource(ImageKey(resourceName));
+			material->samplers.insert({textureName, image});
 		}
 
 		return material;

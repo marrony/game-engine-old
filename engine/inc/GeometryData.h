@@ -73,7 +73,6 @@ namespace engine {
 		void calculateNormal();
 		void preCalculateTangent();
 		void calculateBoundingBox();
-		//void createBuffers(Model* model);
 	public:
 		GeometryData();
 		~GeometryData();
@@ -83,7 +82,6 @@ namespace engine {
 
 		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags);
 
-		//Model* createModel(Model* model = 0);
 		void readFromStream(ResourceManager& manager, ResourceStream& stream);
 		void writeToStream(ResourceStream& stream);
 	};

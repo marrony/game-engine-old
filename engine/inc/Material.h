@@ -17,16 +17,17 @@
 namespace engine {
 
 	class Effect;
+	class Image;
 
 	class Material : public Resource {
 	public:
 		Material(const std::string& name, ResourceManager* manager, Effect* effect);
 		virtual ~Material();
 
-		void addSampler(const std::string& samplerName, class Texture* sampler);
-		class Texture* getSampler(const std::string& samplerName);
+		void addSampler(const std::string& samplerName, Image* sampler);
+		Image* getSampler(const std::string& samplerName);
 
-		class Effect* getEffect() {
+		Effect* getEffect() {
 			return effect;
 		}
 
@@ -39,8 +40,8 @@ namespace engine {
 
 		static const Type TYPE;
 	private:
-		class Effect* effect;
-		std::map<std::string, class Texture*> samplers;
+		Effect* effect;
+		std::map<std::string, Image*> samplers;
 
 		friend class MaterialUtils;
 	};
