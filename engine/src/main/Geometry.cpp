@@ -55,12 +55,12 @@ namespace engine {
 		boundingBoxDirty = true;
 
 		if(frame < 0) {
-			for(size_t i = 0; i < model->getAnimation().getBonesCount(); i++) {
-				global[i] = model->getAnimation().getBone(i)->globalSkeleton;
+			for(size_t i = 0; i < model->skeleton->getBonesCount(); i++) {
+				global[i] = model->skeleton->getBone(i)->globalSkeleton;
 			}
 		} else {
-			for(size_t i = 0; i < model->getAnimation().getBonesCount(); i++) {
-				Bone* bone = model->getAnimation().getBone(i);
+			for(size_t i = 0; i < model->skeleton->getBonesCount(); i++) {
+				Bone* bone = model->skeleton->getBone(i);
 
 				if(bone->parentIndex != -1) {
 					global[i] = global[bone->parentIndex] * bone->evaluate(frame);
@@ -118,7 +118,7 @@ namespace engine {
 
 	void Geometry::notifyVisibility(ResourceManager& manager) {
 		if(model) {
-			global.resize(model->getAnimation().getBonesCount(), math::Matrix4::IDENTITY);
+			//global.resize(model->getAnimation().getBonesCount(), math::Matrix4::IDENTITY);
 		}
 	}
 

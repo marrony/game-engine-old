@@ -130,9 +130,11 @@ public:
 			modelData->addVertexData(vertices, indices, material, flags);
 		}
 
+#if 0
 		modelData->getAnimation().setFrameProperties(ms3d.GetAnimationFps(), ms3d.GetTotalFrames());
 
 		if(ms3d.GetNumJoints() > 0) {
+
 			modelData->getAnimation().setBoneCount(ms3d.GetNumJoints());
 
 			for(size_t i = 0; i < ms3d.GetNumJoints(); i++) {
@@ -149,26 +151,38 @@ public:
 				bone->localSkeleton = math::Matrix4::transformationMatrix(angle, position);
 				bone->globalSkeleton = math::Matrix4::IDENTITY;
 
-				bone->positions.resize(joint->positionKeys.size());
+				bone->keyframes.resize(joint->positionKeys.size());
 				for(size_t j = 0; j < joint->positionKeys.size(); j++) {
-					bone->positions[j].time = joint->positionKeys[j].time;
-					bone->positions[j].position = math::Vector3(joint->positionKeys[j].key);
+					bone->keyframes[j].time = joint->positionKeys[j].time;
+					bone->keyframes[j].position = math::Vector3(joint->positionKeys[j].key);
+					bone->keyframes[j].rotation = math::Quaternion(1, 0, 0, 0);
 				}
 
-				bone->rotations.resize(joint->rotationKeys.size());
-				for(size_t j = 0; j < joint->rotationKeys.size(); j++) {
-					const float x = joint->rotationKeys[j].key[0];
-					const float y = joint->rotationKeys[j].key[1];
-					const float z = joint->rotationKeys[j].key[2];
-					const float s = joint->rotationKeys[j].key[3];
+				for(ms3d_keyframe_rotation_t rot : joint->rotationKeys) {
+					const float x = rot.key[0];
+					const float y = rot.key[1];
+					const float z = rot.key[2];
+					const float s = rot.key[3];
+					const math::Quaternion rotation = math::Quaternion(s, x, y, z);
 
-					bone->rotations[j].time = joint->rotationKeys[j].time;
-					bone->rotations[j].rotation = math::Quaternion(s, x, y, z);
+					for(size_t i = 0; i < bone->keyframes.size(); ++i) {
+						if(rot.time == bone->keyframes[i].time) {
+							bone->keyframes[i].rotation = rotation;
+							break;
+						} else if(rot.time > bone->keyframes[i].time) {
+							KeyFrame keyframe;
+							keyframe.time = rot.time;
+							keyframe.rotation = rotation;
+							keyframe.position = math::Vector3(0, 0, 0);
+							bone->keyframes.insert(bone->keyframes.begin() + i, keyframe);
+						}
+					}
 				}
 			}
 
 			modelData->getAnimation().updateBones();
 		}
+#endif
 
 		std::string outputName = file::getPath(fileName) + "/" + file::getFilename(fileName) + ".model";
 		FileStream fileStream(outputName);

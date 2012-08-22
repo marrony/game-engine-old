@@ -68,8 +68,6 @@ namespace engine {
 		std::vector<Material*> materials;
 		std::string name;
 
-		Animation animation;
-
 		void calculateAttributeOffsetsAndElementsPerVertex();
 		void calculateTangent();
 		void calculateNormal();
@@ -84,8 +82,6 @@ namespace engine {
 		void setName(const std::string& name) { this->name = name; }
 
 		void addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags);
-
-		Animation& getAnimation() { return animation; }
 
 		//Model* createModel(Model* model = 0);
 		void readFromStream(ResourceManager& manager, ResourceStream& stream);

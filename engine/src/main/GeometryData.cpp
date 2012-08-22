@@ -374,6 +374,7 @@ namespace engine {
 			stream.popGroup();
 		}
 
+#if 0
 		animation.bones.resize(stream.readInt("bonesCount"));
 		for(size_t i = 0; i < animation.bones.size(); i++) {
 			Bone& bone = animation.bones[i];
@@ -384,26 +385,15 @@ namespace engine {
 			bone.parentIndex = stream.readInt("parentIndex");
 			stream.readArray("localSkeleton", bone.localSkeleton.matrix, 16);
 
-			bone.positions.resize(stream.readInt("positionsCount"));
-			for(size_t p = 0; p < bone.positions.size(); p++) {
-				KeyFramePosition& position = bone.positions[p];
+			bone.keyframes.resize(stream.readInt("keyframesCount"));
+			for(size_t p = 0; p < bone.keyframes.size(); p++) {
+				KeyFrame& keyframe = bone.keyframes[p];
 
-				stream.pushGroup("keyframePosition");
+				stream.pushGroup("keyframe");
 
-				position.time = stream.readFloat("time");
-				stream.readArray("position", position.position.vector, 3);
-
-				stream.popGroup();
-			}
-
-			bone.rotations.resize(stream.readInt("rotationsCount"));
-			for(size_t r = 0; r < bone.rotations.size(); r++) {
-				KeyFrameRotation& rotation = bone.rotations[r];
-
-				stream.pushGroup("keyframeRotation");
-
-				rotation.time = stream.readFloat("time");
-				stream.readArray("rotation", rotation.rotation.quat, 4);
+				keyframe.time = stream.readFloat("time");
+				stream.readArray("position", keyframe.position.vector, 3);
+				stream.readArray("rotation", keyframe.rotation.quat, 4);
 
 				stream.popGroup();
 			}
@@ -426,6 +416,7 @@ namespace engine {
 		}
 
 		animation.updateBones();
+#endif
 
 		calculateTangent();
 		calculateBoundingBox();
@@ -478,6 +469,7 @@ namespace engine {
 			stream.popGroup();
 		}
 
+#if 0
 		stream.writeInt("bonesCount", animation.bones.size());
 		for(size_t i = 0; i < animation.bones.size(); i++) {
 			const Bone& bone = animation.bones[i];
@@ -488,26 +480,15 @@ namespace engine {
 			stream.writeInt("parentIndex", bone.parentIndex);
 			stream.writeArray("localSkeleton", bone.localSkeleton.matrix, 16);
 
-			stream.writeInt("positionsCount", bone.positions.size());
-			for(size_t p = 0; p < bone.positions.size(); p++) {
-				const KeyFramePosition& position = bone.positions[p];
+			stream.writeInt("keyframesCount", bone.keyframes.size());
+			for(size_t p = 0; p < bone.keyframes.size(); p++) {
+				const KeyFrame& keyframe = bone.keyframes[p];
 
 				stream.pushGroup("keyframePosition");
 
-				stream.writeFloat("time", position.time);
-				stream.writeArray("position", position.position.vector, 3);
-
-				stream.popGroup();
-			}
-
-			stream.writeInt("rotationsCount", bone.rotations.size());
-			for(size_t r = 0; r < bone.rotations.size(); r++) {
-				const KeyFrameRotation& rotation = bone.rotations[r];
-
-				stream.pushGroup("keyframeRotations");
-
-				stream.writeFloat("time", rotation.time);
-				stream.writeArray("rotation", rotation.rotation.quat, 4);
+				stream.writeFloat("time", keyframe.time);
+				stream.writeArray("position", keyframe.position.vector, 3);
+				stream.writeArray("rotation", keyframe.rotation.quat, 4);
 
 				stream.popGroup();
 			}
@@ -518,6 +499,7 @@ namespace engine {
 		stream.writeFloat("animationFps", animation.animationFps);
 		stream.writeFloat("currentTime", animation.currentTime);
 		stream.writeInt("totalFrames", animation.totalFrames);
+#endif
 
 		stream.popGroup();
 	}

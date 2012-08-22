@@ -171,7 +171,7 @@ namespace engine {
 					break;
 
 				case Constants::BonePallete:
-					size_t bonesCount = context.model->getAnimation().getBonesCount();
+					size_t bonesCount = context.model->skeleton->getBonesCount();
 
 					if(context.model->hasAnimation) {
 						cc->setValue(context.geometry->getBoneMatrix(), bonesCount);
@@ -613,7 +613,7 @@ namespace engine {
 			float* vertexPtr = (float*) mapBuffer(vBuffer, AccessType::WriteOnly);
 
 			for(size_t i = 0; i < geometry->position.size(); i++) {
-				if(!geometry->boneIds.empty() && !geometry->weights.empty()) {
+				if(!geometry->boneIds.empty() && !geometry->weights.empty() && !geometry->bindPose.empty()) {
 					math::Vector3 pos(0, 0, 0);
 
 					if(geometry->boneIds[i].x > 0)

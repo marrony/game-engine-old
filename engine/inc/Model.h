@@ -20,63 +20,18 @@
 
 namespace engine {
 
-	class Buffer;
-	class Material;
-	class Model;
 	class ResourceManager;
 	class GeometryData;
 
 	class Animation {
 		friend class GeometryData;
 
-		std::vector<Bone> bones;
+		std::vector<std::vector<KeyFrame>> keyFrames;
+
 		float animationFps;
 		float currentTime;
 		int totalFrames;
 	public:
-		size_t getBonesCount() const {
-			return bones.size();
-		}
-
-		void setBoneCount(size_t boneCount) {
-			bones.resize(boneCount);
-		}
-
-		Bone* getBone(size_t index) {
-			return &bones[index];
-		}
-
-		Bone* findBone(const std::string& name) {
-			for(size_t i = 0; i < bones.size(); i++) {
-				if(bones[i].name == name) {
-					return &bones[i];
-				}
-			}
-
-			return 0;
-		}
-
-		/**
-		 * globalSkeleton = parent->globalSkeleton * localSkeleton;
-		 *
-		 * local = localSkeleton * animateMatrix;
-		 * global = parent->global * local;
-		 *
-		 * v0 = globalSkeleton^-1 * vertex; <== constante
-		 * vFinal = global * v0;
-		 */
-		void updateBones() {
-			for(size_t i = 0; i < bones.size(); i++) {
-				if(bones[i].parentIndex != -1) {
-					Bone* parent = &bones[bones[i].parentIndex];
-
-					bones[i].globalSkeleton = parent->globalSkeleton * bones[i].localSkeleton;
-				} else {
-					bones[i].globalSkeleton = bones[i].localSkeleton;
-				}
-			}
-		}
-
 		void setFrameProperties(float animationFps, int totalFrames) {
 			this->currentTime = -1;
 			this->animationFps = animationFps;
@@ -107,6 +62,8 @@ namespace engine {
 		static const Type TYPE;
 
 		GeometryData* geometryData;
+		Animation* animation;
+		Skeleton* skeleton;
 		bool hasAnimation;
 	protected:
 

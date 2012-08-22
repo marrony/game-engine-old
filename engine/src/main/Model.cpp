@@ -35,10 +35,6 @@ namespace engine {
 		return geometryData->boundingBox;
 	}
 
-	Animation& Model::getAnimation() {
-		return geometryData->animation;
-	}
-
 	Resource* ModelKey::loadResource(class ResourceManager& manager) const {
 		std::string modelName = getName();
 
@@ -51,6 +47,8 @@ namespace engine {
 		model->hasAnimation = !model->geometryData->boneIds.empty() &&
 				!model->geometryData->weights.empty() &&
 				!model->geometryData->bindPose.empty();
+		model->animation = new Animation;
+		model->skeleton = new Skeleton;
 
 		return model;
 	}
