@@ -159,7 +159,7 @@ namespace engine {
 
 			if(!att.enabled) continue;
 
-			GeometryData* geometryData = model->geometryData;
+			Mesh* geometryData = model->geometryData;
 
 			graphicManager->setAttribute((AttributeOffset)offset, att.index, att.mode, geometryData->attributeOffsets[offset], sizeof(float) * geometryData->elementsPerVertex);
 		}

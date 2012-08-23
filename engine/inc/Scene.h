@@ -17,7 +17,7 @@
 namespace engine {
 
 	struct RenderQueueEntry {
-		class Geometry* geometry;
+		class ModelInstance* geometry;
 		class Batch* batch;
 		class Material* material;
 	};
@@ -28,7 +28,7 @@ namespace engine {
 
 		std::vector<class Light*> pointLights;
 		std::vector<class Light*> spotLights;
-		std::vector<class Geometry*> geometries;
+		std::vector<class ModelInstance*> geometries;
 		std::vector<class Frustum*> cameras;
 
 		class Frustum* atualCamera;
@@ -47,7 +47,7 @@ namespace engine {
 			return TYPE;
 		}
 
-		std::vector<class Geometry*> getVisibleGeometries(const class Frustum* const camera);
+		std::vector<class ModelInstance*> getVisibleGeometries(const class Frustum* const camera);
 		std::vector<class Light*> getVisibleLights(const class Frustum* const camera);
 
 		void updateRenderQueue(class Frustum* camera);
@@ -59,7 +59,7 @@ namespace engine {
 		class Node* createNode();
 		class Node* getRoot();
 
-		class Geometry* createGeometry(class Model* model, const class AABoundingBox& aabbox, Node* node = 0);
+		class ModelInstance* createModelInstance(class Model* model, const class AABoundingBox& aabbox, Node* node = 0);
 
 		class Light* createPointLight();
 		class Light* createSpotLight();

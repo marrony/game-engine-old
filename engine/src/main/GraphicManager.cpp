@@ -597,7 +597,7 @@ namespace engine {
 	void GraphicManager::onResourceUnloaded(const ResourceEvent& event) {
 	}
 
-	void GraphicManager::getBuffers(GeometryData* geometry, Buffer** indexBuffer, Buffer** vertexBuffer) {
+	void GraphicManager::getBuffers(Mesh* geometry, Buffer** indexBuffer, Buffer** vertexBuffer) {
 		auto entry = buffers.find(geometry);
 
 		if(entry != buffers.end()) {
@@ -617,7 +617,7 @@ namespace engine {
 			float* vertexPtr = (float*) mapBuffer(vBuffer, AccessType::WriteOnly);
 
 			for(size_t i = 0; i < geometry->position.size(); i++) {
-				if(!geometry->boneIds.empty() && !geometry->weights.empty() && !geometry->bindPose.empty()) {
+				/*if(!geometry->boneIds.empty() && !geometry->weights.empty() && !geometry->bindPose.empty()) {
 					math::Vector3 pos(0, 0, 0);
 
 					if(geometry->boneIds[i].x > 0)
@@ -639,7 +639,7 @@ namespace engine {
 					*vertexPtr++ = geometry->weights[i].y;
 					*vertexPtr++ = geometry->weights[i].z;
 					*vertexPtr++ = geometry->weights[i].w;
-				} else {
+				} else*/ {
 					*vertexPtr++ = geometry->position[i].x;
 					*vertexPtr++ = geometry->position[i].y;
 					*vertexPtr++ = geometry->position[i].z;

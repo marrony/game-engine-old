@@ -91,7 +91,7 @@ class ColladaLoader : public ResourceLoader {
 		colladaDocument.loadFromXml(root);
 	}
 
-	void saveModel(const std::string& path, GeometryData* geometryData) {
+	void saveModel(const std::string& path, Mesh* geometryData) {
 		std::string outputName = path + "/" + geometryData->getName() + ".model";
 		FileStream fileStream(outputName);
 		ResourceBinStream resourceStream(fileStream);

@@ -13,14 +13,14 @@
 
 namespace engine {
 
-	GeometryData::GeometryData() {
+	Mesh::Mesh() {
 		memset(attributeOffsets, 0, sizeof(attributeOffsets));
 	}
 
-	GeometryData::~GeometryData() {
+	Mesh::~Mesh() {
 	}
 
-	void GeometryData::addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags) {
+	void Mesh::addVertexData(const std::vector<MeshVertex>& vertexArray, const std::vector<unsigned short>& newIndices, Material* material, int flags) {
 		size_t lastVertexCount = position.size();
 
 		Batch indexMesh;
@@ -102,7 +102,7 @@ namespace engine {
 		}
 	}
 
-	void GeometryData::calculateAttributeOffsetsAndElementsPerVertex() {
+	void Mesh::calculateAttributeOffsetsAndElementsPerVertex() {
 		elementsPerVertex = 3;
 
 		attributeOffsets[PositionOffset] = 0;
@@ -137,7 +137,7 @@ namespace engine {
 		}
 	}
 
-	void GeometryData::calculateTangent() {
+	void Mesh::calculateTangent() {
 		if(texCoord.empty()) {
 			return;
 		}
@@ -167,7 +167,7 @@ namespace engine {
 		}
 	}
 
-	void GeometryData::preCalculateTangent() {
+	void Mesh::preCalculateTangent() {
 		for(size_t j = 0; j < indices.size(); j += 3) {
 			unsigned int i1 = indices[j + 0];
 			unsigned int i2 = indices[j + 1];
@@ -205,20 +205,20 @@ namespace engine {
 		}
 	}
 
-	void GeometryData::calculateBoundingBox() {
+	void Mesh::calculateBoundingBox() {
 		boundingBox.reset();
 
 		for(const math::Vector3& v : position)
 			boundingBox.merge(v);
 	}
 
-	void GeometryData::calculateNormal() {
+	void Mesh::calculateNormal() {
 		if(!normal.empty()) {
 			return;
 		}
 	}
 
-	void GeometryData::readFromStream(ResourceManager& manager, ResourceStream& stream) {
+	void Mesh::readFromStream(ResourceManager& manager, ResourceStream& stream) {
 		stream.pushGroup("model");
 
 		std::string type = stream.readString("type");
@@ -314,7 +314,7 @@ namespace engine {
 		calculateAttributeOffsetsAndElementsPerVertex();
 	}
 
-	void GeometryData::writeToStream(ResourceStream& stream) {
+	void Mesh::writeToStream(ResourceStream& stream) {
 		stream.pushGroup("model");
 
 		stream.writeString("type", "model");

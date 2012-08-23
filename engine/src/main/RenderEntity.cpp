@@ -22,9 +22,9 @@ namespace engine {
 		actualAspect(aspect), resourceManager(resourceManager) {
 	}
 
-	void RenderEntity::render(GraphicManager* graphicManager, Geometry* geometry, Frustum* frustum, Light* light, float objectId) {
+	void RenderEntity::render(GraphicManager* graphicManager, ModelInstance* geometry, Frustum* frustum, Light* light, float objectId) {
 	}
 
-	void RenderEntity::renderScene(std::vector<Geometry*>& geometries, Frustum* frustum, GraphicManager* graphicManager, Light* light) {
+	void RenderEntity::renderScene(std::vector<ModelInstance*>& geometries, Frustum* frustum, GraphicManager* graphicManager, Light* light) {
 	}
 }

@@ -47,7 +47,7 @@ namespace engine {
 		};
 	};
 
-	class GeometryData {
+	class Mesh {
 	public:
 		std::vector<math::Vector3> position;
 		std::vector<math::Vector3> normal;
@@ -58,7 +58,6 @@ namespace engine {
 		std::vector<math::Vector4> boneIds;
 		std::vector<math::Vector4> weights;
 		std::vector<unsigned short> indices;
-		std::vector<math::Matrix4> bindPose;
 
 		int elementsPerVertex;
 		int attributeOffsets[MaxAttributeOffset];
@@ -74,8 +73,8 @@ namespace engine {
 		void preCalculateTangent();
 		void calculateBoundingBox();
 	public:
-		GeometryData();
-		~GeometryData();
+		Mesh();
+		~Mesh();
 
 		std::string getName() const { return name; }
 		void setName(const std::string& name) { this->name = name; }

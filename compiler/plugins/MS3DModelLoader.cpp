@@ -54,7 +54,7 @@ public:
 
 		ms3d.Load(file);
 
-		GeometryData* modelData = new GeometryData;
+		Mesh* modelData = new Mesh;
 		modelData->setName(file::getFilename(fileName));
 
 		for(int i = 0; i < ms3d.GetNumMaterials(); i++) {

@@ -36,12 +36,12 @@ using namespace engine;
 
 class Animator : public engine::ControllerComponent {
 public:
-	Animator(Geometry* geometry, engine::EventManager& eventManager, float frame) :
+	Animator(ModelInstance* geometry, engine::EventManager& eventManager, float frame) :
 			geometry(geometry), eventManager(eventManager), frame(frame) {
 	}
 
 	virtual void updateBindings(engine::GameEntity* owner) {
-		geometry = owner->getComponent<engine::Geometry>();
+		geometry = owner->getComponent<engine::ModelInstance>();
 	}
 
 	virtual void update(const engine::GameTime& gameTime) {
@@ -54,7 +54,7 @@ public:
 
 private:
 	engine::EventManager& eventManager;
-	engine::Geometry* geometry;
+	engine::ModelInstance* geometry;
 	float frame;
 };
 

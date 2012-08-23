@@ -27,7 +27,7 @@
 
 namespace engine {
 
-	class GeometryData;
+	class Mesh;
 
 	class GraphicManager : public ResourceListener {
 		enum PendingFlags {
@@ -156,9 +156,9 @@ namespace engine {
 			Buffer* vertexBuffer;
 		};
 
-		std::map<GeometryData*, BufferEntry> buffers;
+		std::map<Mesh*, BufferEntry> buffers;
 
-		void getBuffers(GeometryData* geometry, Buffer** indexBuffer, Buffer** vertexBuffer);
+		void getBuffers(Mesh* geometry, Buffer** indexBuffer, Buffer** vertexBuffer);
 	};
 
 }

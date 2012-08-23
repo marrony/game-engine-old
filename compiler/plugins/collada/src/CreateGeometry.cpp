@@ -29,7 +29,7 @@ void CreateGeometry::visit(ColladaGeometry* geometry) {
 	else
 		name0 = geometry->getId();
 
-	geometryData = new GeometryData;
+	geometryData = new Mesh;
 
 	geometryData->setName(name0);
 

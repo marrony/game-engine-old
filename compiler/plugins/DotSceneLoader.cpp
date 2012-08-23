@@ -573,7 +573,7 @@ void DotSceneLoader::processEntity(TiXmlElement *xmlNode, Node *parent) {
 		; //processIndexBuffer(pElement);
 
 	// Create the entity
-	Geometry *geometry = 0;
+	ModelInstance *modelInstance = 0;
 	try {
 		std::map<std::string, std::string> options;
 
@@ -583,14 +583,14 @@ void DotSceneLoader::processEntity(TiXmlElement *xmlNode, Node *parent) {
 		compiler->compile(meshFile.c_str(), options);
 		Model* model = (Model*)manager->loadResource(ModelKey(file::getFilename(meshFile)));
 
-		Geometry* entity = scene->createGeometry(model, model->getBoundingBox(), parent);
+		ModelInstance* entity = scene->createModelInstance(model, model->getBoundingBox(), parent);
 	} catch(Exception &/*e*/) {
 	}
 
 	// Process userDataReference (?)
 	element = xmlNode->FirstChildElement("userDataReference");
 	if(element)
-		processUserDataReference(element, geometry);
+		processUserDataReference(element, modelInstance);
 
 }
 
@@ -825,7 +825,7 @@ math::Vector3 DotSceneLoader::parseColour(TiXmlElement *xmlNode) {
 	return value;
 }
 
-void DotSceneLoader::processUserDataReference(TiXmlElement *xmlNode, Geometry *pEntity) {
+void DotSceneLoader::processUserDataReference(TiXmlElement *xmlNode, ModelInstance *pEntity) {
 	std::string str = xmlNode->Attribute("id");
 //	pEntity->setUserAny(Any(str));
 }

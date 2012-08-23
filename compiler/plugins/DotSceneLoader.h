@@ -15,7 +15,7 @@ class TiXmlElement;
 namespace engine {
 	class Scene;
 	class Node;
-	class Geometry;
+	class ModelInstance;
 	class Light;
 }
 
@@ -45,7 +45,7 @@ protected:
 	void processEnvironment(TiXmlElement *xmlNode);
 	void processTerrain(TiXmlElement *xmlNode);
 	void processUserDataReference(TiXmlElement *xmlNode, Node *pParent = 0);
-	void processUserDataReference(TiXmlElement *xmlNode, Geometry *pEntity);
+	void processUserDataReference(TiXmlElement *xmlNode, ModelInstance *pEntity);
 	void processOctree(TiXmlElement *xmlNode);
 	void processLight(TiXmlElement *xmlNode, Node *pParent = 0);
 	void processCamera(TiXmlElement *xmlNode, Node *pParent = 0);

@@ -131,7 +131,7 @@ public:
 		}
 
 		const engine::Camera* const camera = sceneManager->getActualCamera();
-		std::vector<engine::Geometry*> geometries = sceneManager->getVisibleGeometries(camera->getFrustum());
+		std::vector<engine::ModelInstance*> geometries = sceneManager->getVisibleGeometries(camera->getFrustum());
 
 		std::cout << "entidades visiveis: " << geometries.size() << std::endl;
 
@@ -157,7 +157,7 @@ public:
 
 		if(!svo) {
 			engine::Entity* entity = sceneManager->findEntity("mesh01");
-			engine::Geometry* geo = entity->getComponent<engine::Geometry>();
+			engine::ModelInstance* geo = entity->getComponent<engine::ModelInstance>();
 
 			engine::SparseVoxelOctreeBuilder svoBuilder(geo->getModel());
 			svo = svoBuilder.build(5);

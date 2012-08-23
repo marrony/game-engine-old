@@ -15,15 +15,15 @@
 
 namespace engine {
 
-	Geometry::Geometry(Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier) :
+	ModelInstance::ModelInstance(Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier) :
 		model(model), modifier(modifier), boundingBoxDirty(false), aabbox(aabbox) {
 	}
 
-	Geometry::~Geometry() {
+	ModelInstance::~ModelInstance() {
 		model->getManager()->unloadResource(model);
 	}
 
-	AABoundingBox Geometry::getNonTransformedBoundingBox() const {
+	AABoundingBox ModelInstance::getNonTransformedBoundingBox() const {
 		if(boundingBoxDirty) {
 			updateBoundingBox();
 			boundingBoxDirty = false;
@@ -32,16 +32,16 @@ namespace engine {
 		return aabbox;
 	}
 
-	AABoundingBox Geometry::getBoundingBox() const {
+	AABoundingBox ModelInstance::getBoundingBox() const {
 		return getNonTransformedBoundingBox().transform(getTransformation());
 	}
 
-	void Geometry::setBoundingBox(AABoundingBox aabbox) {
+	void ModelInstance::setBoundingBox(AABoundingBox aabbox) {
 		this->aabbox = aabbox;
 		boundingBoxDirty = false;
 	}
 
-	math::Matrix4 Geometry::getTransformation() const {
+	math::Matrix4 ModelInstance::getTransformation() const {
 		if(modifier != 0) {
 			return modifier->getTransformation();
 		}
@@ -49,7 +49,7 @@ namespace engine {
 		return math::Matrix4::IDENTITY;
 	}
 
-	void Geometry::setFrame(float frame) {
+	void ModelInstance::setFrame(float frame) {
 		if(!model) return;
 
 		boundingBoxDirty = true;
@@ -71,18 +71,18 @@ namespace engine {
 		}
 	}
 
-	Model* Geometry::getModel() const {
+	Model* ModelInstance::getModel() const {
 		return model;
 	}
 
-	const math::Matrix4* Geometry::getBoneMatrix() const {
+	const math::Matrix4* ModelInstance::getBoneMatrix() const {
 		return global.data();
 	}
 
-	void Geometry::updateBindings(GameEntity* owner) {
+	void ModelInstance::updateBindings(GameEntity* owner) {
 	}
 
-	void Geometry::updateBoundingBox() const {
+	void ModelInstance::updateBoundingBox() const {
 		if(!model) return;
 
 		aabbox.reset();
@@ -116,13 +116,13 @@ namespace engine {
 #endif
 	}
 
-	void Geometry::notifyVisibility(ResourceManager& manager) {
+	void ModelInstance::notifyVisibility(ResourceManager& manager) {
 		if(model) {
 			//global.resize(model->getAnimation().getBonesCount(), math::Matrix4::IDENTITY);
 		}
 	}
 
-	bool Geometry::isVisible(const Frustum* const frustum) const {
+	bool ModelInstance::isVisible(const Frustum* const frustum) const {
 		return frustum == 0 || frustum->testAgainstBoundingBox(getBoundingBox()) != TestResult::OUT_SIDE;
 	}
 

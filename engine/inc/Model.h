@@ -21,11 +21,12 @@
 namespace engine {
 
 	class ResourceManager;
-	class GeometryData;
+	class Mesh;
 
 	class Animation {
-		friend class GeometryData;
+		friend class Mesh;
 
+		std::vector<math::Matrix4> bindPose;
 		std::vector<std::vector<KeyFrame>> keyFrames;
 
 		float animationFps;
@@ -61,7 +62,7 @@ namespace engine {
 
 		static const Type TYPE;
 
-		GeometryData* geometryData;
+		Mesh* geometryData;
 		Animation* animation;
 		Skeleton* skeleton;
 		bool hasAnimation;

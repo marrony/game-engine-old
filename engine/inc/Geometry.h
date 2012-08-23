@@ -25,10 +25,10 @@ namespace engine {
 	class TransformationModifier;
 	class ResourceManager;
 
-	class Geometry : public SceneTreeObject, public DataComponent {
+	class ModelInstance : public SceneTreeObject, public DataComponent {
 	public:
-		Geometry(class Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier);
-		virtual ~Geometry();
+		ModelInstance(class Model* model, const AABoundingBox& aabbox, TransformationModifier* modifier);
+		virtual ~ModelInstance();
 
 		math::Matrix4 getTransformation() const;
 

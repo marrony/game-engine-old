@@ -42,11 +42,10 @@ namespace engine {
 		ResourceBinStream resourceStream(fileStream);
 
 		Model* model = new Model(modelName, &manager);
-		model->geometryData = new GeometryData;
+		model->geometryData = new Mesh;
 		model->geometryData->readFromStream(manager, resourceStream);
 		model->hasAnimation = !model->geometryData->boneIds.empty() &&
-				!model->geometryData->weights.empty() &&
-				!model->geometryData->bindPose.empty();
+				!model->geometryData->weights.empty();
 		model->animation = new Animation;
 		model->skeleton = new Skeleton;
 

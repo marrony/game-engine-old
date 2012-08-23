@@ -129,7 +129,7 @@ class DeferredLighting : public engine::Renderer {
 		shadowFramebuffer->setDepthTarget(depthTextureShadow);
 	}
 
-	void renderScene(std::vector<engine::Geometry*>& geometries, const engine::Frustum* frustum, engine::GraphicManager* graphicManager, const std::string& aspect) {
+	void renderScene(std::vector<engine::ModelInstance*>& geometries, const engine::Frustum* frustum, engine::GraphicManager* graphicManager, const std::string& aspect) {
 		engine::RenderEntity renderEntity(aspect);
 		renderEntity.renderScene(geometries, frustum, graphicManager, 0);
 	}
@@ -137,7 +137,7 @@ class DeferredLighting : public engine::Renderer {
 	/**
 	 * Render to depth and normal textures
 	 */
-	void geometryPass(std::vector<engine::Geometry*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
+	void geometryPass(std::vector<engine::ModelInstance*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
 		graphicManager->bindFramebuffer(gbuffer);
 
 		graphicManager->cullFace(GL_BACK, GL_CCW);
@@ -163,7 +163,7 @@ class DeferredLighting : public engine::Renderer {
 	/**
 	 * Do foward rendering
 	 */
-	void materialPass(std::vector<engine::Geometry*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
+	void materialPass(std::vector<engine::ModelInstance*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
 
 //		applyFilter(lbuffer.get(), 0);
 
@@ -199,7 +199,7 @@ class DeferredLighting : public engine::Renderer {
 	/**
 	 * Render to light buffer and acumulate the lights contribuition
 	 */
-	void lightPass(std::vector<engine::Geometry*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
+	void lightPass(std::vector<engine::ModelInstance*>& geometries, const engine::Frustum* camera, engine::GraphicManager* graphicManager, engine::SceneManager* sceneManager) {
 		std::vector<engine::Light*> lights = sceneManager->getVisibleLights(camera);
 
 		gpuPrint("shadow begin");
@@ -363,7 +363,7 @@ class DeferredLighting : public engine::Renderer {
 				graphicManager->clear(engine::math::Vector4(1.0, 1.0, 1.0, 1.0), 1.0);
 
 				const engine::Frustum* const frustum = light->getFrustum();
-				std::vector<engine::Geometry*> geometries = sceneManager->getVisibleGeometries(frustum);
+				std::vector<engine::ModelInstance*> geometries = sceneManager->getVisibleGeometries(frustum);
 
 				renderScene(geometries, frustum, graphicManager, "SHADOW");
 
@@ -498,7 +498,7 @@ public:
 		}
 
 		const engine::Frustum* const camera = sceneManager->getActualCamera()->getComponent<engine::Frustum>();
-		std::vector<engine::Geometry*> geometries = sceneManager->getVisibleGeometries(camera);
+		std::vector<engine::ModelInstance*> geometries = sceneManager->getVisibleGeometries(camera);
 
 		std::cout << "entidades visiveis: " << geometries.size() << std::endl;
 

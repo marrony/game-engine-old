@@ -13,7 +13,7 @@
 
 namespace engine {
 
-	class Geometry;
+	class ModelInstance;
 	class GraphicManager;
 	class ResourceManager;
 	class Attribute;
@@ -28,9 +28,9 @@ namespace engine {
 	public:
 		RenderEntity(const std::string& aspect, ResourceManager& resourceManager);
 
-		void render(GraphicManager* graphicManager, Geometry* geometry, Frustum* frustum, Light* light, float objectId);
+		void render(GraphicManager* graphicManager, ModelInstance* geometry, Frustum* frustum, Light* light, float objectId);
 
-		void renderScene(std::vector<Geometry*>& geometries, Frustum* frustum, GraphicManager* graphicManager, Light* light);
+		void renderScene(std::vector<ModelInstance*>& geometries, Frustum* frustum, GraphicManager* graphicManager, Light* light);
 	private:
 		std::string actualAspect;
 		ResourceManager& resourceManager;

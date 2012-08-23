@@ -28,13 +28,13 @@ class CreateGeometry : public Visitor,
 							public ColladaPolyListVisitor,
 							public ColladaTrianglesVisitor {
 	class ResourceManager* manager;
-	GeometryData* geometryData;
+	Mesh* geometryData;
 	std::string name;
 public:
 	CreateGeometry(const std::string& name, class ResourceManager* manager);
 	virtual ~CreateGeometry();
 
-	GeometryData* getModelData() { return geometryData; }
+	Mesh* getModelData() { return geometryData; }
 
 	virtual void visit(ColladaGeometry* geometry);
 	virtual void visit(ColladaMesh* mesh);

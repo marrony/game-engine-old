@@ -57,7 +57,7 @@ public:
 			throw Exception("Tag mesh not found");
 		}
 
-		GeometryData* modelData = new GeometryData;
+		Mesh* modelData = new Mesh;
 
 		TiXmlElement* xmlSubmeshes = xmlMesh->FirstChildElement("submeshes");
 		if(xmlSubmeshes != 0) {
@@ -105,7 +105,7 @@ public:
 		return value;
 	}
 
-	void processSubmeshes(GeometryData* modelData, TiXmlElement* xmlSubmeshes) {
+	void processSubmeshes(Mesh* modelData, TiXmlElement* xmlSubmeshes) {
 		TiXmlElement* xmlSubmesh = xmlSubmeshes->FirstChildElement("submesh");
 
 		while(xmlSubmesh != 0) {
@@ -114,7 +114,7 @@ public:
 		}
 	}
 
-	void processSubmesh(GeometryData* modelData, TiXmlElement* xmlSubmesh) {
+	void processSubmesh(Mesh* modelData, TiXmlElement* xmlSubmesh) {
 		std::vector<unsigned short> indices;
 		std::vector<MeshVertex> vertices;
 		int flags = 0;
@@ -135,7 +135,7 @@ public:
 		modelData->addVertexData(vertices, indices, 0 /*material*/, flags);
 	}
 
-	std::vector<unsigned short> processFaces(GeometryData* modelData, TiXmlElement* xmlFaces) {
+	std::vector<unsigned short> processFaces(Mesh* modelData, TiXmlElement* xmlFaces) {
 		std::vector<unsigned short> indices;
 
 		TiXmlElement* xmlFace = xmlFaces->FirstChildElement("face");
@@ -156,7 +156,7 @@ public:
 		return indices;
 	}
 
-	std::vector<MeshVertex> processGeometry(GeometryData* modelData, TiXmlElement* xmlGeometry, int& flags) {
+	std::vector<MeshVertex> processGeometry(Mesh* modelData, TiXmlElement* xmlGeometry, int& flags) {
 		std::vector<MeshVertex> vertices;
 
 		TiXmlElement* xmlVertexBuffer = xmlGeometry->FirstChildElement("vertexbuffer");

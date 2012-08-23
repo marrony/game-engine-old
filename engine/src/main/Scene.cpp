@@ -55,8 +55,8 @@ namespace engine {
 		eraseVector(nodes);
 	}
 
-	std::vector<Geometry*> Scene::getVisibleGeometries(const Frustum* const camera) {
-		std::vector<Geometry*> visibleGeometries;
+	std::vector<ModelInstance*> Scene::getVisibleGeometries(const Frustum* const camera) {
+		std::vector<ModelInstance*> visibleGeometries;
 
 		QueryList queryList;
 		queryList.setFrustum(camera);
@@ -64,7 +64,7 @@ namespace engine {
 
 		sceneTree->queryObjects(queryList);
 		for(size_t i = 0; i < queryList.size(); i++) {
-			Geometry* geometry = (Geometry*) queryList.getObject(i);
+			ModelInstance* geometry = (ModelInstance*) queryList.getObject(i);
 			visibleGeometries.push_back(geometry);
 		}
 
@@ -98,7 +98,7 @@ namespace engine {
 		renderQueue.clear();
 
 		for(size_t i = 0; i < queryList.size(); i++) {
-			Geometry* geometry = (Geometry*) queryList.getObject(i);
+			ModelInstance* geometry = (ModelInstance*) queryList.getObject(i);
 
 			Model* model = geometry->getModel();
 
@@ -128,11 +128,11 @@ namespace engine {
 		return root;
 	}
 
-	Geometry* Scene::createGeometry(Model* model, const AABoundingBox& aabbox, Node* node) {
+	ModelInstance* Scene::createModelInstance(Model* model, const AABoundingBox& aabbox, Node* node) {
 		if(!node)
 			node = createNode();
 
-		Geometry* geometry = new Geometry(model, aabbox, node);
+		ModelInstance* geometry = new ModelInstance(model, aabbox, node);
 
 		geometries.push_back(geometry);
 
@@ -213,7 +213,7 @@ namespace engine {
 			if(obj->getSceneTreeType() != SceneTreeType::GeometrySceneType)
 				continue;
 
-			Geometry* geometry = (Geometry*)obj;
+			ModelInstance* geometry = (ModelInstance*)obj;
 
 			geometry->notifyVisibility(manager);
 		}
@@ -269,7 +269,7 @@ namespace engine {
 			stream.readArray("aabboxMax", max.vector, 3);
 
 			Model* model = (Model*)manager.loadResource(ModelKey(modelName));
-			Geometry* geometry = new Geometry(model, AABoundingBox(min, max), node);
+			ModelInstance* geometry = new ModelInstance(model, AABoundingBox(min, max), node);
 
 			scene->geometries[i] = geometry;
 
@@ -361,7 +361,7 @@ namespace engine {
 
 		stream.writeInt("geometriesCount", scene->geometries.size());
 		for(size_t i = 0; i < scene->geometries.size(); ++i) {
-			Geometry* geometry = scene->geometries[i];
+			ModelInstance* geometry = scene->geometries[i];
 
 			stream.pushGroup("geometry");
 
