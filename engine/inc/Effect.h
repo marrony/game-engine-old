@@ -38,7 +38,6 @@ namespace engine {
 
 	struct ConstantContext {
 		class GraphicManager* graphicManager;
-		class ResourceManager* resourceManager;
 		class ModelInstance* geometry;
 		class Frustum* frustum;
 		class Light* light;

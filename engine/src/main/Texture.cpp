@@ -11,15 +11,11 @@
 
 namespace engine {
 
-	void Texture::cleanData() {
-	}
-
 	Texture::Texture() :
 			image(0), handle(0), dirty(true) {
 	}
 
 	Texture::~Texture() {
-		cleanData();
 	}
 
 	void Texture::setHandle(int handle) {
@@ -36,8 +32,6 @@ namespace engine {
 
 	void Texture::setUpdated() {
 		dirty = false;
-
-		cleanData();
 	}
 
 	TextureType Texture::getTextureType() const {

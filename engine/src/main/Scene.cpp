@@ -51,7 +51,7 @@ namespace engine {
 		eraseVector(cameras);
 		eraseVector(spotLights);
 		eraseVector(pointLights);
-		eraseVector(geometries);
+		eraseVector(models);
 		eraseVector(nodes);
 	}
 
@@ -134,7 +134,7 @@ namespace engine {
 
 		ModelInstance* geometry = new ModelInstance(model, aabbox, node);
 
-		geometries.push_back(geometry);
+		models.push_back(geometry);
 
 		return geometry;
 	}
@@ -185,8 +185,8 @@ namespace engine {
 		sceneTree->maxObjects(10);
 		sceneTree->minObjects(5);
 
-		for(size_t i = 0; i < geometries.size(); i++) {
-			sceneTree->addObject(geometries[i]);
+		for(size_t i = 0; i < models.size(); i++) {
+			sceneTree->addObject(models[i]);
 		}
 
 		for(size_t i = 0; i < pointLights.size(); i++) {
@@ -254,8 +254,8 @@ namespace engine {
 
 		scene->root = scene->nodes[0];
 
-		scene->geometries.resize(stream.readInt("geometriesCount"));
-		for(size_t i = 0; i < scene->geometries.size(); ++i) {
+		scene->models.resize(stream.readInt("geometriesCount"));
+		for(size_t i = 0; i < scene->models.size(); ++i) {
 
 			stream.pushGroup("geometry");
 
@@ -271,7 +271,7 @@ namespace engine {
 			Model* model = (Model*)manager.loadResource(ModelKey(modelName));
 			ModelInstance* geometry = new ModelInstance(model, AABoundingBox(min, max), node);
 
-			scene->geometries[i] = geometry;
+			scene->models[i] = geometry;
 
 			stream.popGroup();
 		}
@@ -359,9 +359,9 @@ namespace engine {
 			stream.popGroup();
 		}
 
-		stream.writeInt("geometriesCount", scene->geometries.size());
-		for(size_t i = 0; i < scene->geometries.size(); ++i) {
-			ModelInstance* geometry = scene->geometries[i];
+		stream.writeInt("geometriesCount", scene->models.size());
+		for(size_t i = 0; i < scene->models.size(); ++i) {
+			ModelInstance* geometry = scene->models[i];
 
 			stream.pushGroup("geometry");
 

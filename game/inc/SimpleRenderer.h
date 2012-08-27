@@ -22,8 +22,6 @@ using namespace engine;
 
 class SimpleRenderer : public Renderer {
 
-	ResourceManager& resourceManager;
-
 	void renderScene(Frustum* frustum, GraphicManager* graphicManager, Light* light, const std::string& aspect, Scene* scene) {
 		for(RenderQueueEntry entry : scene->getRenderQueue()) {
 			Model* model = entry.geometry->getModel();
@@ -42,7 +40,6 @@ class SimpleRenderer : public Renderer {
 			ConstantContext context;
 
 			context.graphicManager = graphicManager;
-			context.resourceManager = &resourceManager;
 			context.geometry = entry.geometry;
 			context.frustum = frustum;
 			context.light = light;
@@ -56,10 +53,6 @@ class SimpleRenderer : public Renderer {
 	}
 
 public:
-	SimpleRenderer(ResourceManager& resourceManager) :
-		resourceManager(resourceManager) {
-	}
-
 	virtual void render(GraphicManager* graphicManager, Scene* sceneManager) {
 		Frustum* camera = sceneManager->getActualCamera();
 

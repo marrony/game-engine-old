@@ -23,9 +23,6 @@ namespace engine {
 		Image* image;
 		int handle;
 		bool dirty;
-		TextureType type;
-
-		void cleanData();
 	public:
 		Texture();
 		~Texture();

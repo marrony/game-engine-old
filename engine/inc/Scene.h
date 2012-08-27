@@ -28,7 +28,7 @@ namespace engine {
 
 		std::vector<class Light*> pointLights;
 		std::vector<class Light*> spotLights;
-		std::vector<class ModelInstance*> geometries;
+		std::vector<class ModelInstance*> models;
 		std::vector<class Frustum*> cameras;
 
 		class Frustum* atualCamera;

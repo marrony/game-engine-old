@@ -17,6 +17,7 @@ namespace engine {
 	};
 
 	struct Bone {
+	public:
 		std::string name;
 		int parentIndex;
 
@@ -24,7 +25,7 @@ namespace engine {
 
 		math::Matrix4 localSkeleton;
 		math::Matrix4 globalSkeleton;
-	public:
+
 		math::Matrix4 evaluate(float frame) {
 			math::Vector3 position(0, 0, 0);
 			math::Quaternion rotation(1, 0, 0, 0);

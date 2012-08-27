@@ -81,7 +81,7 @@ MyGame::~MyGame() {}
 void MyGame::create(Application& app) {
 	application = &app;
 
-	renderer = new SimpleRenderer(application->getResourceManager());
+	renderer = new SimpleRenderer;
 
 	Node* node;
 
