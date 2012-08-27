@@ -7,7 +7,8 @@ set(ENGINE_COMMON_SRC
 	
 	src/main/math/Matrix4.cpp
 	
-	src/main/AnimationSystem.cpp
+	#src/main/AnimationSystem.cpp
+	src/main/RenderingSystem.cpp
 	
 	src/main/Window.cpp
 	#src/main/OpenCL.cpp

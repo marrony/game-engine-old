@@ -1266,7 +1266,19 @@ void testeResouceManager() {
 	std::cout << texture->data << std::endl;
 }
 
+#include "RenderingSystem.h"
+void testeRenderingSystem() {
+	engine::RenderingSystem s;
+
+	unsigned int x = s.insertNode(0, engine::math::Matrix4::IDENTITY);
+	unsigned int y = s.insertNode(0, engine::math::Matrix4::IDENTITY);
+	unsigned int z = s.insertNode(1, engine::math::Matrix4::IDENTITY);
+	unsigned int w = s.insertNode(1, engine::math::Matrix4::IDENTITY);
+}
+
+
 int main(int argc, char* argv[]) {
+	testeRenderingSystem();
 	testeBranch();
 	testeResouceManager();
 	testeAlias();

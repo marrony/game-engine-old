@@ -14,13 +14,13 @@ namespace engine {
 
 	template<typename Object, int NumberOfBits = 16>
 	struct PackedArray {
+		typedef unsigned int ID;
+
 		struct Index {
 			ID id;
 			unsigned short index;
 			unsigned short next;
 		};
-
-		typedef unsigned int ID;
 
 		static const unsigned int MAX_OBJECTS = 1 << NumberOfBits;
 		static const unsigned int INDEX_MASK = MAX_OBJECTS - 1;
