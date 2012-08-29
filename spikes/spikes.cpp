@@ -1266,7 +1266,21 @@ void testeResouceManager() {
 	std::cout << texture->data << std::endl;
 }
 
+struct Hierarchy {
+	std::vector<math::Matrix4> global;
+	std::vector<math::Matrix4> local;
+};
+
+struct FlatHierarchy {
+	std::vector<Hierarchy> hierarchy;
+};
+
+void testeFlatHierarchy() {
+
+}
+
 #include "RenderingSystem.h"
+
 void testeRenderingSystem() {
 	engine::RenderingSystem s;
 
@@ -1276,8 +1290,24 @@ void testeRenderingSystem() {
 	unsigned int w = s.insertNode(1, engine::math::Matrix4::IDENTITY);
 }
 
+template<typename... T>
+struct TesteX {
+	std::tuple<std::vector<T>...> x;
+
+	template<int idx>
+	auto get() {
+		return std::get<idx>(x);
+	}
+
+	void doSomethings(T... z) {
+		//std::tuple_size<decltype(x)>::value
+	}
+};
 
 int main(int argc, char* argv[]) {
+//	TesteX<int, float, double> testex;
+//	testex.doSomethings(10, 1.2f, 3.14);
+
 	testeRenderingSystem();
 	testeBranch();
 	testeResouceManager();
