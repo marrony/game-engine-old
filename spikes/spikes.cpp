@@ -1290,23 +1290,68 @@ void testeRenderingSystem() {
 	unsigned int w = s.insertNode(1, engine::math::Matrix4::IDENTITY);
 }
 
+template<int...>
+struct index_tuple {
+};
+
+template<int I, typename IndexTuple, typename ... Types>
+struct make_indexes_impl;
+
+template<int I, int ... Indexes, typename T, typename ... Types>
+struct make_indexes_impl<I, index_tuple<Indexes...>, T, Types...> {
+	typedef typename make_indexes_impl<I + 1, index_tuple<Indexes..., I>, Types...>::type type;
+};
+
+template<int I, int ... Indexes>
+struct make_indexes_impl<I, index_tuple<Indexes...> > {
+	typedef index_tuple<Indexes...> type;
+};
+
+template<typename ... Types>
+struct make_indexes : make_indexes_impl<0, index_tuple<>, Types...> {
+};
+
 template<typename... T>
 struct TesteX {
 	std::tuple<std::vector<T>...> x;
 
-	template<int idx>
-	auto get() {
-		return std::get<idx>(x);
+	template<int... I>
+	void get(index_tuple<I...> index) {
 	}
 
-	void doSomethings(T... z) {
+	std::tuple<T...> doSomethings(T... z) {
 		//std::tuple_size<decltype(x)>::value
+		auto index = typename make_indexes<T...>::type();
+		get(index);
+
+		return std::tuple<T...>(z...);
 	}
 };
 
+template<typename ... Elements>
+class MyTuple;
+
+template<>
+class MyTuple<> { };
+
+template<typename Head, typename ... Tail>
+class MyTuple<Head, Tail...> : public MyTuple<Tail...> {
+public:
+	Head head;
+};
+
 int main(int argc, char* argv[]) {
-//	TesteX<int, float, double> testex;
-//	testex.doSomethings(10, 1.2f, 3.14);
+	MyTuple<int, float, double> myTuple;
+
+	myTuple.head = 10;
+
+	TesteX<int, float, double> testex;
+
+	int a;
+	float b;
+	double c;
+
+	std::tie(a, b, c) = testex.doSomethings(10, 1.2f, 3.14);
 
 	testeRenderingSystem();
 	testeBranch();
